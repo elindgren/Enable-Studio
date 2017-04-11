@@ -20,8 +20,8 @@ import javafx.util.StringConverter;
 
 public class CordPan extends Application {
 
-    public static final String Column1MapKey = "X";
-    public static final String Column2MapKey = "Y";
+    public static final String Column1MapKey = "0";
+    public static final String Column2MapKey = "1";
 
     public static void main(String[] args) {
         launch(args);
@@ -85,19 +85,35 @@ public class CordPan extends Application {
     }
 
     private ObservableList<Map> generateDataInMap() {
-        int max = 10;
+        int[][] myArray = new int[10][2];
+        int cols = myArray[0].length;
+        int rows = myArray.length;
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++){
+                myArray[i][j] = i + j;
+                //System.out.println(myArray[i][j]);
+            }
+        }
+
+        int max = myArray.length;
+        //System.out.println(max);
         ObservableList<Map> allData = FXCollections.observableArrayList();
-        for (int i = 1; i < max; i++) {
+        for (int i = 0; i < max; i++) {
+
             Map<String, String> dataRow = new HashMap<>();
+            for (int j=0; j<cols; j++) {
 
-            String value1 = "Z" + i;
-            String value2 = "3" + i;
-            // (Associated element, value of element)
-            dataRow.put(Column1MapKey, value1);
-            dataRow.put(Column2MapKey, value2);
-            System.out.println(dataRow.get("X"));
+                String value1 = "" + myArray[i][j];
+                System.out.println(i + "||"+  j + "||" + myArray[i][j]);
+                //String value2 = "" + myArray[i][1];
+                // (Associated element, value of element)
+                dataRow.put("" + j, value1);
+                //dataRow.put("" + 2, value2);
+                // System.out.println(dataRow.get("X"));
 
-            allData.add(dataRow);
+                allData.add(dataRow);
+            }
         }
         return allData;
     }

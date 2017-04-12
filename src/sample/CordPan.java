@@ -29,6 +29,7 @@ public class CordPan extends Application {
 
     @Override
     public void start(Stage stage) {
+        //Set up the scene with size and title
         Scene scene = new Scene(new Group());
         stage.setTitle("Graphics");
         stage.setWidth(300);
@@ -72,7 +73,6 @@ public class CordPan extends Application {
         secondDataColumn.setCellFactory(cellFactoryForMap);
 
         final VBox vbox = new VBox();
-
         vbox.setSpacing(5);
         vbox.setPadding(new Insets(10, 0, 0, 10));
         vbox.getChildren().addAll(label, table_view);
@@ -80,7 +80,6 @@ public class CordPan extends Application {
         ((Group) scene.getRoot()).getChildren().addAll(vbox);
 
         stage.setScene(scene);
-
         stage.show();
     }
 
@@ -96,21 +95,19 @@ public class CordPan extends Application {
             }
         }
 
-        //System.out.println(max);
+        //Each datarow is build up on the values of the matrix in one row. The datarow puts each value in
+        //the right column and is then added to the Observable list which is finaly displayed.
         ObservableList<Map> allData = FXCollections.observableArrayList();
         for (int i = 0; i < rows; i++) {
+            //creating a HashMap called dataRow which we put the column values of one row (i) into.
             Map<String, String> dataRow = new HashMap<>();
 
             for (int j=0; j<cols; j++) {
 
                 String value = "" + myArray[i][j];
                 System.out.println(i + "||"+  j + "||" + myArray[i][j]);
-                //String value2 = "" + myArray[i][1];
                 // (Associated element, value of element)
                 dataRow.put("" + j, value);
-                //dataRow.put("" + 2, value2);
-                // System.out.println(dataRow.get("X"));
-
 
             }
             allData.add(dataRow);

@@ -96,24 +96,24 @@ public class CordPan extends Application {
             }
         }
 
-        int max = myArray.length;
         //System.out.println(max);
         ObservableList<Map> allData = FXCollections.observableArrayList();
-        for (int i = 0; i < max; i++) {
-
+        for (int i = 0; i < rows; i++) {
             Map<String, String> dataRow = new HashMap<>();
+
             for (int j=0; j<cols; j++) {
 
-                String value1 = "" + myArray[i][j];
+                String value = "" + myArray[i][j];
                 System.out.println(i + "||"+  j + "||" + myArray[i][j]);
                 //String value2 = "" + myArray[i][1];
                 // (Associated element, value of element)
-                dataRow.put("" + j, value1);
+                dataRow.put("" + j, value);
                 //dataRow.put("" + 2, value2);
                 // System.out.println(dataRow.get("X"));
 
-                allData.add(dataRow);
+
             }
+            allData.add(dataRow);
         }
         return allData;
     }

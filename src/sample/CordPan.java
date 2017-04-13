@@ -19,9 +19,12 @@ import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 public class CordPan extends Application {
+    public int[][] myArray;
 
     public static final String Column1MapKey = "0";
     public static final String Column2MapKey = "1";
+    public static final String Column3MapKey = "2";
+    public static final String Column4MapKey = "3";
 
     public static void main(String[] args) {
         launch(args);
@@ -40,6 +43,10 @@ public class CordPan extends Application {
 
         TableColumn<Map, String> firstDataColumn = new TableColumn<>("X");
         TableColumn<Map, String> secondDataColumn = new TableColumn<>("Y");
+        TableColumn<Map, String> thirdDataColumn = new TableColumn<>("Z");
+        TableColumn<Map, String> fourthDataColumn = new TableColumn<>("P");
+
+        TableView table_view = new TableView<>(generateDataInMap());
 
         // Column1MapKey refers to which data goes into which column
         firstDataColumn.setCellValueFactory(new MapValueFactory(Column1MapKey));
@@ -47,11 +54,29 @@ public class CordPan extends Application {
         secondDataColumn.setCellValueFactory(new MapValueFactory(Column2MapKey));
         secondDataColumn.setMinWidth(130);
 
-        TableView table_view = new TableView<>(generateDataInMap());
+        if (myArray[0].length >= 3) {
+            thirdDataColumn.setCellValueFactory(new MapValueFactory(Column3MapKey));
+            thirdDataColumn.setMinWidth(130);
+            stage.setWidth(450);
+            if (myArray[0].length >= 4) {
+                fourthDataColumn.setCellValueFactory(new MapValueFactory(Column4MapKey));
+                fourthDataColumn.setMinWidth(130);
+                stage.setWidth(600);
+            }
+        }
+        System.out.println(myArray[0].length + " " + stage.getWidth());
 
         table_view.setEditable(false);
         table_view.getSelectionModel().setCellSelectionEnabled(true);
-        table_view.getColumns().setAll(firstDataColumn, secondDataColumn);
+
+        if (myArray[0].length == 2){
+            table_view.getColumns().setAll(firstDataColumn, secondDataColumn);
+        }else if (myArray[0].length == 3){
+            table_view.getColumns().setAll(firstDataColumn, secondDataColumn, thirdDataColumn);
+        }else if (myArray[0].length == 4){
+            table_view.getColumns().setAll(firstDataColumn, secondDataColumn, thirdDataColumn, fourthDataColumn);
+        }
+
         Callback<TableColumn<Map, String>, TableCell<Map, String>>
                 cellFactoryForMap = new Callback<TableColumn<Map, String>,
                 TableCell<Map, String>>() {
@@ -72,6 +97,13 @@ public class CordPan extends Application {
         firstDataColumn.setCellFactory(cellFactoryForMap);
         secondDataColumn.setCellFactory(cellFactoryForMap);
 
+        if (myArray[0].length >= 3) {
+            thirdDataColumn.setCellFactory(cellFactoryForMap);
+            if (myArray[0].length >=4) {
+                fourthDataColumn.setCellFactory(cellFactoryForMap);
+            }
+        }
+
         final VBox vbox = new VBox();
         vbox.setSpacing(5);
         vbox.setPadding(new Insets(10, 0, 0, 10));
@@ -84,7 +116,7 @@ public class CordPan extends Application {
     }
 
     private ObservableList<Map> generateDataInMap() {
-        int[][] myArray = new int[10][2];
+        myArray = new int[15][3];
         int cols = myArray[0].length;
         int rows = myArray.length;
 
@@ -105,7 +137,7 @@ public class CordPan extends Application {
             for (int j=0; j<cols; j++) {
 
                 String value = "" + myArray[i][j];
-                System.out.println(i + "||"+  j + "||" + myArray[i][j]);
+
                 // (Associated element, value of element)
                 dataRow.put("" + j, value);
 

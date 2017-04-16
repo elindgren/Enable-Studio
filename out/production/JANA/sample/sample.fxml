@@ -14,6 +14,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
+<BorderPane xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <top>
       <VBox BorderPane.alignment="CENTER">
          <children>
@@ -21,6 +22,7 @@
               <menus>
                 <Menu mnemonicParsing="false" text="File">
                   <items>
+                    <MenuItem fx:id="menuClose" mnemonicParsing="false" text="Close" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
@@ -51,10 +53,12 @@
             </LineChart>
             <HBox alignment="CENTER" depthTest="DISABLE" spacing="20.0">
                <children>
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="hej :)" fx:id="b1">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
                   </Button>
+                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="coolt ju" fx:id="b2"/>
                </children>
                <VBox.margin>
                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />

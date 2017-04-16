@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
@@ -45,20 +44,21 @@
          <children>
             <LineChart fx:id="lineChart">
               <xAxis>
-                <CategoryAxis side="BOTTOM" fx:id="xAxis" />
+                <NumberAxis side="BOTTOM" fx:id="xAxis" />
               </xAxis>
               <yAxis>
-                <NumberAxis side="LEFT" fx:id="yAxis"/>
+                <NumberAxis fx:id="yAxis" side="LEFT" />
               </yAxis>
             </LineChart>
             <HBox alignment="CENTER" depthTest="DISABLE" spacing="20.0">
                <children>
-                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="hej :)" fx:id="b1">
+                  <Button fx:id="b1" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Start">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
                   </Button>
-                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="coolt ju" fx:id="b2"/>
+                  <Button fx:id="b2" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Stop" />
+                  <Button fx:id="b3" mnemonicParsing="false" text="Reset" />
                </children>
                <VBox.margin>
                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
@@ -68,7 +68,7 @@
       </VBox>
    </right>
    <left>
-      <TableView BorderPane.alignment="CENTER" fx:id="table">
+      <TableView fx:id="table" BorderPane.alignment="CENTER">
         <columns>
           <TableColumn prefWidth="75.0" text="C1" />
           <TableColumn prefWidth="75.0" text="C2" />

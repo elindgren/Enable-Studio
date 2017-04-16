@@ -68,7 +68,7 @@
       </VBox>
    </right>
    <left>
-      <TableView BorderPane.alignment="CENTER">
+      <TableView BorderPane.alignment="CENTER" fx:id="table">
         <columns>
           <TableColumn prefWidth="75.0" text="C1" />
           <TableColumn prefWidth="75.0" text="C2" />

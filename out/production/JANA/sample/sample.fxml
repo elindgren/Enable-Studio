@@ -43,12 +43,12 @@
    <right>
       <VBox BorderPane.alignment="CENTER">
          <children>
-            <LineChart>
+            <LineChart fx:id="lineChart">
               <xAxis>
-                <CategoryAxis side="BOTTOM" />
+                <CategoryAxis side="BOTTOM" fx:id="xAxis" />
               </xAxis>
               <yAxis>
-                <NumberAxis side="LEFT" />
+                <NumberAxis side="LEFT" fx:id="yAxis"/>
               </yAxis>
             </LineChart>
             <HBox alignment="CENTER" depthTest="DISABLE" spacing="20.0">
@@ -68,7 +68,7 @@
       </VBox>
    </right>
    <left>
-      <TableView BorderPane.alignment="CENTER">
+      <TableView BorderPane.alignment="CENTER" fx:id="table">
         <columns>
           <TableColumn prefWidth="75.0" text="C1" />
           <TableColumn prefWidth="75.0" text="C2" />

@@ -1,6 +1,7 @@
 package sample;
 
 import com.sun.org.apache.xpath.internal.SourceTree;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,6 +11,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TableView;
 
 import java.awt.event.ActionEvent;
 import java.net.URL;
@@ -17,6 +19,9 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 
 public class Controller implements Initializable {
+    //Table
+    @FXML
+    private TableView table;
 
     //Adding closing functionality to close option in menu
     @FXML
@@ -36,7 +41,7 @@ public class Controller implements Initializable {
     @FXML
     private NumberAxis yAxis;
 
-    private XYChart.Series series;
+    private XYChart.Series<Number,Number> series;
     private ExecutorService executor;
 
     @Override
@@ -52,8 +57,11 @@ public class Controller implements Initializable {
 
         b1.setOnAction(e -> {
             System.out.println("b1");
-
         });
+
+        this.initGraph();
+
+
     }
 
     public void initGraph(){
@@ -69,8 +77,10 @@ public class Controller implements Initializable {
         lineChart.setId("liveLineChart");
         lineChart.setTitle("Animated Line Chart");
 
-        series = Data.getAcc(series);
+        series=Data.getAcc();
 
+        series.setName("Random Data");
+        lineChart.getData().add(series);
     }
 
 

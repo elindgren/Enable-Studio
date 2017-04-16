@@ -7,13 +7,12 @@ import javafx.scene.chart.XYChart;
  */
 public class Data {
 
-    public static XYChart.Data getAcc(XYChart.Series series){
-
-        double[][] acc = new double[10][2];
+    public static XYChart.Series getAcc(){
+        XYChart.Series<Number,Number> series = new XYChart.Series<Number,Number>();
+        //Rewrite to take data from Arduino
         for(int i = 0; i < 10; i++){
-            acc[i][0] = (double)i;
-            acc[i][1] = 10*Math.random();
+            series.getData().add(new XYChart.Data<Number,Number>(i,Math.random()*10));
         }
-        return acc;
+        return series;
     }
 }

@@ -139,13 +139,7 @@ public class AccGraph extends Application {
                 graphSwitch.setText("Static");
 
                 grid.getChildren().remove(statChart);
-
-
-                //grid.add(dynChart, 0, 1);
-                mainWindow.setScene(DynamicChart.display());
-
-
-                //init(mainWindow,grid,scene1);
+                grid.add(dynChart, 0, 1);
             }
             else{
                 graphSwitch.setText("Dynamic");

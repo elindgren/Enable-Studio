@@ -39,7 +39,7 @@ public class MainApp extends Application {
 
         //Creating a timeline for updating the graph
         timeline = new Timeline();
-        timeline.setCycleCount(Timeline.INDEFINITE); //Ten cycles of the timeline finishing
+        timeline.setCycleCount(Timeline.INDEFINITE); //Indefinite cycles of the timeline finishing
         timeline.setAutoReverse(true);
 
 
@@ -56,6 +56,7 @@ public class MainApp extends Application {
 
 
 
+        //I don't know how to do actionhandling for keyframe with lambda expression
         KeyFrame keyFrame = new KeyFrame(duration, onFinished);
         timeline.getKeyFrames().add(keyFrame);
 
@@ -70,6 +71,7 @@ public class MainApp extends Application {
             e.consume();
             closeProgram();
         });
+        //***************************************************************************************************//
 
     }
 

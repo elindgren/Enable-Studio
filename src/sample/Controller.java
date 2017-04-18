@@ -22,11 +22,11 @@ import java.util.concurrent.ExecutorService;
 import javafx.scene.text.Text;
 
 public class Controller implements Initializable {
-    //Table
+    //TableView
     @FXML
     private TableView table;
 
-    //Adding closing functionality to close option in menu
+    //MenuBar
     @FXML
     private MenuItem menuClose;
 
@@ -45,9 +45,10 @@ public class Controller implements Initializable {
     private NumberAxis xAxis;
     @FXML
     private NumberAxis yAxis;
-
+    //Series for LineChart
     private XYChart.Series<Number,Number> series;
-    private ExecutorService executor;
+
+
 
 
     @Override
@@ -95,9 +96,16 @@ public class Controller implements Initializable {
         //series=Data.getAcc();
 
         series=MainApp.getSeries();
-        series.setName("Random Data");
+        series.setName("Random Data 1");
+
+
+
         lineChart.getData().add(series);
         lineChart.setCreateSymbols(false);
+    }
+
+    public void test(){
+        System.out.println("Test");
     }
 
 

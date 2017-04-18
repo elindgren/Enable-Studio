@@ -39,8 +39,16 @@
          </children>
       </VBox>
    </top>
-   <right>
-      <VBox BorderPane.alignment="CENTER">
+   <left>
+      <TableView fx:id="table" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn prefWidth="75.0" text="C1" />
+          <TableColumn prefWidth="75.0" text="C2" />
+        </columns>
+      </TableView>
+   </left>
+   <center>
+      <VBox alignment="CENTER" BorderPane.alignment="CENTER">
          <children>
             <LineChart fx:id="lineChart">
               <xAxis>
@@ -66,13 +74,5 @@
             </HBox>
          </children>
       </VBox>
-   </right>
-   <left>
-      <TableView fx:id="table" BorderPane.alignment="CENTER">
-        <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
-        </columns>
-      </TableView>
-   </left>
+   </center>
 </BorderPane>

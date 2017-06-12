@@ -15,7 +15,7 @@ public class ConfirmBox {
 
     private static boolean answer = false;
 
-    public static boolean display(String title, String message){
+    public static boolean display(String title, String message) {
         Stage window = new Stage();
         window.setTitle(title);
         window.setWidth(300);
@@ -26,14 +26,14 @@ public class ConfirmBox {
         FlowPane layout = new FlowPane();
         layout.setAlignment(Pos.CENTER);
         layout.setHgap(20);
-        layout.getChildren().addAll(label,b1,b2);
+        layout.getChildren().addAll(label, b1, b2);
 
-        b1.setOnAction(e-> {
-           answer = true;
+        b1.setOnAction(e -> {
+            answer = true;
             window.close();
         });
 
-        b2.setOnAction(e->{
+        b2.setOnAction(e -> {
             window.close();
         });
 
@@ -43,9 +43,7 @@ public class ConfirmBox {
 
         return answer;
     }
-
     public boolean getAnswer(){
         return answer;
     }
-
 }

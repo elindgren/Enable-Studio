@@ -1,6 +1,5 @@
 package sample;
 
-import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -21,7 +20,6 @@ public class MainApp extends Application {
 
     //Main timeline
     private static Timeline timeline;
-    private AnimationTimer timer;
     //Variable for storing actual frame
     private static Integer i=0;
     private static Integer secs=0;
@@ -77,7 +75,7 @@ public class MainApp extends Application {
     }
 
     public static void staticChart(){
-        staticSeries=Data.getStaticAcc();
+        staticSeries=Data.getStaticDataGraph();
     }
     //Method for closing program.
     private void closeProgram(){

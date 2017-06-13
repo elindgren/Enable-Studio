@@ -4,6 +4,9 @@ package sample;
 import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -11,15 +14,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 import java.net.URL;
 
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
 import javafx.util.Duration;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
@@ -31,6 +32,12 @@ public class Controller implements Initializable {
     //TableView
     @FXML
     private TableView tableStatic;
+    private TableColumn<Number,Number> xDataStaticCol;
+    private TableColumn<Number,Number> yDataStaticCol;
+    private double[][] serialDataAccStatic;
+    private ObservableList<Number> staticData;
+    @FXML
+    private TableView tableAnimated;
 
     //MenuBar
     @FXML
@@ -106,18 +113,22 @@ public class Controller implements Initializable {
             MainApp.setStaticSeries(new XYChart.Series());
             System.out.println("b22");
         });
+
+
+        //Setup of static TableView.
+        tableStatic.setEditable(true);
+        TableColumn xDataStaticCol = new TableColumn("x");
+        TableColumn yDataStaticCol = new TableColumn("y");
+        tableStatic.getColumns().setAll(xDataStaticCol,yDataStaticCol);
+        xDataStaticCol.setCellValueFactory(new PropertyValueFactory<Number, Number>("xStatic"));
+        yDataStaticCol.setCellValueFactory(new PropertyValueFactory<Number,Number>("yStatic"));
     }
 
     public void initStaticGraph(){
-        //Setup of static TableView.
-        /*
         //Fetching data for table
-        tableDataStatic=Data.getStaticAcc();
-        tableStatic.setItems(tableDataStatic);
-        TableColumn<Number,String> xDataStaticCol = new TableColumn<Number,String>("x");
-        xDataStaticCol.setCellValueFactory(new PropertyValueFactory<Number, String>());
-        */
+        tableStatic.setItems(Data.getTableDataXStatic());
 
+        //tableStatic.setItems(Data.getSerialDataStatic());
 
         //Setup of static graph
         xAxisStatic.setAutoRanging(true); //As to not have the axis scale weirdly
@@ -137,10 +148,7 @@ public class Controller implements Initializable {
 
         lineChartStatic.getData().add(seriesStatic);
         lineChartStatic.setCreateSymbols(false);
-
-
     }
-
     public void initAnimatedGraph(){
 
         //Setup of graph
@@ -163,9 +171,13 @@ public class Controller implements Initializable {
         lineChartAnimated.setCreateSymbols(false);
     }
 
-    public void test(){
-        System.out.println("Test");
+    private class TableData{
+        private SimpleDoubleProperty xStatic;
+        private SimpleDoubleProperty yStatic;
+
+        private TableData(double x, double y){
+            this.xStatic = new SimpleDoubleProperty(x);
+            this.yStatic = new SimpleDoubleProperty(y);
+        }
     }
-
-
 }

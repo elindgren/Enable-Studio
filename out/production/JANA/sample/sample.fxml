@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.chart.LineChart?>
@@ -8,16 +10,16 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<TabPane side="LEFT" styleClass="root" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller" stylesheets="@stylesheet.css">
+<TabPane styleClass="root" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <tabs>
        <Tab text="Static view">
          <content>
@@ -46,9 +48,12 @@
                <left>
                   <TableView fx:id="tableStatic" editable="true" BorderPane.alignment="CENTER">
                     <columns>
-                      <TableColumn minWidth="0.0" prefWidth="125.0" text="C1" />
-                      <TableColumn minWidth="0.0" prefWidth="122.0" text="C2" />
+                      <TableColumn minWidth="0.0" prefWidth="114.0" text="x" />
+                      <TableColumn minWidth="0.0" prefWidth="133.0" text="y" />
                     </columns>
+                     <padding>
+                        <Insets bottom="8.0" left="16.0" top="8.0" />
+                     </padding>
                   </TableView>
                </left>
                <center>
@@ -61,19 +66,32 @@
                           <yAxis>
                             <NumberAxis fx:id="yAxisStatic" side="LEFT" />
                           </yAxis>
+                           <styleClass>
+                              <String fx:value="chart-plot-background" />
+                              <String fx:value="chart-series-line" />
+                           </styleClass>
                         </LineChart>
                         <VBox>
                            <children>
                               <HBox alignment="CENTER" spacing="20.0">
                                  <children>
-                                    <Button fx:id="b21" mnemonicParsing="false" text="Read" />
-                                    <Button fx:id="b22" mnemonicParsing="false" text="Reset" />
+                                    <Button fx:id="b21" mnemonicParsing="false" text="Read">
+                                       <styleClass>
+                                          <String fx:value="button-raised" />
+                                          <String fx:value="toggle-button" />
+                                       </styleClass></Button>
+                                    <Button fx:id="b22" mnemonicParsing="false" styleClass="button-raised" text="Reset" />
+                                    <ToggleButton mnemonicParsing="false" text="ReadToggle">
+                                       <styleClass>
+                                          <String fx:value="toggle-button" />
+                                          <String fx:value="button-raised" />
+                                       </styleClass>
+                                    </ToggleButton>
                                  </children>
                                  <VBox.margin>
                                     <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                  </VBox.margin>
                               </HBox>
-                              <Slider showTickLabels="true" showTickMarks="true" />
                            </children>
                         </VBox>
                      </children>
@@ -115,9 +133,12 @@
                <left>
                   <TableView fx:id="table" BorderPane.alignment="CENTER">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
+                      <TableColumn prefWidth="108.0" text="x" />
+                      <TableColumn prefWidth="111.0" text="y" />
                     </columns>
+                     <padding>
+                        <Insets bottom="8.0" left="16.0" top="8.0" />
+                     </padding>
                   </TableView>
                </left>
                <center>
@@ -130,13 +151,22 @@
                           <yAxis>
                             <NumberAxis fx:id="yAxisAnimated" side="LEFT" />
                           </yAxis>
+                           <styleClass>
+                              <String fx:value="chart-line-symbol" />
+                              <String fx:value="chart-plot-background" />
+                              <String fx:value="chart-series-line" />
+                           </styleClass>
                         </LineChart>
                         <HBox alignment="CENTER" depthTest="DISABLE" spacing="20.0">
                            <children>
-                              <Button fx:id="b11" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Start">
+                              <Button fx:id="b11" accessibleRole="TOGGLE_BUTTON" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Start">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
+                                 <styleClass>
+                                    <String fx:value="toggle-button" />
+                                    <String fx:value="button-raised" />
+                                 </styleClass>
                               </Button>
                               <Button fx:id="b12" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Stop" />
                               <Button fx:id="b13" mnemonicParsing="false" text="Reset" />
@@ -155,4 +185,8 @@
    <cursor>
       <Cursor fx:constant="DEFAULT" />
    </cursor>
+   <stylesheets>
+      <URL value="@stylesheet.css" />
+      <URL value="@agixmaterialfx.css" />
+   </stylesheets>
 </TabPane>

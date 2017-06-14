@@ -32,8 +32,8 @@ public class Controller implements Initializable {
     //TableView
     @FXML
     private TableView tableStatic;
-    private TableColumn<Number,Number> xDataStaticCol;
-    private TableColumn<Number,Number> yDataStaticCol;
+    private TableColumn xDataStaticCol;
+    private TableColumn yDataStaticCol;
     private double[][] serialDataAccStatic;
     private ObservableList<Number> staticData;
     @FXML
@@ -117,16 +117,18 @@ public class Controller implements Initializable {
 
         //Setup of static TableView.
         tableStatic.setEditable(true);
-        TableColumn xDataStaticCol = new TableColumn("x");
-        TableColumn yDataStaticCol = new TableColumn("y");
-        tableStatic.getColumns().setAll(xDataStaticCol,yDataStaticCol);
-        xDataStaticCol.setCellValueFactory(new PropertyValueFactory<Number, Number>("xStatic"));
-        yDataStaticCol.setCellValueFactory(new PropertyValueFactory<Number,Number>("yStatic"));
+        xDataStaticCol = new TableColumn("x");
+        xDataStaticCol.setMinWidth(100);
+        yDataStaticCol = new TableColumn("y");
+        yDataStaticCol.setMinWidth(100);
+        xDataStaticCol.setCellValueFactory(new PropertyValueFactory<DataPoint2D, Number>("x"));
+        yDataStaticCol.setCellValueFactory(new PropertyValueFactory<DataPoint2D,Number>("y"));
     }
 
     public void initStaticGraph(){
         //Fetching data for table
-        tableStatic.setItems(Data.getTableDataXStatic());
+        tableStatic.setItems(Data.getTableDataStatic());
+        tableStatic.getColumns().setAll(xDataStaticCol,yDataStaticCol);
 
         //tableStatic.setItems(Data.getSerialDataStatic());
 
@@ -180,4 +182,7 @@ public class Controller implements Initializable {
             this.yStatic = new SimpleDoubleProperty(y);
         }
     }
+    //DataPoint2D-class
+
+
 }

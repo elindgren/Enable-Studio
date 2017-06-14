@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.XYChart;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -32,8 +33,10 @@ public class MainApp extends Application {
 
     public void start(Stage primaryStage) throws Exception {
         mainWindow = primaryStage;
+        mainWindow.getIcons().add(new Image("file:resources/images/1497470325_Map_-_Location_Solid_Style_30.png"));
         //Load the fxml-file
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+
 
         Scene scene = new Scene(root, 900, 500);
         mainWindow.setTitle("FXML-test");

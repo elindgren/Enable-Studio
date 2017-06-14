@@ -1,4 +1,5 @@
 package sample;
+import com.sun.deploy.security.DeployURLClassPathCallback;
 import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -9,8 +10,7 @@ import javafx.scene.chart.XYChart;
  * Created by Eric on 2017-04-16.
  */
 public class Data {
-    private static ObservableList<Number> tableDataXStatic;
-    private static ObservableList<Number> tableDataYStatic;
+    private static ObservableList<DataPoint2D> tableDataStatic;
     private static ObservableList<Number> tableDataAnimated;
     private static double[][] serialDataAccStatic;
     //*********************************Animated Data********************************//
@@ -27,39 +27,33 @@ public class Data {
     public static XYChart.Series<Number,Number> getStaticDataGraph(){
         ReadSerialPort rp = new ReadSerialPort();
         serialDataAccStatic = rp.stringArrayToDoubleMatrix();
-        tableDataXStatic = FXCollections.observableArrayList(serialDataAccStatic.length);
-        tableDataYStatic = FXCollections.observableArrayList(serialDataAccStatic.length);
+
+        tableDataStatic = FXCollections.observableArrayList();
+
         //Listener to track changes to table
 
-        tableDataXStatic.addListener(new ListChangeListener<Number>() {
+/*
+        tableDataStatic.addListener(new ListChangeListener<DataPoint2D>() {
                                         @Override
-                                        public void onChanged(Change<? extends Number> c) {
+                                        public void onChanged(Change<? extends DataPoint2D> c) {
                                             //Write something here TODO
                                         }
                                     }
-        );
-        tableDataYStatic.addListener(new ListChangeListener<Number>() {
-                                         @Override
-                                         public void onChanged(Change<? extends Number> c) {
-                                             //Write something here TODO
-                                         }
-                                     }
-        );
-
+                                    );
+*/
         XYChart.Series<Number,Number> staticData = new XYChart.Series<Number,Number>();
         int seconds;
         for (int i=0; i<serialDataAccStatic.length; i++ ){
-            tableDataXStatic.add(i, serialDataAccStatic[i][0]);
+            //XY-data for chart
             XYChart.Data<Number,Number> staticDataPoint=new XYChart.Data<Number,Number>(serialDataAccStatic[i][0], serialDataAccStatic[i][1]);
             staticData.getData().add(staticDataPoint);
+            //IntelliJ doesn't like the row below
+            tableDataStatic.add(new DataPoint2D(serialDataAccStatic[i][0],serialDataAccStatic[i][1]));
         }
         return staticData;
     }
-    public static ObservableList<Number> getTableDataXStatic(){
-        return tableDataXStatic;
-    }
-    public static ObservableList<Number> getTableDataYStatic(){
-        return tableDataYStatic;
+    public static ObservableList<DataPoint2D> getTableDataStatic(){
+        return tableDataStatic;
     }
 }
 

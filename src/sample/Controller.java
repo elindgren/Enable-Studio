@@ -7,6 +7,7 @@ import javafx.animation.Timeline;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -20,30 +21,22 @@ import javafx.event.ActionEvent;
 import java.net.URL;
 
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
 import javafx.scene.text.Text;
+import javafx.util.converter.NumberStringConverter;
 
 import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 
 public class Controller implements Initializable {
-    //TableView
-    @FXML
-    private TableView tableStatic;
-    private TableColumn xDataStaticCol;
-    private TableColumn yDataStaticCol;
-    private double[][] serialDataAccStatic;
-    private ObservableList<Number> staticData;
-    @FXML
-    private TableView tableAnimated;
-
     //MenuBar
     @FXML
     private MenuItem menuClose;
 
-    //On-screen buttons. Naming-scheme: button bij referes to button j on tab i. Ex. b12 refers to button 2 on tab 1.
+    //On-screen buttons. Naming-scheme: button bij refers to button j on tab i. Ex. b12 refers to button 2 on tab 1.
     @FXML
     private Button b11;
     @FXML
@@ -54,6 +47,17 @@ public class Controller implements Initializable {
     private Button b21;
     @FXML
     private Button b22;
+
+    //TableView - Static
+    @FXML
+    private TableView tableStatic;
+    private TableColumn xDataStaticCol;
+    private TableColumn yDataStaticCol;
+    //TableView - Animated
+    @FXML
+    private TableView tableAnimated;
+    private TableColumn xDataAnimatedCol;
+    private TableColumn yDataAnimatedCol;
 
     //LineChart - Animated
     @FXML
@@ -72,7 +76,7 @@ public class Controller implements Initializable {
     private NumberAxis xAxisStatic;
     @FXML
     private NumberAxis yAxisStatic;
-    //Series for LineChart
+    //Static series
     private XYChart.Series<Number,Number> seriesStatic;
 
     @Override
@@ -99,30 +103,47 @@ public class Controller implements Initializable {
             System.out.println("b12");
         });
         b13.setOnAction(e -> {
-            MainApp.setAnimatedSeries(new XYChart.Series());
             System.out.println("b13");
+            ObservableList<DataPoint2D> tableData = Data.getTableDataAnimated();
+            tableData.remove(0,tableData.size());
+            Data.resetXYChartAnimated();
+
         });
 
-        b21.setOnAction(e -> {
-            MainApp.staticChart();
-            initStaticGraph();
-            System.out.println("b21");
-        });
+        b21.setOnAction(e ->{
+                MainApp.staticChart();
+                initStaticGraph();
+                System.out.println("b21");
+            });
 
         b22.setOnAction(e -> {
-            MainApp.setStaticSeries(new XYChart.Series());
             System.out.println("b22");
+            ObservableList<DataPoint2D> tableData = Data.getTableDataStatic();
+            tableData.remove(0,tableData.size());
+            Data.resetXYChartStatic();
         });
 
 
         //Setup of static TableView.
         tableStatic.setEditable(true);
-        xDataStaticCol = new TableColumn("x");
-        xDataStaticCol.setMinWidth(100);
-        yDataStaticCol = new TableColumn("y");
-        yDataStaticCol.setMinWidth(100);
-        xDataStaticCol.setCellValueFactory(new PropertyValueFactory<DataPoint2D, Number>("x"));
-        yDataStaticCol.setCellValueFactory(new PropertyValueFactory<DataPoint2D,Number>("y"));
+        //X-column
+        xDataStaticCol = new TableColumn("Time, <s>");
+        TableCol xColStatic = new TableCol(xDataStaticCol,"x");
+
+        //Y-column
+        yDataStaticCol = new TableColumn("Acc, <m/s>");
+        TableCol yColStatic = new TableCol(yDataStaticCol,"y");
+
+        //****************************//
+        //Setup of Animated TableView.
+        tableAnimated.setEditable(true);
+        //X-column
+        xDataAnimatedCol = new TableColumn("Time, <s>");
+        TableCol xColAnimated = new TableCol(xDataAnimatedCol,"x");
+
+        //Y-column
+        yDataAnimatedCol = new TableColumn("Acc, <m/s>");
+        TableCol yColAnimated = new TableCol(yDataAnimatedCol,"y");
     }
 
     public void initStaticGraph(){
@@ -130,59 +151,33 @@ public class Controller implements Initializable {
         tableStatic.setItems(Data.getTableDataStatic());
         tableStatic.getColumns().setAll(xDataStaticCol,yDataStaticCol);
 
-        //tableStatic.setItems(Data.getSerialDataStatic());
-
-        //Setup of static graph
-        xAxisStatic.setAutoRanging(true); //As to not have the axis scale weirdly
-        xAxisStatic.setTickLabelsVisible(true);
-        xAxisStatic.setTickMarkVisible(false);
-        xAxisStatic.setMinorTickVisible(false);
-
-        yAxisStatic.setAutoRanging(true);
-
-        //Graph
-        lineChartStatic.setAnimated(false);
-        lineChartStatic.setId("staticLineChart");
-        lineChartStatic.setTitle("Static Line Chart");
-
+        //Setup of series
         seriesStatic=MainApp.getStaticSeries();
-        seriesStatic.setName("Static Series1");
+        seriesStatic.setName("Static Series");
 
-        lineChartStatic.getData().add(seriesStatic);
-        lineChartStatic.setCreateSymbols(false);
+        Graph2D staticGraph = new Graph2D(lineChartStatic, seriesStatic, xAxisStatic, yAxisStatic,"b21");
+        staticGraph.setup();
     }
     public void initAnimatedGraph(){
 
-        //Setup of graph
-        xAxisAnimated.setAutoRanging(true); //As to not have the axis scale weirdly
-        xAxisAnimated.setTickLabelsVisible(true);
-        xAxisAnimated.setTickMarkVisible(false);
-        xAxisAnimated.setMinorTickVisible(false);
-
-        yAxisAnimated.setAutoRanging(true);
-
-        //Graph
-        lineChartAnimated.setAnimated(false);
-        lineChartAnimated.setId("liveLineChart");
-        lineChartAnimated.setTitle("Animated Line Chart");
+        //Fetching data for table
+        ObservableList<DataPoint2D> series = Data.getTableDataAnimated();
+        tableAnimated.setItems(series);
+        series.addListener(new ListChangeListener<DataPoint2D>() {
+            @Override
+            public void onChanged(Change<? extends DataPoint2D> c) {
+                updateTableViewAnimated();
+            }
+        });
+        tableAnimated.getColumns().setAll(xDataAnimatedCol,yDataAnimatedCol);
 
         seriesAnimated=MainApp.getAnimatedSeries();
-        seriesAnimated.setName("Animated Series1");
+        seriesAnimated.setName("Animated Series");
 
-        lineChartAnimated.getData().add(seriesAnimated);
-        lineChartAnimated.setCreateSymbols(false);
+        Graph2D staticGraph = new Graph2D(lineChartAnimated, seriesAnimated, xAxisAnimated, yAxisAnimated,"b11");
+        staticGraph.setup();
     }
-
-    private class TableData{
-        private SimpleDoubleProperty xStatic;
-        private SimpleDoubleProperty yStatic;
-
-        private TableData(double x, double y){
-            this.xStatic = new SimpleDoubleProperty(x);
-            this.yStatic = new SimpleDoubleProperty(y);
-        }
+    private void updateTableViewAnimated(){
+        tableAnimated.setItems(Data.getTableDataAnimated());
     }
-    //DataPoint2D-class
-
-
 }

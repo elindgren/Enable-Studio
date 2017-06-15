@@ -46,7 +46,7 @@
                   </MenuBar>
                </top>
                <left>
-                  <TableView fx:id="tableStatic" editable="true" BorderPane.alignment="CENTER">
+                  <TableView fx:id="tableStatic" editable="true" tableMenuButtonVisible="true" BorderPane.alignment="CENTER">
                     <columns>
                       <TableColumn minWidth="0.0" prefWidth="114.0" text="x" />
                       <TableColumn minWidth="0.0" prefWidth="133.0" text="y" />
@@ -59,7 +59,7 @@
                <center>
                   <VBox alignment="CENTER" BorderPane.alignment="CENTER">
                      <children>
-                        <LineChart fx:id="lineChartStatic" VBox.vgrow="ALWAYS">
+                        <LineChart fx:id="lineChartStatic" createSymbols="false" VBox.vgrow="ALWAYS">
                           <xAxis>
                             <NumberAxis side="BOTTOM" fx:id="xAxisStatic" />
                           </xAxis>
@@ -131,7 +131,7 @@
                   </VBox>
                </top>
                <left>
-                  <TableView fx:id="table" BorderPane.alignment="CENTER">
+                  <TableView fx:id="tableAnimated" BorderPane.alignment="CENTER">
                     <columns>
                       <TableColumn prefWidth="108.0" text="x" />
                       <TableColumn prefWidth="111.0" text="y" />

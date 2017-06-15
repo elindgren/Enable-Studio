@@ -26,7 +26,7 @@ public class ReadSerialPort {
 
     //Place-holder constructor
     public ReadSerialPort(){
-        System.out.println("Dummy constrcutor in ReadSerialPort. Object created");
+        System.out.println("Dummy constructor in ReadSerialPort. Object created");
     }
 
     private void makeSerialPortList(){
@@ -100,7 +100,7 @@ public class ReadSerialPort {
 
         return save;
     }
-    public double[][] stringArrayToDoubleMatrix(){
+    public double[][] stringArrayToDoubleMatrix(String str, int time){  //TODO Remove int time, time is supposed to be given by the array itself
         /*
         String[] arrTmp = serialToStringArray();
         int length = arrTmp.length-1;
@@ -114,7 +114,15 @@ public class ReadSerialPort {
             }
         }
         */
-        double[][] save = {{1,10},{2, 20},{3,30}, {4,5}, {5,15}};
+        double[][] save = {{0, 10}};
+        if(str =="static") {
+            double[][] save1 = {{0, 10}, {1, 20}, {2, 30}, {3, 5}, {4, 15}};
+            save=save1;
+        }
+        else if(str =="animated"){
+            double[][] save2 = {{time, Math.random()*10}};
+            save=save2;
+        }
         return save;
     }
 }

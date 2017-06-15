@@ -8,7 +8,7 @@
     -fx-background-color: #fbfbfb;
 }
 .chart-series-line{  /*Settings for the chart lines*/
-    -fx-stroke-width: 3px;
+    -fx-stroke-width: 2px;
     //-fx-effects: null;
 }
 /*COLOR for the chart lines*/

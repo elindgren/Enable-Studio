@@ -27,8 +27,7 @@ public class MainApp extends Application {
     private static XYChart.Series<Number,Number> animatedSeries = new XYChart.Series<Number,Number>();
     private static XYChart.Series<Number,Number> staticSeries = new XYChart.Series<Number,Number>();
 
-    public static void main(String[] args) {
-        launch(args);
+    public static void main(String[] args) { launch(args);
     }
 
     public void start(Stage primaryStage) throws Exception {
@@ -62,7 +61,7 @@ public class MainApp extends Application {
         EventHandler onFinished = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
                 //series.getData().add(new XYChart.Data<Number, Number>(secs, Math.random() * 10));
-                animatedSeries.getData().add(Data.getAnimatedAcc(secs));
+                animatedSeries.getData().add(Data.getAnimatedAcc(secs)); //TODO Clear up, it's very convoluted. Decide if we want to retrieve a XYSeries or an XYData.
                 secs++;
                 //reset frametracker
                 i = 0;
@@ -70,7 +69,7 @@ public class MainApp extends Application {
         };
         //*************************************************************************//
 
-        Duration duration = Duration.millis(20);
+        Duration duration = Duration.millis(200);
 
         //I don't know how to do actionhandling for keyframe with lambda expression
         KeyFrame keyFrame = new KeyFrame(duration, onFinished);

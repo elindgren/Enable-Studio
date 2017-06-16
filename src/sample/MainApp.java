@@ -26,13 +26,14 @@ public class MainApp extends Application {
     private static Integer secs=0;
     private static XYChart.Series<Number,Number> animatedSeries = new XYChart.Series<Number,Number>();
     private static XYChart.Series<Number,Number> staticSeries = new XYChart.Series<Number,Number>();
-
-    public static void main(String[] args) { launch(args);
+    public static void main(String[] args) {
+        launch(args);
     }
 
     public void start(Stage primaryStage) throws Exception {
         mainWindow = primaryStage;
         mainWindow.getIcons().add(new Image("file:resources/images/1497470325_Map_-_Location_Solid_Style_30.png"));
+
         //Load the fxml-file
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
 
@@ -107,10 +108,5 @@ public class MainApp extends Application {
     }
 
     public static XYChart.Series getStaticSeries(){return staticSeries;
-    }
-
-    public static void setStaticSeries(XYChart.Series ser){
-        staticSeries=ser;
-        staticSeries.getData().setAll(new XYChart.Data(0,0));
     }
 }

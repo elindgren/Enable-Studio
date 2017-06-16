@@ -32,6 +32,7 @@ import javafx.util.converter.NumberStringConverter;
 import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 
 public class Controller implements Initializable {
+
     //MenuBar
     @FXML
     private MenuItem menuClose;

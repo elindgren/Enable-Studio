@@ -22,10 +22,6 @@ public class Data {
     public static XYChart.Data<Number,Number> getAnimatedAcc(int secs){
 
         int seconds = secs;
-        /*
-        XYChart.Data<Number,Number> animatedData = new XYChart.Data<Number,Number>(seconds, Math.random()*10);
-        return animatedData;
-        */
         ReadSerialPort rp = new ReadSerialPort();
         serialDataAccAnimated = rp.stringArrayToDoubleMatrix("animated",seconds);
 
@@ -101,5 +97,7 @@ public class Data {
         animatedDataSeries.getData().removeAll(animatedDataSeries.getData());
         serialDataAccAnimated = null; //Creating a new, empty matrix. Cannot make it null?
     }
+
+
 }
 

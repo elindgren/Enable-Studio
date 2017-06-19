@@ -1,39 +1,41 @@
+/**
+ * Created by simon on 2017-06-13.
+ */
 package sample;
-import com.fazecast.jSerialComm.*;
-//import arduino.*;
-import com.sun.org.apache.xpath.internal.SourceTree;
 
+import com.fazecast.jSerialComm.*;
+import com.sun.org.apache.xpath.internal.SourceTree;
+import java.io.*;
 import java.nio.ByteBuffer;
 import java.util.Scanner;
 
-/**
- * Created by simon on 2017-02-10.
- */
-public class ReadSerialPort {
-    public static SerialPort[] portsList;
-    public static SerialPort port;
-    private Scanner portScanner;
-    private byte[] buffer;
 
-    /*
+public class ReadSerialPort  {
+    public SerialPort[] portsList;
+    private SerialPort port;
+    public Scanner portScanner;
+    private byte[] buffer;
+    public double[][] continuousMatrix;
+    private int count;
+
     public ReadSerialPort(){
         makeSerialPortList();
-        setPort(0);
-        initializePort();
-        buffer = ByteBuffer.allocate(4).putInt(2).array(); //1 = mode1 (Logging), 2 = mode2 (SD), 3 = mode3 (Serial Print)
+        this.getPortlist();
+        //setPort(0);
+        //initializePort();
+        //setBuffer(3);
+        continuousMatrix = new double[(int)(2.5*Math.pow(10,5))][14];
     }
-    */
-
-    //Place-holder constructor
-    public ReadSerialPort(){
-        System.out.println("Dummy constructor in ReadSerialPort. Object created");
+    public ReadSerialPort(int port, int mode){
+        makeSerialPortList();
+        setPort(port);
+        initializePort();
+        setBuffer(mode);
+        continuousMatrix = new double[(int)(2.5*Math.pow(10,5))][14];
     }
 
     private void makeSerialPortList(){
         portsList = SerialPort.getCommPorts();
-    }
-    private void findChipPort(){
-        //TODO CORRECT
     }
     private void setPort(int port){
         this.port = portsList[port];
@@ -44,7 +46,6 @@ public class ReadSerialPort {
             port.openPort();
         }
         System.out.println("Port Successfully Opened" + "\n");
-
     }
     private void closePort() {
         while (port.isOpen()) {
@@ -61,69 +62,152 @@ public class ReadSerialPort {
         openPort();
         scanPort();
     }
+    public void writeBytesSerial(){
+        port.setComPortTimeouts(SerialPort.TIMEOUT_WRITE_SEMI_BLOCKING, 100, 100);
+        port.writeBytes(buffer, buffer.length);
+        port.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER, 100, 100); //reset to Scanner-mode
+    }
+    private void commandPromptOutput() {
+        String tmp = "";
+        while (portScanner.hasNextLine()){
+            tmp = portScanner.nextLine();
+            System.out.println(tmp);
+            if (tmp.equals("EndOfLine")) {
+                break;
+            }
+        }
+    }
     private String readOneLineSerial() {
-        port.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER, 100 , 100); //Change back to Scanner-timeout
         while (!portScanner.hasNextLine()){
             ;
         }
-        port.setComPortTimeouts(SerialPort. TIMEOUT_WRITE_SEMI_BLOCKING, 100, 100);
         return portScanner.nextLine();
-
     }
-    private void writeOneByteSerial() {
-        for (int i=0; i<buffer.length; i++){
-            System.out.println(buffer[i]);
-        }
-        port.setComPortTimeouts(SerialPort. TIMEOUT_WRITE_SEMI_BLOCKING, 100, 100);
-        System.out.println(port.writeBytes(buffer, buffer.length));
-    }
-    private void commandPromptOutput() {
-        while (portScanner.hasNextLine()){
-            System.out.println(portScanner.nextLine());
-        }
-    }
-    //Place-holder serialToStringArray()
-    private String[] serialToStringArray() {
-        writeOneByteSerial();
+    public String[] serialToStringArray() { //mode2
+        writeBytesSerial();
         String tmp = readOneLineSerial();
         System.out.println("tmp = " + tmp);
-        String[] save = new String[Integer.parseInt(tmp)];
+        String[] save = new String[Integer.parseInt(tmp)-1]; // -1 because starts with 0
 
         int i = 0;
-        port.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER, 100 , 100);
-
-        while (portScanner.hasNextLine() && i < save.length-1){ //Jump Problem || null on last row, need to fix
+        while (portScanner.hasNextLine() && i < save.length){ //sometimes loses 1 row of data due to hasNextline
             save[i] = portScanner.nextLine();
-            //System.out.println(save[i] + " " + i);
+            //System.out.println(save[i] + " " + i); //DEBUG
             i += 1;
         }
-
         return save;
     }
-    public double[][] stringArrayToDoubleMatrix(String str, int time){  //TODO Remove int time, time is supposed to be given by the array itself
-        /*
-        String[] arrTmp = serialToStringArray();
-        int length = arrTmp.length-1;
+    public double[][] stringArrayToDoubleMatrix(String[] apa){ //mode2
+        //String[] arrTmp = serialToStringArray();
+        String[] arrTmp = apa;
+        int length = arrTmp.length;
         double[][] save = new double[length][14];
-        String[] tmp;
+        //String[] tmp;
         for(int i = 0; i < length; i++){
-            tmp = arrTmp[i].split(", ");
-            System.out.println(tmp[1]);
+            String[] tmp = arrTmp[i].split(", ");
+            //System.out.println(tmp[1]); // DEBUG
             for(int j = 0; j<14; j++){
                 save[i][j] = Double.parseDouble(tmp[j]);
             }
         }
-        */
-        double[][] save = {{0, 10}};
-        if(str =="static") {
-            double[][] save1 = {{0, 10}, {1, 20}, {2, 30}, {3, 5}, {4, 15}};
-            save=save1;
-        }
-        else if(str =="animated"){
-            double[][] save2 = {{time, Math.random()*10}};
-            save=save2;
-        }
         return save;
     }
-}
+    public String[] fileToStringArray(int fileNbr) { //mode4
+        writeBytesSerial();
+        commandPromptOutput();
+        setBuffer(fileNbr);
+        return serialToStringArray();
+    }
+    public double[][] fileToDoubleMatrix(int fileNbr) { //mode4
+        /*
+        writeBytesSerial();
+        commandPromptOutput();
+        setBuffer(fileNbr);
+        return stringArrayToDoubleMatrix();
+        */
+        String[] test = new String[303];
+        String line;
+        int i = 0;
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(new File("resources/log100.txt")));
+            while((line = br.readLine()) != null){
+                test[i] = line;
+                //System.out.println("test i " + test[i]);
+                i++;
+            }
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+        return stringArrayToDoubleMatrix(test);
+    }
+    public void deleteFile(int fileNbr) { //mode5
+        writeBytesSerial();
+        commandPromptOutput();
+        setBuffer(fileNbr);
+        writeBytesSerial();
+        commandPromptOutput();
+    }
+    public void fileToFile(int fileNbr) { //Mode4
+        writeBytesSerial();
+        commandPromptOutput();
+        setBuffer(fileNbr);
+        File file = new File("log" + fileNbr + ".txt");
+        if (!file.exists()){
+            try {
+                PrintWriter writer = new PrintWriter(new FileWriter(file,true));
+                writeBytesSerial();
+                String tmp = readOneLineSerial();
+                System.out.println("tmp = " + tmp);
 
+                int i = 0;
+                while(portScanner.hasNextLine() && i < (Integer.parseInt(tmp) - 1)) {
+                    writer.println(portScanner.nextLine());
+                    i++;
+                }
+                writer.close();
+            } catch (Exception e){
+                System.out.println("ERROR");
+            }
+        } else {
+            setBuffer(0); //No file is log0
+            writeBytesSerial();
+            System.out.println("File already exists");
+        }
+
+    }
+    public void setBuffer(int nbr){
+        buffer = ByteBuffer.allocate(4).putInt(nbr).array(); //1 = mode1 (Logging), 2 = mode2 (SD), 3 = mode3 (Serial Print)
+    }
+    private void getPortlist(){
+        for(int i = 0; i < portsList.length; i++){
+            System.out.println(portsList[i].getDescriptivePortName());
+        }
+    }
+    public double[][] getContinuousMatrix(){
+        return continuousMatrix;
+    }
+    public int getCount(){
+        return count;
+    }
+
+    public void setCount(int count){
+        this.count=count;
+    }
+
+    public static void main(String[] args) {
+        ReadSerialPort test = new ReadSerialPort(0,4);
+        test.fileToDoubleMatrix(100);
+
+        /*
+        test.continuousToDoubleMatrix();
+        double[][] tmp = test.getContinuousMatrix();
+        for (int i = 0; i <= 100; i++){
+            for (int j = 0; j < 14; j++){
+                System.out.print(tmp[i][j] + ", ");
+            }
+            System.out.println();
+        }
+        */
+    }
+}

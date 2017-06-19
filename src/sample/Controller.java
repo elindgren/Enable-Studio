@@ -1,9 +1,8 @@
 package sample;
 
-
-import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -11,161 +10,279 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.event.EventHandler;
+import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import java.net.URL;
-
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Duration;
 import java.util.ResourceBundle;
-import java.util.concurrent.ExecutorService;
-import javafx.scene.text.Text;
-
-import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
+import org.gillius.jfxutils.JFXUtil.*;
+import org.gillius.jfxutils.chart.StableTicksAxis;
 
 public class Controller implements Initializable {
-    //TableView
-    @FXML
-    private TableView tableStatic;
+    //********************************************************************//
+    private Timeline timeline;
+    private Data data;
 
-    //MenuBar
+    //*********************MENU BAR************************//
     @FXML
     private MenuItem menuClose;
 
-    //On-screen buttons. Naming-scheme: button bij referes to button j on tab i. Ex. b12 refers to button 2 on tab 1.
+    //*********************STATIC VIEW*********************//
+    private int statusResStatic =0; //TODO Change data so that it is the resulting data
+    //TableView - Static View
     @FXML
-    private Button b11;
-    @FXML
-    private Button b12;
-    @FXML
-    private Button b13;
-    @FXML
-    private Button b21;
-    @FXML
-    private Button b22;
+    private TableView tableStatic;
+    private TableColumn xDataStaticCol;
+    private TableColumn yDataStaticCol;
 
-    //LineChart - Animated
+    //Buttons - Static View
     @FXML
-    private LineChart lineChartAnimated;
+    private Button readStatic;
     @FXML
-    private NumberAxis xAxisAnimated;
-    @FXML
-    private NumberAxis yAxisAnimated;
-    //Series for LineChart
-    private XYChart.Series<Number,Number> seriesAnimated;
+    private Button resetStatic;
 
-    //LineChart - Static
+    //LineChart - Static View
     @FXML
     private LineChart lineChartStatic;
     @FXML
     private NumberAxis xAxisStatic;
     @FXML
     private NumberAxis yAxisStatic;
-    //Series for LineChart
+    //Static series
     private XYChart.Series<Number,Number> seriesStatic;
+    //******************************************************//
+
+    //*********************ANIMATED VIEW*********************//
+    private int statusResAnimated = 0;
+
+    //TableView - Animated View
+    @FXML
+    private TableView tableAnimated;
+    private TableColumn xDataAnimatedCol;
+    private TableColumn yDataAnimatedCol;
+
+    //Buttons - Animated View
+    @FXML
+    private Button stopAnimated;
+    @FXML
+    private Button readAnimated;
+    @FXML
+    private Button resetAnimated;
+
+    //LineChart - Animated View
+    @FXML
+    private LineChart lineChartAnimated;
+    @FXML
+    private NumberAxis xAxisAnimated;
+    @FXML
+    private NumberAxis yAxisAnimated;
+    //Animated series
+    private XYChart.Series<Number,Number> seriesAnimated;
+    //******************************************************//
+
+
+    //***************************EXPERIMENTAL****************//
+    @FXML
+    private Button readExperimental;
+    @FXML
+    private Button resetExperimental;
+    @FXML
+    private LineChart lineChartExperimental;
+    //*******************************************************//
+    //********************************************************************//
 
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources){
-        //Checks if all the imported fx:id's are declared in FXML-file
+        //*****Checks if all the imported fx:id's are declared in FXML-file*****//
         assert menuClose != null : "fx:id=\"menuClose\" was not injected: check your FXML file";
-        assert b11 != null : "fx:id=\"b11\" was not injected: check your FXML file";
-        assert b12 != null : "fx:id=\"b12\" was not injected: check your FXML file";
-        assert b13 != null : "fx:id=\"b13\" was not injected: check your FXML file";
-        assert b21 != null : "fx:id=\"b21\" was not injected: check your FXML file";
-        assert b22 != null : "fx:id=\"b22\" was not injected: check your FXML file";
+        assert readStatic != null : "fx:id=\"readStatic\" was not injected: check your FXML file";
+        assert resetStatic != null : "fx:id=\"resetStatic\" was not injected: check your FXML file";
+        assert readAnimated != null : "fx:id=\"readAnimated\" was not injected: check your FXML file";
+        assert stopAnimated != null : "fx:id=\"stopAnimated\" was not injected: check your FXML file";
+        assert resetAnimated != null : "fx:id=\"resetAnimated\" was not injected: check your FXML file";
+        //********************************************************************//
 
+        ReadSerialPort rp = new ReadSerialPort();
+        data = new Data(rp);
+
+        //**********************************************BUTTON SETUP*******************************************//
         menuClose.setOnAction(e -> {
             System.out.println("MenuClose");
         });
 
-        b11.setOnAction(e -> {
+        //*****************************BUTTONS - Animated VIEW*******************************//
+        readAnimated.setOnAction(e -> {
+            rp.setBuffer(6);
+            ContinousToDoubleMatrix cont = new ContinousToDoubleMatrix(rp);
+            Thread thread = new Thread(cont);
+            thread.start();
             initAnimatedGraph();
-            MainApp.startAnimatedTimeline();
-            System.out.println("b11");
+            this.startAnimatedTimeline();
+            System.out.println("readAnimated");
         });
-        b12.setOnAction(e -> {
-            MainApp.stopAnimatedTimeline();
-            System.out.println("b12");
+        stopAnimated.setOnAction(e -> {
+            this.stopAnimatedTimeline();
+            System.out.println("stopAnimated");
         });
-        b13.setOnAction(e -> {
-            MainApp.setAnimatedSeries(new XYChart.Series());
-            System.out.println("b13");
+        resetAnimated.setOnAction(e -> {
+            resetAnimatedGraph();
+            System.out.println("resetAnimated");
         });
+        //***********************************************************************************//
 
-        b21.setOnAction(e -> {
-            MainApp.staticChart();
-            initStaticGraph();
-            System.out.println("b21");
-        });
+        //******************************BUTTONS - STATIC VIEW********************************//
+        readStatic.setOnAction(e ->{
+                if(statusResStatic == 0) {
+                    initStaticGraph();
+                    statusResStatic = 1;
+                }
+                else{
+                    System.out.println("Graph reset");
+                    resetStaticGraph();
+                    initStaticGraph();
 
-        b22.setOnAction(e -> {
-            MainApp.setStaticSeries(new XYChart.Series());
-            System.out.println("b22");
+                }
+            System.out.println("readStatic");
+            });
+
+        resetStatic.setOnAction(e -> {
+            System.out.println("resetStatic");
+            resetStaticGraph();
         });
+        //***********************************************************************************//
+        //*****************************************************************************************************//
+
+
+        //*************SETUP OF STATIC TABLEVIEW***************//
+        //Setup of static TableView.
+        tableStatic.setEditable(true);
+        //X-column
+        xDataStaticCol = new TableColumn("Time, <s>");
+        TableCol xColStatic = new TableCol(xDataStaticCol,"x");
+        //Y-column
+        yDataStaticCol = new TableColumn("Acc, <m/s^2>");
+        TableCol yColStatic = new TableCol(yDataStaticCol,"y");
+        //****************************************************//
+
+        //***********SETUP OF ANIMATED TALBEVIEW**************//
+        //Setup of Animated TableView.
+        tableAnimated.setEditable(true);
+        //X-column
+        xDataAnimatedCol = new TableColumn("Time, <s>");
+        TableCol xColAnimated = new TableCol(xDataAnimatedCol,"x");
+        //Y-column
+        yDataAnimatedCol = new TableColumn("Acc, <m/s^2>");
+        TableCol yColAnimated = new TableCol(yDataAnimatedCol,"y");
+        //****************************************************//
+
+
+
+        //****************SETUP OF EXPERIMENTAL VIEW*************//
+        readExperimental.setOnAction(e -> {
+            XYChart.Series<Number,Number> seriesExperimental = new XYChart.Series<Number,Number>();
+            seriesExperimental = data.getStaticDataAcc("x");
+            seriesExperimental.setName("Static Series - Experimental View");
+
+            StableTicksAxis x = new StableTicksAxis();
+            StableTicksAxis y = new StableTicksAxis();
+
+
+            Graph2D staticGraph = new Graph2D(lineChartExperimental, seriesExperimental, x, y,"readExperimental");
+            lineChartExperimental.getData().add(seriesExperimental);
+        });
+        //*******************************************************//
     }
+
+    private void updateTableViewAnimated(){
+        tableAnimated.setItems(data.getTableDataAnimated());
+    }
+
+    //**********************************************STATIC GRAPH*****************************************************//
 
     public void initStaticGraph(){
-        //Setup of static TableView.
-        /*
         //Fetching data for table
-        tableDataStatic=Data.getStaticAcc();
-        tableStatic.setItems(tableDataStatic);
-        TableColumn<Number,String> xDataStaticCol = new TableColumn<Number,String>("x");
-        xDataStaticCol.setCellValueFactory(new PropertyValueFactory<Number, String>());
-        */
+        tableStatic.setItems(data.getTableDataStatic());
+        tableStatic.getColumns().setAll(xDataStaticCol,yDataStaticCol);
 
+        //Setup of series
+        seriesStatic = data.getStaticDataAcc("x");
+        seriesStatic.setName("Static Series");
 
-        //Setup of static graph
-        xAxisStatic.setAutoRanging(true); //As to not have the axis scale weirdly
-        xAxisStatic.setTickLabelsVisible(true);
-        xAxisStatic.setTickMarkVisible(false);
-        xAxisStatic.setMinorTickVisible(false);
-
-        yAxisStatic.setAutoRanging(true);
-
-        //Graph
-        lineChartStatic.setAnimated(false);
-        lineChartStatic.setId("staticLineChart");
-        lineChartStatic.setTitle("Static Line Chart");
-
-        seriesStatic=MainApp.getStaticSeries();
-        seriesStatic.setName("Static Series1");
-
-        lineChartStatic.getData().add(seriesStatic);
-        lineChartStatic.setCreateSymbols(false);
-
-
+        Graph2D staticGraph = new Graph2D(lineChartStatic, seriesStatic, xAxisStatic, yAxisStatic,"readStatic");
+        staticGraph.setup();
     }
+
+    public void resetStaticGraph(){
+        ObservableList<DataPoint2D> tableData = data.getTableDataStatic();
+        tableData.remove(0,tableData.size());
+        data.resetXYChartStatic();
+    }
+    //***************************************************************************************************************//
+
+    //********************************************ANIMATED GRAPH*****************************************************//
 
     public void initAnimatedGraph(){
 
-        //Setup of graph
-        xAxisAnimated.setAutoRanging(true); //As to not have the axis scale weirdly
-        xAxisAnimated.setTickLabelsVisible(true);
-        xAxisAnimated.setTickMarkVisible(false);
-        xAxisAnimated.setMinorTickVisible(false);
+        //Fetching data for table
+        ObservableList<DataPoint2D> series = data.getTableDataAnimated();
+        tableAnimated.setItems(series);
+        series.addListener(new ListChangeListener<DataPoint2D>() {
+            @Override
+            public void onChanged(Change<? extends DataPoint2D> c) {
+                updateTableViewAnimated();
+            }
+        });
+        tableAnimated.getColumns().setAll(xDataAnimatedCol,yDataAnimatedCol);
 
-        yAxisAnimated.setAutoRanging(true);
+        seriesAnimated=data.getAnimatedAcc();
+        seriesAnimated.setName("Animated Series");
 
-        //Graph
-        lineChartAnimated.setAnimated(false);
-        lineChartAnimated.setId("liveLineChart");
-        lineChartAnimated.setTitle("Animated Line Chart");
-
-        seriesAnimated=MainApp.getAnimatedSeries();
-        seriesAnimated.setName("Animated Series1");
-
-        lineChartAnimated.getData().add(seriesAnimated);
-        lineChartAnimated.setCreateSymbols(false);
+        Graph2D animatedGraph = new Graph2D(lineChartAnimated, seriesAnimated, xAxisAnimated, yAxisAnimated,"readAnimated");
+        animatedGraph.setup();
     }
 
-    public void test(){
-        System.out.println("Test");
+    public void resetAnimatedGraph(){
+        ObservableList<DataPoint2D> tableData = data.getTableDataAnimated();
+        tableData.remove(0,tableData.size()); //Removes everything in the table
+        data.resetXYChartAnimated();
+    }
+    //***************************************************************************************************************//
+
+    //******************************************TIMELINE HANDLING****************************************************//
+
+    public void timelineAnimated() {
+        //Creating a timeline for updating the graph
+        timeline = new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE); //Indefinite cycles of the timeline finishing
+        timeline.setAutoReverse(true);
+        //****************** EVENT HANDLER FOR KEYFRAME ***************************//
+        EventHandler onFinished = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+                //series.getData().add(new XYChart.Data<Number, Number>(secs, Math.random() * 10));
+                XYChart.Series<Number,Number> series = data.getAnimatedAcc();
+                for(int i = 0; i<series.getData().size(); i++) {
+                    seriesAnimated.getData().add(series.getData().get(i)); //TODO Clear up, it's very convoluted. Decide if we want to retrieve a XYSeries or an XYData.
+
+                }
+            }
+        };
+        //*************************************************************************//
+
+        Duration duration = Duration.millis(10);
+
+        //I don't know how to do actionhandling for keyframe with lambda expression
+        KeyFrame keyFrame = new KeyFrame(duration, onFinished);
+        timeline.getKeyFrames().add(keyFrame);
     }
 
+    public void startAnimatedTimeline(){
+        timelineAnimated();
+        timeline.play();
+    }
 
+    public void stopAnimatedTimeline(){
+        timeline.stop();
+    }
+
+    //***************************************************************************************************************//
 }

@@ -188,6 +188,15 @@
 	-fx-font-size: 24px;
 }
 
+/***ADDED ericlin 22/6-17***/
+
+.save-button {
+    -fx-background-color: -swatch-200;
+    -fx-text-fill: FF5151;
+}
+
+/* ------------------------*/
+
 /*******************************************************************************
  *                                                                             *
  * ComboBox, ChoiceBox COMMON                                                 *

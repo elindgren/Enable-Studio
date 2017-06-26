@@ -19,3 +19,18 @@
 .default-color0.chart-line-symbol { -fx-background-color: #e2211d, white; }
 .default-color1.chart-line-symbol { -fx-background-color: #6666ff, white; }
 .default-color2.chart-line-symbol { -fx-background-color: #72c66b, white; }
+
+/* Styling of dialogBoxes TODO*/
+
+.myDialog{
+    -fx-background-color: #fbfbfb;
+}
+myDialog .button{
+    -fx-background-color: color0;
+}
+
+.button-save{
+    -fx-background-color: #2196F3;
+    -fx-text-fill: FF0000;
+}
+

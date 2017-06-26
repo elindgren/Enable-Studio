@@ -4,50 +4,28 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import org.gillius.jfxutils.chart.StableTicksAxis?>
 
-<TabPane styleClass="root" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<TabPane fx:id="tabPane" styleClass="root" xmlns="http://javafx.com/javafx/8.0.112-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <tabs>
-
-
-       <Tab text="Experimental view">
-         <content>
-            <VBox alignment="CENTER">
-               <children>
-                  <LineChart fx:id="lineChartExperimental" title="Experiment ">
-                    <xAxis>
-                      <CategoryAxis side="BOTTOM" />
-                    </xAxis>
-                    <yAxis>
-                      <NumberAxis side="LEFT" />
-                    </yAxis>
-                     <cursor>
-                        <Cursor fx:constant="CROSSHAIR" />
-                     </cursor>
-                  </LineChart>
-                  <HBox alignment="CENTER" spacing="40.0">
-                     <children>
-                        <Button fx:id="readExperimental" mnemonicParsing="false" text="Read" />
-                        <Button fx:id="resetExperimental" mnemonicParsing="false" text="Reset" />
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-         </content></Tab>
-       <Tab text="Static view">
+       <Tab fx:id="tabStaticView" text="Static view">
          <content>
             <BorderPane>
                <top>
@@ -87,17 +65,17 @@
                      <children>
                         <LineChart fx:id="lineChartStatic" createSymbols="false" VBox.vgrow="ALWAYS">
                           <xAxis>
-                            <NumberAxis side="BOTTOM" fx:id="xAxisStatic" />
+                            <StableTicksAxis side="BOTTOM" fx:id="xAxisStatic" />
                           </xAxis>
                           <yAxis>
-                            <NumberAxis fx:id="yAxisStatic" side="LEFT" />
+                            <StableTicksAxis fx:id="yAxisStatic" side="LEFT" />
                           </yAxis>
                            <styleClass>
                               <String fx:value="chart-plot-background" />
                               <String fx:value="chart-series-line" />
                            </styleClass>
                         </LineChart>
-                        <VBox>
+                        <VBox alignment="CENTER" spacing="8.0">
                            <children>
                               <HBox alignment="CENTER" spacing="20.0">
                                  <children>
@@ -107,12 +85,35 @@
                                           <String fx:value="toggle-button" />
                                        </styleClass></Button>
                                     <Button fx:id="resetStatic" mnemonicParsing="false" styleClass="button-raised" text="Reset" />
+                                    <Button fx:id="toggleClickableStaticView" mnemonicParsing="false" styleClass="button-raised" text="Toggle Clickable" />
                                  </children>
                                  <VBox.margin>
                                     <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                                  </VBox.margin>
                               </HBox>
+                              <HBox alignment="CENTER" spacing="20.0">
+                                 <children>
+                                    <Label text="Status: " />
+                                    <Circle fx:id="statusStaticView" fill="#ff1f1f" radius="4.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Label fx:id="progressLabelStaticView" text="Progress: " visible="false">
+                                       <padding>
+                                          <Insets bottom="8.0" />
+                                       </padding>
+                                    </Label>
+                                    <ProgressBar fx:id="progressBarStaticView" prefWidth="200.0" progress="0.0" visible="false">
+                                       <opaqueInsets>
+                                          <Insets bottom="8.0" />
+                                       </opaqueInsets>
+                                       <padding>
+                                          <Insets bottom="8.0" />
+                                       </padding>
+                                    </ProgressBar>
+                                 </children>
+                              </HBox>
                            </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
                         </VBox>
                      </children>
                      <BorderPane.margin>
@@ -122,7 +123,7 @@
                </center>
             </BorderPane>
          </content></Tab>
-      <Tab text="Animated View">
+      <Tab fx:id="tabAnimatedView" text="Animated View">
          <content>
             <BorderPane>
                <top>
@@ -166,10 +167,10 @@
                      <children>
                         <LineChart fx:id="lineChartAnimated" VBox.vgrow="ALWAYS">
                           <xAxis>
-                            <NumberAxis side="BOTTOM" fx:id="xAxisAnimated" />
+                            <StableTicksAxis side="BOTTOM" fx:id="xAxisAnimated" />
                           </xAxis>
                           <yAxis>
-                            <NumberAxis fx:id="yAxisAnimated" side="LEFT" />
+                            <StableTicksAxis fx:id="yAxisAnimated" side="LEFT" />
                           </yAxis>
                            <styleClass>
                               <String fx:value="chart-line-symbol" />
@@ -179,6 +180,12 @@
                         </LineChart>
                         <HBox alignment="CENTER" depthTest="DISABLE" spacing="20.0">
                            <children>
+                              <ToggleButton fx:id="toggleReadChip" mnemonicParsing="false" text="Read from Chip">
+                                 <styleClass>
+                                    <String fx:value="toggle-button" />
+                                    <String fx:value="button-raised" />
+                                 </styleClass>
+                              </ToggleButton>
                               <Button fx:id="readAnimated" accessibleRole="TOGGLE_BUTTON" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Start">
                                  <opaqueInsets>
                                     <Insets />
@@ -188,13 +195,23 @@
                                     <String fx:value="button-raised" />
                                  </styleClass>
                               </Button>
-                              <Button fx:id="stopAnimated" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Stop" />
-                              <Button fx:id="resetAnimated" mnemonicParsing="false" text="Reset" />
+                              <Button fx:id="stopAnimated" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" styleClass="button-raised" text="Stop" />
+                              <Button fx:id="resetAnimated" mnemonicParsing="false" styleClass="button-raised" text="Reset" />
+                              <Button fx:id="saveButton" mnemonicParsing="false" text="Save current">
+                                 <styleClass>
+                                    <String fx:value="save-button" />
+                                    <String fx:value="button-raised" />
+                                 </styleClass></Button>
                            </children>
                            <VBox.margin>
                               <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                            </VBox.margin>
                         </HBox>
+                        <Slider fx:id="timelineSlider" blockIncrement="5.0" majorTickUnit="10.0" minorTickCount="5">
+                           <VBox.margin>
+                              <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                           </VBox.margin>
+                        </Slider>
                      </children>
                   </VBox>
                </center>

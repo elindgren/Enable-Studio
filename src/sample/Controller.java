@@ -1,8 +1,10 @@
 package sample;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -15,6 +17,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.*;
 import javafx.scene.Cursor;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
@@ -27,15 +30,20 @@ import java.net.URL;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.*;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -45,6 +53,9 @@ import org.gillius.jfxutils.chart.JFXChartUtil;
 import org.gillius.jfxutils.chart.StableTicksAxis;
 import org.gillius.jfxutils.chart.XYChartInfo;
 import org.gillius.jfxutils.tab.TabUtil;
+import org.fxyz3d.utils.*;
+
+import javax.xml.bind.annotation.XmlAnyAttribute;
 
 public class Controller implements Initializable {
     //********************************************************************//
@@ -54,645 +65,480 @@ public class Controller implements Initializable {
     //Below are used by various progressbars.
     private ObservableList<Integer> progressList;
     private ObservableList<Integer> statusList;
-    private int[] rowsToRead;
+    private ObservableList<Integer> statusListView=FXCollections.observableArrayList(); //StatusList used by all the views, as to not have eventhandlers conflict
 
+    @FXML
+    private VBox slideMenuBox;
+
+    @FXML
+    private Tab tab2D;
+    @FXML
+    private Tab tab3D;
+    private ArrayList<Tab> tabs;
+    private int tabIndex=0;
 
     @FXML
     private TabPane tabPane;
+    SingleSelectionModel<Tab> selectionModel;
     //*********************MENU BAR************************//
     @FXML
-    private MenuItem menuClose;
-
-    //*********************STATIC VIEW*********************//
-    private boolean statusResStatic = false; //TODO Change data so that it is the resulting data
-    private int statusPan = 1;
-    private boolean clickStatusStaticView=false;
-    private int readModeStaticView = 1; //1 corresponds to reading a file from harddrive, 0 corresponds to reading from the chip
-    private ChartPanManager panManagerStaticView;
-    private Task<Void> readTask;
-
+    private Button menu;
     @FXML
-    private Tab tabStaticView;
-
-    //TableView - Static View
-    @FXML
-    private TableView tableStatic;
-    private TableColumn xDataStaticCol;
-    private TableColumn yDataStaticCol;
-
-    //Buttons - Static View
-    @FXML
-    private Button readStatic;
-    @FXML
-    private Button resetStatic;
-    @FXML
-    private Button toggleClickableStaticView;
+    private AnchorPane navList;
 
     //ProgressBar & Status - Static View
     @FXML
-    private Label progressLabelStaticView;
+    private Label progressLabel;
     @FXML
-    private ProgressBar progressBarStaticView;
+    private ProgressBar progressBar;
     @FXML
-    private Circle statusStaticView;
+    private Circle statusCircle;
+
+    //**** BUTTONS ****//
+    @FXML
+    private Button change2DDefualt;
+    @FXML
+    private Button change3DDefualt;
+    @FXML
+    private Button newScene2D;
 
 
-    //LineChart - Static View
-    @FXML
-    private LineChart lineChartStatic;
-    @FXML
-    private StableTicksAxis xAxisStatic;
-    @FXML
-    private StableTicksAxis yAxisStatic;
-    Graph2D staticGraph;
-    //Static series
-    private XYChart.Series<Number,Number> seriesDataStatic = new XYChart.Series<Number,Number>();
-    private ObservableList<DataPoint2D> dataStatic = FXCollections.observableArrayList();
     //******************************************************//
 
-    //*********************ANIMATED VIEW*********************//
-    private boolean statusResAnimated = false;
-    private boolean readFromChip=false;
-    KeyFrame keyFrameAnimated;
-    ChartPanManager panManagerAnimatedView;
-    private boolean timelineIsFinished;
-    private Timeline timeline;
-    private int timelineIteration=0;
+    //**************************3D********************//
+    /*
+    @FXML
+    private SubScene scene3D;
+    @FXML
+    private BorderPane pane3D;
+    */
+    @FXML
+    private Group group3D;
+    private MeshView meshView;
 
-    @FXML
-    private Slider timelineSlider;
+    private static final int VIEWPORT_SIZE = 500;
+    private static final double MODEL_SCALE_FACTOR = 40;
+    private static final double MODEL_X_OFFSET = 0;
+    private static final double MODEL_Y_OFFSET = 0;
+    private static final double MODEL_Z_OFFSET = VIEWPORT_SIZE * 21;
+
+    private PerspectiveCamera camera = new PerspectiveCamera(true);
+    final Xform axisGroup = new Xform();
+    final Xform world = new Xform();
+    final Xform cameraXform = new Xform();
+    final Xform cameraXform2 = new Xform();
+    final Xform cameraXform3 = new Xform();
+    private static final double CAMERA_INITIAL_DISTANCE = -450;
+    private static final double CAMERA_INITIAL_X_ANGLE = 70.0;
+    private static final double CAMERA_INITIAL_Y_ANGLE = 320.0;
+    private static final double CAMERA_NEAR_CLIP = 0.1;
+    private static final double CAMERA_FAR_CLIP = 10000.0;
+    private static final double AXIS_LENGTH = 250.0;
+
+    private Xform boxGroup = new Xform();
+
+    // MOUSE AND KEYBOARD HANDLING //
+    private static final double CONTROL_MULTIPLIER = 0.1;
+    private static final double SHIFT_MULTIPLIER = 10.0;
+    private static final double MOUSE_SPEED = 0.1;
+    private static final double ROTATION_SPEED = 2.0;
+    private static final double TRACK_SPEED = 0.3;
+
+    double mousePosX;
+    double mousePosY;
+    double mouseOldX;
+    double mouseOldY;
+    double mouseDeltaX;
+    double mouseDeltaY;
 
 
-    @FXML
-    private Tab tabAnimatedView;
+    //************************************************//
 
-    //TableView - Animated View
-    @FXML
-    private TableView tableAnimated;
-    private TableColumn xDataAnimatedCol;
-    private TableColumn yDataAnimatedCol;
-
-    //Buttons - Animated View
-    @FXML
-    private Button stopAnimated;
-    @FXML
-    private Button readAnimated;
-    @FXML
-    private Button resetAnimated;
-    @FXML
-    private ToggleButton toggleReadChip;
-    @FXML
-    private Button saveButton;
-
-    //LineChart - Animated View
-    @FXML
-    private LineChart lineChartAnimated;
-    @FXML
-    private StableTicksAxis xAxisAnimated;
-    @FXML
-    private StableTicksAxis yAxisAnimated;
-    Graph2D animatedGraph;
-    //Animated series
-    private XYChart.Series<Number,Number> seriesDataAnimated = new XYChart.Series<Number,Number>();
-    private ObservableList<DataPoint2D>  dataAnimated = FXCollections.observableArrayList();
-    //******************************************************//
     //********************************************************************//
 
     @Override
     public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         //*****Checks if all the imported fx:id's are declared in FXML-file*****//
-        assert menuClose != null : "fx:id=\"menuClose\" was not injected: check your FXML file";
-        assert readStatic != null : "fx:id=\"readStatic\" was not injected: check your FXML file";
-        assert resetStatic != null : "fx:id=\"resetStatic\" was not injected: check your FXML file";
-        assert readAnimated != null : "fx:id=\"readAnimated\" was not injected: check your FXML file";
-        assert stopAnimated != null : "fx:id=\"stopAnimated\" was not injected: check your FXML file";
-        assert resetAnimated != null : "fx:id=\"resetAnimated\" was not injected: check your FXML file";
+
         //********************************************************************//
 
         rp = new ReadSerialPort();
-        data = new Data(rp);
-        //InitializeStaticGraph initStatic = new InitializeStaticGraph( data,  tableStatic,  yDataStaticCol,  xDataStaticCol,  lineChartStatic,  xAxisStatic,  yAxisStatic,  staticGraph, panManagerStaticView, seriesStatic );
+        progressList = rp.getProgressList();
+        //Setup of progresslist, as to not have set() crash.
+        progressList.add(0, 0);
+        progressList.add(1, 1);
+        statusListView.add(0,0);
+        StandardView std = new StandardView(true,tab2D,tabPane, rp, progressBar, progressList,progressLabel, statusListView);
 
+        //**********************SETUP*******************//
+        setupButtons();
+        setupChip();
+        setup3D();
+        setupProgressBar();
+        setupTabs();
+        prepareSlideMenuAnimation(); //Setup of slide-in menu
+
+        //*******************************************************//
+    }
+
+
+    //*********************************************SETUP METHODS******************************************************//
+    private void setup3D(){
+        //***********************3D-view setup*******************//
+
+        buildCamera();
+        buildAxes();
+        buildBox();
+
+        //initCamera();
+        //meshView = buildMesh();
+        //Group meshInGroup = buildScene();
+        SubScene subscene = createScene3D(world);
+        handleKeyboard(subscene,world);
+        handleMouse(subscene,world);
+        this.group3D.getChildren().add(subscene);
+        /*
+        buildCamera();
+        buildAxes();
+        scene3D.setCamera(camera);
+        */
+
+
+        //*******************************************************//
+    }
+
+
+    private void setupChip(){
         //***********************************************CHIP STATUS SETUP************************************//
         statusList = rp.getStatusList();
         statusList.addListener(new ListChangeListener<Integer>() {
             @Override
             public void onChanged(Change<? extends Integer> c) {
-                if(statusList.get(0).intValue() == 0 ){
-                    statusStaticView.setFill(Color.FIREBRICK);
-                }
-                else if(statusList.get(0).intValue() ==1){
-                    statusStaticView.setFill(Color.FORESTGREEN);
+                if (statusList.get(0).intValue() == 0) {
+                    statusCircle.setFill(Color.FIREBRICK);
+                    statusListView.set(0,0);
+                } else if (statusList.get(0).intValue() == 1) {
+                    statusCircle.setFill(Color.FORESTGREEN);
+                    statusListView.set(0,1);
                 }
             }
         });
         //Setup of default mode. If chip is connected, the program will load data from the chip. If not, it will default to load from a file on
         //the computer
 
-        if(rp.isConnected()){
-            statusStaticView.setFill(Color.FORESTGREEN);
+        if (rp.isConnected()) {
+            statusCircle.setFill(Color.FORESTGREEN);
             rp.setupPorts();
             System.out.println("Chip available. Defualt to reading from chip.");
-            readModeStaticView = 0;
-        }
-        else{
-            statusStaticView.setFill(Color.FIREBRICK);
+        } else {
+            statusCircle.setFill(Color.FIREBRICK);
             System.out.println("Chip unavailable. Defualt to reading from harddrive.");
-            readModeStaticView = 1;
         }
         //*****************************************************************************************************//
+    }
 
+    private void setupTabs(){
         //**********************************************TAB SETUP**********************************************//
-
+        tabs= new ArrayList<>();
+        tabs.add(tabIndex,tab2D);
+        tabIndex++;
+        selectionModel=tabPane.getSelectionModel();
         //tabs.makeDroppable(tabPane);
         //tabs.makeDraggable(tabExperimentalView); <- TODO NullpointerException? Why?
         //*****************************************************************************************************//
+    }
 
+    private void setupProgressBar(){
         //***********************************************PROGRESS BAR SETUP************************************//
         //Setup of progressBar
-        progressList = rp.getProgressList();
-        //Setup of progresslist, as to not have set() crash.
-        progressList.add(0,0);
-        progressList.add(1,1);
+
         //Add functionality for it to say "Done" when done TODO
 
         progressList.addListener(new ListChangeListener<Integer>() {
                                      @Override
                                      public void onChanged(Change<? extends Integer> c) {
-                                         double progress=progressList.get(0).doubleValue()/progressList.get(1).doubleValue();
-                                         progressBarStaticView.setProgress(progress);
+                                         double progress = progressList.get(0).doubleValue() / progressList.get(1).doubleValue();
+                                         progressBar.setProgress(progress);
                                      }
                                  }
         );
-
         //*****************************************************************************************************//
+    }
 
 
-        //**********************************************BUTTON SETUP*******************************************//
-        menuClose.setOnAction(e -> {
-            System.out.println("MenuClose");
+
+    private void setupButtons(){
+        //*************************** SLIDE-MENU BUTTONS ******************************//
+        newScene2D.setOnAction(e ->{
+            Tab newTab = new Tab("2D view-" + Integer.toString(tabIndex +1));
+            tabs.add(tabIndex,newTab);
+            tabIndex++;
+            tabPane.getTabs().add(newTab);
+            StandardView std = new StandardView(false, newTab,tabPane, rp, progressBar, progressList,progressLabel, statusListView);
+            addNewShortcutButton(newTab);
+        });
+        //*****************************************************************************//
+
+        change2DDefualt.setOnAction(e -> {
+            selectionModel.select(tab2D);
         });
 
-        //*****************************BUTTONS - Animated VIEW*******************************//
-        //******Toggle: Chip or Computer***********//
-        toggleReadChip.setOnAction(e -> {
-            if(readFromChip){
-                readFromChip=false;
+        change3DDefualt.setOnAction(e -> {
+            selectionModel.select(tab3D);
+        });
+
+    }
+
+    //******************MENU BAR SLIDE ANIMATION****************//
+    //Code taken from StackOverflow question, https://stackoverflow.com/questions/31601900/javafx-how-to-create-slide-in-animation-effect-for-a-pane-inside-a-transparent
+    private void prepareSlideMenuAnimation(){
+        TranslateTransition openNav = new TranslateTransition(new Duration(350), navList);
+        openNav.setToX(0);
+        TranslateTransition closeNav = new TranslateTransition(new Duration(350), navList);
+        menu.setOnAction(e -> {
+            if(navList.getTranslateX()!=0){
+                openNav.play();
             }
             else{
-                readFromChip=true;
+                closeNav.setToX(-(navList.getWidth()));
+                closeNav.play();
             }
         });
-        //*****************************************//
-        readAnimated.setOnAction(e -> {
-            if(readFromChip) {
-                if (statusResAnimated) {
-                    System.out.println("Graph reset");
-                    resetStaticGraph();
-                }
-                readChipCinematic();
-                /*
-                initAnimatedGraph();
-                this.startAnimatedTimeline("chip");
-                */
-            }
-            else{
-                if (statusResAnimated && timelineIsFinished && timelineIteration+1 == dataAnimated.size()) {
-                    System.out.println("Graph reset");
-                    resetStaticGraph();
-                    readFileCinematic();
-                }
-                else if (!timelineIsFinished && statusResAnimated || (timelineIteration+1 != dataAnimated.size() && timelineIsFinished)){
-                    //timeline.play();
-                    startAnimatedTimeline("file");
-                }
-                else{
-                    readFileCinematic();
-                }
-            }
-            statusResAnimated=true;
-            System.out.println("readAnimated");
+    }
+
+    //**********************************************************//
+
+    private void addNewShortcutButton(Tab tab){
+        Button btn = new Button("2D view-" + Integer.toString(tabIndex));
+        slideMenuBox.getChildren().add(tabIndex-1,btn);
+        btn.setOnAction(e->{
+            selectionModel.select(tab);
         });
-        stopAnimated.setOnAction(e -> {
-            this.stopAnimatedTimeline();
-            System.out.println("stopAnimated");
-        });
-        resetAnimated.setOnAction(e -> {
-            timeline.getKeyFrames().remove(keyFrameAnimated);
-            statusResAnimated =false;
-            resetAnimatedGraph();
-            System.out.println("resetAnimated");
-        });
-
-        saveButton.setOnAction(e -> {
-            FileChooser fileChoose = new FileChooser();
-            FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("txt File(*.txt)", "*.txt");
-            fileChoose.getExtensionFilters().add(extensionFilter);
-
-            File file = fileChoose.showOpenDialog(tabPane.getScene().getWindow());
-            if (file != null) {
-                data.writeFile(file,progressList, readFromChip);
-            }
-
-        });
-        //***********************************************************************************//
-
-        //******************************BUTTONS - STATIC VIEW********************************//
-        readStatic.setOnAction(e ->{
-                //Logic for determining whether to read from chip or from disk
-                if(readModeStaticView == 0) {
-                    if(statusResStatic){
-                        System.out.println("Graph Reset");
-                        resetStaticGraph();
-                    }
-                    Task<Void> readTask = new Task<Void>() {
-                        @Override
-                        protected Void call() throws Exception {
-                            //Fetching data for table
-                            System.out.println("Reading data");
-                            data.readFile(null,"x",true, progressList);
-                            Platform.runLater(new Runnable() {
-                                @Override public void run(){
-                                    initStaticGraph();
-                                    progressLabelStaticView.setText("Done");
-                                }
-                            });
-                            return null;
-                        }
-                    };
-                    Thread th = new Thread(readTask);
-                    System.out.println("Starting new readThread");
-                    progressBarStaticView.setVisible(true);
-                    progressLabelStaticView.setVisible(true);
-                    th.start();
-                }
-                else if(readModeStaticView ==1) {
-                        if (statusResStatic) {
-                            System.out.println("Graph reset");
-                            resetStaticGraph();
-                        }
-                        FileChooser fileChoose = new FileChooser();
-                        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("txt File(*.txt)", "*.txt");
-                        fileChoose.getExtensionFilters().add(extensionFilter);
-
-                        File file = fileChoose.showOpenDialog(tabPane.getScene().getWindow());
-
-                        if (file != null) {
-                            System.out.println("File found");
-                            //Open up a new task to read the file.
-                            readTask = new Task<Void>() {
-                                @Override
-                                protected Void call() {
-                                    System.out.println("Reading data");
-                                    data.readFile(file, "x", false, progressList);
-                                    System.out.println("Read successful");
-                                    Platform.runLater(new Runnable() {
-                                        @Override public void run(){
-                                            initStaticGraph();
-                                            progressLabelStaticView.setText("Done");
-                                        }
-                                    });
-                                    return null;
-                                }
-                            };
-                            Thread th = new Thread(readTask);
-                            //progressBarStaticView.setProgress(0);
-                            System.out.println("Starting new readThread");
-                            progressBarStaticView.setVisible(true);
-                            progressLabelStaticView.setVisible(true);
-                            th.start();
-                        }
-                    /*
-                        try{
-                            while(true) {
-                                System.out.println(readTask.getProgress());
-                                Thread.sleep(10);
-                            }
-                        }catch(Exception a){
-                            ;
-                        }
-                        */
-                        /* //Not necessary at the moment TODO
-                        String fileName = file.getName();
-                        String fileExtension = fileName.substring(fileName.indexOf(".") + 1, file.getName().length());
-                        System.out.println(fileExtension);
-                        while (fileExtension != "txt") {
-                            Alert noSuchFileAlert = new Alert(Alert.AlertType.INFORMATION);
-                            noSuchFileAlert.setTitle("Error in loading file");
-                            noSuchFileAlert.setHeaderText(null);
-                            noSuchFileAlert.setContentText("Unallowed file. Please try again.");
-                            noSuchFileAlert.showAndWait();
-                            file = fileChoose.showOpenDialog(tabPane.getScene().getWindow());
-                            fileChoose.showOpenDialog(tabPane.getScene().getWindow());
-                            fileName = file.getName();
-                            fileExtension = fileName.substring(fileName.indexOf(".") + 1, file.getName().length());
-                            System.out.println(fileExtension);
-                        }
-                        */
-
-                }
-                else{
-                    Alert processExitAlert = new Alert(Alert.AlertType.INFORMATION);
-                    processExitAlert.setTitle("Read Exit");
-                    processExitAlert.setHeaderText(null);
-                    processExitAlert.setContentText("Reading of file will now terminate");
-                    processExitAlert.showAndWait();
-                    //Styling in css
-                    DialogPane dialogPane = processExitAlert.getDialogPane();
-                    dialogPane.getStylesheets().add(getClass().getResource("stylesheet.css").toExternalForm());
-                    dialogPane.getStyleClass().add("stylesheet");
-                }
-            statusResStatic=true;
-            System.out.println("readStatic");
-        });
+    }
 
 
-        resetStatic.setOnAction(e -> {
-            System.out.println("resetStatic");
-            statusResStatic=false;
-            resetStaticGraph();
-        });
-        toggleClickableStaticView.setOnAction(e ->{
-            if(clickStatusStaticView){
-                staticGraph.setDataClickable(clickStatusStaticView);
-                clickStatusStaticView=false;
-            }
-            else{
-                staticGraph.setDataClickable(clickStatusStaticView);
-                clickStatusStaticView=true;
+    //CODE BELOW TAKEN FROM JAVAFX 3D example, Molecule
+
+    private void buildCamera() {
+        group3D.getChildren().add(cameraXform);
+        cameraXform.getChildren().add(cameraXform2);
+        cameraXform2.getChildren().add(cameraXform3);
+        cameraXform3.getChildren().add(camera);
+        cameraXform3.setRotateZ(180.0);
+
+        camera.setNearClip(CAMERA_NEAR_CLIP);
+        camera.setFarClip(CAMERA_FAR_CLIP);
+        camera.setTranslateZ(CAMERA_INITIAL_DISTANCE);
+        cameraXform.ry.setAngle(CAMERA_INITIAL_Y_ANGLE);
+        cameraXform.rx.setAngle(CAMERA_INITIAL_X_ANGLE);
+    }
+
+
+    private void buildAxes() {
+        final PhongMaterial redMaterial = new PhongMaterial();
+        redMaterial.setDiffuseColor(Color.DARKRED);
+        redMaterial.setSpecularColor(Color.RED);
+
+        final PhongMaterial greenMaterial = new PhongMaterial();
+        greenMaterial.setDiffuseColor(Color.DARKGREEN);
+        greenMaterial.setSpecularColor(Color.GREEN);
+
+        final PhongMaterial blueMaterial = new PhongMaterial();
+        blueMaterial.setDiffuseColor(Color.DARKBLUE);
+        blueMaterial.setSpecularColor(Color.BLUE);
+
+        final Box xAxis = new Box(AXIS_LENGTH, 1, 1);
+        final Box yAxis = new Box(1, AXIS_LENGTH, 1);
+        final Box zAxis = new Box(1, 1, AXIS_LENGTH);
+
+        xAxis.setMaterial(redMaterial);
+        yAxis.setMaterial(greenMaterial);
+        zAxis.setMaterial(blueMaterial);
+
+        axisGroup.getChildren().addAll(xAxis, yAxis, zAxis);
+        axisGroup.setVisible(true);
+        world.getChildren().addAll(axisGroup);
+    }
+
+    private SubScene createScene3D(Group group) {
+        SubScene scene3d = new SubScene(group, 500, 500, true, SceneAntialiasing.BALANCED);
+        scene3d.widthProperty().bind(((AnchorPane) group3D.getParent()).widthProperty());
+        scene3d.heightProperty().bind(((AnchorPane) group3D.getParent()).heightProperty());
+
+        scene3d.setFill(Color.WHITE);
+        scene3d.setCamera(camera);
+        scene3d.setPickOnBounds(true);
+        return scene3d;
+    }
+
+    /*
+ * Copyright (c) 2013, 2014 Oracle and/or its affiliates.
+ * All rights reserved. Use is subject to license terms.
+ *
+ * This file is available and licensed under the following license:
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *  - Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *  - Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the distribution.
+ *  - Neither the name of Oracle nor the names of its
+ *    contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+//
+// The handleMouse() method is used in the MoleculeSampleApp application to
+// handle the different 3D camera views.
+// This method is used in the Getting Started with JavaFX 3D Graphics tutorial.
+//
+
+    private void handleMouse(SubScene scene, final Node root) {
+
+        scene.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent me) {
+                mousePosX = me.getSceneX();
+                mousePosY = me.getSceneY();
+                mouseOldX = me.getSceneX();
+                mouseOldY = me.getSceneY();
             }
         });
+        scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override public void handle(MouseEvent me) {
+                mouseOldX = mousePosX;
+                mouseOldY = mousePosY;
+                mousePosX = me.getSceneX();
+                mousePosY = me.getSceneY();
+                mouseDeltaX = (mousePosX - mouseOldX);
+                mouseDeltaY = (mousePosY - mouseOldY);
+
+                double modifier = 1.0;
+
+                if (me.isControlDown()) {
+                    modifier = CONTROL_MULTIPLIER;
+                }
+                if (me.isShiftDown()) {
+                    modifier = SHIFT_MULTIPLIER;
+                }
+                if (me.isPrimaryButtonDown()) {
+                    cameraXform.ry.setAngle(cameraXform.ry.getAngle() -
+                            mouseDeltaX*modifier*ROTATION_SPEED);  //
+                    cameraXform.rx.setAngle(cameraXform.rx.getAngle() +
+                            mouseDeltaY*modifier*ROTATION_SPEED);  // -
+                }
+                else if (me.isSecondaryButtonDown()) {
+                    double z = camera.getTranslateZ();
+                    double newZ = z + mouseDeltaX*MOUSE_SPEED*modifier;
+                    camera.setTranslateZ(newZ);
+                }
+                else if (me.isMiddleButtonDown()) {
+                    cameraXform2.t.setX(cameraXform2.t.getX() +
+                            mouseDeltaX*MOUSE_SPEED*modifier*TRACK_SPEED);  // -
+                    cameraXform2.t.setY(cameraXform2.t.getY() +
+                            mouseDeltaY*MOUSE_SPEED*modifier*TRACK_SPEED);  // -
+                }
+            }
+        }); // setOnMouseDragged
+    } //handleMouse
+
+
+    /*
+ * Copyright (c) 2013, 2014 Oracle and/or its affiliates.
+ * All rights reserved. Use is subject to license terms.
+ *
+ * This file is available and licensed under the following license:
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *  - Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *  - Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the distribution.
+ *  - Neither the name of Oracle nor the names of its
+ *    contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+//
+// The handleKeyboard() method is used in the MoleculeSampleApp application to
+// handle the different 3D camera views.
+// This method is used in the Getting Started with JavaFX 3D Graphics tutorial.
+//
+
+    private void handleKeyboard(SubScene scene, final Node root) {
+
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                switch (event.getCode()) {
+                    case Z:
+                        cameraXform2.t.setX(0.0);
+                        cameraXform2.t.setY(0.0);
+                        cameraXform.ry.setAngle(CAMERA_INITIAL_Y_ANGLE);
+                        cameraXform.rx.setAngle(CAMERA_INITIAL_X_ANGLE);
+                        break;
+                    case X:
+                        axisGroup.setVisible(!axisGroup.isVisible());
+                        break;
+                    case V:
+                        boxGroup.setVisible(!boxGroup.isVisible());
+                        break;
+                } // switch
+            } // handle()
+        });  // setOnKeyPressed
+    }  //  handleKeyboard()
+
+
+    private void buildBox(){
+        Box box3D = new Box(20, 12, 40);
+        final PhongMaterial blackMaterial = new PhongMaterial();
+        blackMaterial.setSpecularColor(Color.LIGHTGREY);
+        blackMaterial.setDiffuseColor(Color.GREY);
+        box3D.setMaterial(blackMaterial);
         /*
-        togglePanStaticView.setOnAction(e ->{ //Doesn't work properly TODO
-           if(statusPan==1){
-               panManagerStaticView.stop();
-               statusPan=0;
-           }
-           else{
-               panManagerStaticView.start();
-           }
-        });
+        Sphere sphere3D = new Sphere(40.0);
+        final PhongMaterial blueMaterial = new PhongMaterial();
+        blueMaterial.setSpecularColor(Color.BURLYWOOD);
+        blueMaterial.setDiffuseColor(Color.BLUE);
+        sphere3D.setMaterial(blueMaterial);
         */
 
-        //***********************************************************************************//
-        //*****************************************************************************************************//
+        Xform group3d = new Xform();
+        group3d.getChildren().add(box3D);
+        //group3d.getChildren().add(sphere3D);
 
-        //**********************SLIDER SETUP*********************//
-        timelineSlider.valueProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                //progressBarStaticView.setProgress(newValue.doubleValue()/timelineSlider.getMax()); //sets the progressbar's progress
-                double progress =newValue.doubleValue()/100;
-                int max = timeline.getCycleCount()-1;
-                int newTimelineIteration;
-                if(timelineIsFinished) {
-                    newTimelineIteration = (int) Math.round(progress * max);
-                    if(newTimelineIteration > timelineIteration){
-                        lineChartAnimated.getData().removeAll(seriesDataAnimated);
-                        for(int i=timelineIteration; i<timelineIteration; i++){
-                            XYChart.Data<Number,Number> datapoint = new XYChart.Data<Number,Number>(dataAnimated.get(i).getX(), dataAnimated.get(i).getY());
-                            seriesDataAnimated.getData().add(datapoint);
-                        }
-                        lineChartAnimated.getData().add(seriesDataAnimated);
-                    }
-                    else if(newTimelineIteration < timelineIteration){
-                        lineChartAnimated.getData().removeAll(seriesDataAnimated);
-                        seriesDataAnimated.getData().remove(newTimelineIteration,timelineIteration);
-                        lineChartAnimated.getData().add(seriesDataAnimated);
-
-                    }
-                    timelineIteration=newTimelineIteration;
-                    System.out.println("timelineIteration new: " + timelineIteration);
-                }
-
-            }
-        });
-
-
-        //*******************************************************//
-        //*************SETUP OF STATIC TABLEVIEW***************//
-        //Setup of static TableView.
-        tableStatic.setEditable(true);
-        //X-column
-        xDataStaticCol = new TableColumn("Time, <s>");
-        TableCol xColStatic = new TableCol(xDataStaticCol,"x");
-        //Y-column
-        yDataStaticCol = new TableColumn("Acc, <m/s^2>");
-        TableCol yColStatic = new TableCol(yDataStaticCol,"y");
-        //****************************************************//
-
-        //***********SETUP OF ANIMATED TALBEVIEW**************//
-        //Setup of Animated TableView.
-        tableAnimated.setEditable(true);
-        //X-column
-        xDataAnimatedCol = new TableColumn("Time, <s>");
-        TableCol xColAnimated = new TableCol(xDataAnimatedCol,"x");
-        //Y-column
-        yDataAnimatedCol = new TableColumn("Acc, <m/s^2>");
-        TableCol yColAnimated = new TableCol(yDataAnimatedCol,"y");
-        //****************************************************//
-
+        boxGroup.getChildren().add(group3d);
+        world.getChildren().addAll(boxGroup);
     }
-
-    private void updateTableViewAnimated(){
-        tableAnimated.setItems(data.getDataAnimated());
-    }
-
-    //**********************************************STATIC GRAPH*****************************************************//
-    public void initStaticGraph(){
-        dataStatic = data.getDataStatic();
-        tableStatic.setItems(dataStatic);
-        tableStatic.getColumns().setAll(xDataStaticCol,yDataStaticCol);
-        //Setup of series
-        seriesDataStatic=data.getStaticDataSeries();
-        staticGraph = new Graph2D(lineChartStatic, seriesDataStatic, xAxisStatic, yAxisStatic,"readStatic", panManagerStaticView);
-        //lineChartStatic.getData().add(seriesStatic);
-        staticGraph.setup();
-    }
-
-    public void resetStaticGraph(){
-        data.resetDataStatic();
-        lineChartStatic.getData().removeAll(seriesDataStatic);
-        statusResStatic = false;
-        progressBarStaticView.setVisible(false);
-        progressLabelStaticView.setVisible(false);
-    }
-
-    //***************************************************************************************************************//
-
-
-    //********************************************ANIMATED GRAPH*****************************************************//
-
-    public void initAnimatedGraph(){
-        //Fetching data for table
-        dataAnimated=data.getDataAnimated();
-        tableAnimated.setItems(dataAnimated);
-        /*
-        dataAnimated.addListener(new ListChangeListener<DataPoint2D>() {
-            @Override
-            public void onChanged(Change<? extends DataPoint2D> c) {
-                updateTableViewAnimated();
-            }
-        });
-        */
-        //seriesDataAnimated=data.getStaticDataSeries();
-        tableAnimated.getColumns().setAll(xDataAnimatedCol,yDataAnimatedCol);
-
-        animatedGraph = new Graph2D(lineChartAnimated, seriesDataAnimated, xAxisAnimated, yAxisAnimated,"readAnimated", panManagerAnimatedView);
-        animatedGraph.setup();
-    }
-
-    public void resetAnimatedGraph(){
-        data.resetDataAnimated();
-        lineChartAnimated.getData().removeAll(seriesDataAnimated);
-        statusResAnimated = false;
-    }
-    //***************************************************************************************************************//
-
-    //******************************************TIMELINE HANDLING****************************************************//
-
-    public void timelineAnimated(String str) {
-        //****************** EVENT HANDLER FOR KEYFRAME ***************************//
-        EventHandler onFinishedFile = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent t) {
-                XYChart.Data<Number,Number> datapoint = new XYChart.Data<>(dataAnimated.get(timelineIteration).getX(),dataAnimated.get(timelineIteration).getY());
-                seriesDataAnimated.getData().add(datapoint);
-                double progress = Math.round(((double)timelineIteration/dataAnimated.size())*100);
-                System.out.println("Progress: " + progress);
-                System.out.println("timeline Iteration: " + timelineIteration);
-                timelineSlider.setValue(progress);
-                timelineIteration++;
-            }
-        };
-
-        EventHandler onFinishedChip = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent t) {
-                data.readContinously();
-                XYChart.Series<Number,Number> series= data.getAnimatedDataSeries();
-                for(int i=0; i<series.getData().size(); i++){
-                    seriesDataAnimated.getData().add(series.getData().get(i)); //TODO, CLEAR UP
-                }
-
-            }
-        };
-        //*************************************************************************//
-
-
-
-        //Creating a timeline for updating the graph
-        timeline = new Timeline();
-        if(str =="file") {
-            System.out.println("entered file");
-            timeline.setCycleCount(dataAnimated.size() - timelineIteration); //Cycles of the timeline finishing according to the size of the series
-            //timeline.setAutoReverse(true);
-            timelineIsFinished = false;
-            timeline.setOnFinished(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    timelineIsFinished = true;
-                    System.out.println("Done!");
-                }
-
-            });
-            Duration duration = Duration.millis(10);
-            //I don't know how to do actionhandling for keyframe with lambda expression
-            keyFrameAnimated = new KeyFrame(duration, onFinishedFile);
-            timeline.getKeyFrames().add(keyFrameAnimated);
-        }
-        else if(str=="chip"){
-            System.out.println("entered chip");
-            timeline.setCycleCount(Timeline.INDEFINITE);
-            Duration duration = Duration.millis(10);
-            keyFrameAnimated = new KeyFrame(duration, onFinishedChip);
-            timeline.getKeyFrames().add(keyFrameAnimated);
-        }
-
-
-    }
-
-    public void startAnimatedTimeline(String str){
-        timelineAnimated(str);
-        timeline.play();
-    }
-
-    public void stopAnimatedTimeline(){
-        timeline.stop();
-    }
-
-    public void readFileCinematic(){
-        FileChooser fileChoose = new FileChooser();
-        FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("txt File(*.txt)", "*.txt");
-        fileChoose.getExtensionFilters().add(extensionFilter);
-
-        File file = fileChoose.showOpenDialog(tabPane.getScene().getWindow());
-
-        if (file != null) {
-            System.out.println("File found");
-            //Open up a new task to read the file. But do so continously.
-            readTask = new Task<Void>() {
-                @Override
-                protected Void call() {
-                    System.out.println("Reading data from file...");
-                    data.readContinouslyFromFile(file, "x", false, progressList);
-                    System.out.println("Read successful");
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            initAnimatedGraph();
-                            startAnimatedTimeline("file");
-                            //progressLabelStaticView.setText("Done");
-                        }
-                    });
-                    return null;
-                }
-            };
-            Thread th = new Thread(readTask);
-            //progressBarStaticView.setProgress(0);
-            System.out.println("Starting new readThread: from file");
-            //progressBarStaticView.setVisible(true);
-            //progressLabelStaticView.setVisible(true);
-            th.start();
-        }
-    }
-
-    public void readChipCinematic(){
-        readTask =  new Task<Void>(){
-            @Override protected Void call(){
-                System.out.println("Reading data from chip...");
-                rp.setBuffer(6);
-                rp.continousToDoubleMatrix();
-                System.out.println("Read successful");
-                /*
-                Platform.runLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        initAnimatedGraph();
-                        startAnimatedTimeline("chip");
-                    }
-                });
-                */
-                return null;
-            }
-        };
-        Thread th = new Thread(readTask);
-        System.out.println("Starting new readThread: from chip");
-        th.start();
-        initAnimatedGraph();
-        startAnimatedTimeline("chip");
-    }
-
-    //*****VERSION 2, if VERSION ABOVE FAILS******//
-
-    public void readChipCinematic2(){
-        System.out.println("Trying to use ContinousToDoubleMatrix");
-        rp.setBuffer(6);
-        ContinousToDoubleMatrix cont = new ContinousToDoubleMatrix(rp);
-        Thread th = new Thread(cont);
-        System.out.println("Starting new ContinousToDoubleMatrix thread");
-        th.start();
-        initAnimatedGraph();
-        startAnimatedTimeline("chip");
-    }
-    //***************************************************************************************************************//
 }

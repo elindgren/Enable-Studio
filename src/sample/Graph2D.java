@@ -29,7 +29,7 @@ public class Graph2D {
     private Data data;
 
     //public Graph2D(LineChart<Number,Number> lineChart, XYChart.Series<Number,Number> series, NumberAxis x, NumberAxis y, String str, ChartPanManager panManager){
-    public Graph2D(LineChart<Number,Number> lineChart, XYChart.Series<Number,Number> series, ValueAxis x, ValueAxis y, String str, ChartPanManager panManager){
+    public Graph2D(LineChart<Number,Number> lineChart, XYChart.Series<Number,Number> series, ValueAxis x, ValueAxis y, String str){
         this.lineChart=lineChart;
         this.series=series;
         this.panManager=panManager;
@@ -40,9 +40,8 @@ public class Graph2D {
             //Graph
             this.lineChart.setAnimated(false);
             this.lineChart.setId("staticLineChart");
-            this.lineChart.setTitle("Static Line Chart");
             //Series
-            series.setName("Series 1");
+            series.setName("x");
             this.lineChart.setCreateSymbols(false);
             System.out.println("Graph created successfully");
         }
@@ -52,29 +51,17 @@ public class Graph2D {
             //Graph
             this.lineChart.setAnimated(false);
             this.lineChart.setId("animatedLineChart");
-            this.lineChart.setTitle("Animated Line Chart");
             //Series
-            series.setName("Series 1");
+            series.setName("x");
             this.lineChart.setCreateSymbols(false);
             System.out.println("Graph created successfully");
-        }
-        else if(str =="readExperimental"){
-            xAxis=x;
-            yAxis=y;
-            this.lineChart.setAnimated(false);
-            this.lineChart.setTitle("Static Line Chart - Experimental");
-            this.lineChart.setCreateSymbols(false);
-            //Series
-            series.setName("Experimental Series");
-
-            System.out.println("Experimental - Graph created successfully");
         }
         else{
             System.out.println("Error in Constructor 2, Graph2D: If-criteria not met.");
         }
     }
 
-    public void setup() {
+    public void setup(String str) {
         //Setup of static graph
         xAxis.setAutoRanging(true); //As to not have the axis scale weirdly
         xAxis.setTickLabelsVisible(true);
@@ -104,8 +91,11 @@ public class Graph2D {
             }
         });
         panManager.start();
-
         lineChart.getData().setAll(series);
+
+
+
+
         //*****************************************//
     }
 

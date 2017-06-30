@@ -188,12 +188,8 @@
 	-fx-font-size: 24px;
 }
 
-/***ADDED ericlin 22/6-17***/
 
-.save-button {
-    -fx-background-color: -swatch-200;
-    -fx-text-fill: FF5151;
-}
+
 
 /* ------------------------*/
 
@@ -816,4 +812,150 @@
 .tab {
     fx-background-color: -swatch-toolbar;
     -fx-border-color: -swatch-grey;
+}
+
+/*************************************************************************
+    *                                                                    *
+    * TabPane - ericlin 28/6-17                                          *
+    *                                                                    *
+*************************************************************************/
+
+/*Styling for tabpane to hide them */
+
+.tab-pane{
+-fx-tab-max-height: 0;
+}
+.tab-pane .tab-header-area{
+    visibility: HIDDEN;
+}
+
+
+
+/*************************************************************************
+    *                                                                    *
+    * ButtonBar - ericlin 28/6-17                                        *
+    *                                                                    *
+*************************************************************************/
+
+.menu-bar-custom{
+    -fx-background-color: #483D8B;    /*-swatch-toolbar;*/ /*cool purple #9932CC*/
+    	-fx-border-width: 0 0 2 0;
+    	-fx-border-color: -swatch-grey;
+    	-fx-min-height: 48;
+    	-fx-alignment: CENTER_LEFT;
+    -fx-spacing: 40;
+    /*-fx-alignment: CENTER;*/
+}
+.menu-bar-custom-menu-slide{
+    -fx-graphic: url('file:resources/images/iconsPurple/menuLargeWhitePurple.png');
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+}
+
+.menu-bar-undo{
+    -fx-graphic: url('file:resources/images/iconsPurple/undoLargeWhitePurple.png');
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+}
+
+.menu-bar-redo{
+    -fx-graphic: url('file:resources/images/iconsPurple/redoLargeWhitePurple.png');
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+}
+
+.menu-bar-math{
+    -fx-graphic: url('file:resources/images/iconsPurple/mathLargeWhitePurple.png');
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+}
+
+.menu-bar-settings{
+    -fx-graphic: url('file:resources/images/iconsPurple/settingsLargeWhitePurple.png');
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+}
+}
+
+
+
+/*************************************************************************
+    *                                                                    *
+    * Menu-Slide - ericlin 29/6-17                                       *
+    *                                                                    *
+*************************************************************************/
+
+.menu-slide{
+    -fx-background-color: #6A5ACD;
+        -fx-border-width: 0 2 0 0;
+        -fx-border-color: -swatch-grey;
+}
+.menu-slide-item{
+    -fx-text-fill: #F8F8FF;
+    -fx-font-weight: bold;
+    -fx-font-size: 20;
+}
+
+/*************************************************************************
+    *                                                                    *
+    * On-screen-buttons - ericlin 29/6-17                                *
+    *                                                                    *
+*************************************************************************/
+
+/***ADDED ericlin 22/6-17***/
+
+.save-button {
+    /*-fx-background-color: -swatch-200;*/
+    -fx-graphic: url('file:resources/images/iconsBlack/downloadLargeBlack.png');
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+}
+
+.chart-settings{
+    /*-fx-background-color: -swatch-200;*/
+    -fx-graphic: url('file:resources/images/iconsBlack/chartSettingsSmallBlack.png');
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+}
+
+.play-button {
+    /*-fx-background-color: -swatch-200;*/
+    -fx-graphic: url('file:resources/images/iconsBlack/playLargeBlack.png');
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+}
+
+.pause-button {
+    /*-fx-background-color: -swatch-200;*/
+    -fx-graphic: url('file:resources/images/iconsBlack/pauseLargeBlack.png');
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+}
+
+.reset-button {
+    /*-fx-background-color: -swatch-200;*/
+    -fx-graphic: url('file:resources/images/iconsBlack/resetLargeBlack.png');
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+}
+
+.chip-button {
+    /*-fx-background-color: -swatch-200;*/
+    -fx-graphic: url('file:resources/images/iconsBlack/chipLargeBlack.png');
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+}
+
+.chart-click {
+    /*-fx-background-color: -swatch-200;*/
+    -fx-graphic: url('file:resources/images/iconsBlack/chartClickLargeBlack.png');
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+}
+
+.cinematic-button {
+    /*-fx-background-color: -swatch-200;*/
+    -fx-graphic: url('file:resources/images/iconsBlack/cinematicLargeBlack.png');
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
 }

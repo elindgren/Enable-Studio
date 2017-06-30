@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="javafx-preloader" name="Preloader">
+    <output-path>$PROJECT_DIR$/out/artifacts/Preloader</output-path>
+    <root id="archive" name="Preloader.jar">
+      <element id="module-output" name="JANA" />
+    </root>
+  </artifact>
+</component>

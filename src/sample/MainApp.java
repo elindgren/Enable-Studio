@@ -55,10 +55,9 @@ public class MainApp extends Application {
                 //TODO - End threads
                 System.exit(0);
             }
-
-            //closeProgram();
-
-
+            else{
+                e.consume();
+            }
         });
         //**********************************************************************************************************//
     }

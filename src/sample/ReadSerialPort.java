@@ -258,6 +258,36 @@ public class ReadSerialPort {
         System.out.println(tmp);
     }
 
+
+    public int getFileLength(File file) {
+        int i = 2;
+        String line = "";
+        char ch;
+        try {
+            RandomAccessFile RandomFile = new RandomAccessFile(file, "r");
+            ch = RandomFile.readChar();
+            System.out.println(RandomFile.length());
+            while((byte)ch != 10){
+                RandomFile.seek(RandomFile.length()-i);
+                ch = (char)RandomFile.readByte();
+                System.out.println("ch = " + ch + " byte: " + (byte)ch);
+                i++;
+            }
+            System.out.println("finish");
+            ch = (char)RandomFile.readByte();
+            while (ch != ','){
+                line += Character.toString(ch);
+                ch = (char)RandomFile.readByte();
+            }
+            RandomFile.close();
+        } catch (IOException e) {
+            System.out.println("Something went wrong :(");
+            e.printStackTrace();
+        }
+        return Integer.parseInt(line) + 1;
+    }
+
+
     //**************************ERIC's changes******************//
 
     public void continousToDoubleMatrix() {

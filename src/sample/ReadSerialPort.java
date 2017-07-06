@@ -266,14 +266,13 @@ public class ReadSerialPort {
         try {
             RandomAccessFile RandomFile = new RandomAccessFile(file, "r");
             ch = RandomFile.readChar();
-            System.out.println(RandomFile.length());
+            System.out.println("File length: " + RandomFile.length());
             while((byte)ch != 10){
                 RandomFile.seek(RandomFile.length()-i);
                 ch = (char)RandomFile.readByte();
-                System.out.println("ch = " + ch + " byte: " + (byte)ch);
+                //System.out.println("ch = " + ch + " byte: " + (byte)ch);
                 i++;
             }
-            System.out.println("finish");
             ch = (char)RandomFile.readByte();
             while (ch != ','){
                 line += Character.toString(ch);
@@ -284,6 +283,7 @@ public class ReadSerialPort {
             System.out.println("Something went wrong :(");
             e.printStackTrace();
         }
+
         return Integer.parseInt(line) + 1;
     }
 

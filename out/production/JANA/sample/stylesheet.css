@@ -3,6 +3,7 @@
 }   /*Class controlling the chart itself*/
 .chart{
     -fx-background-color: #f1f1f1;
+    -fx-background-radius: 0px;
 }
 .chart-plot-background{ /*Background color of chart*/
     -fx-background-color: #fbfbfb;
@@ -29,9 +30,5 @@ myDialog .button{
     -fx-background-color: color0;
 }
 
-.button-save{
-    -fx-background-color: #2196F3;
-    -fx-text-fill: FF0000;
-}
 
 

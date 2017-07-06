@@ -34,7 +34,7 @@ public class MainApp extends Application {
 
 
         Scene scene = new Scene(root, 900, 500);
-        mainWindow.setTitle("FXML-test");
+        mainWindow.setTitle("Enable Studio");
         mainWindow.setScene(scene);
         mainWindow.show();
 

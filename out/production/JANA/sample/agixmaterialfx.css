@@ -51,7 +51,7 @@
 	-dark: rgb(47.0, 52.0, 57.0);
 	-fx-background-color: fbfbfb;	/*default font */
 	-fx-font-family: 'Roboto Medium';
-	-fx-font-size: 14.0px;
+	-fx-font-size: 13.0px;
 	-fx-disabled-opacity: 0.6;
 	/*default colors */
 	-swatch-grey: rgb(200.0, 200.0, 200.0);
@@ -823,7 +823,8 @@
 /*Styling for tabpane to hide them */
 
 .tab-pane{
--fx-tab-max-height: 0;
+    -fx-tab-max-height: 0;
+    -fx-background-color: f1f1f1;
 }
 .tab-pane .tab-header-area{
     visibility: HIDDEN;
@@ -833,50 +834,73 @@
 
 /*************************************************************************
     *                                                                    *
-    * ButtonBar - ericlin 28/6-17                                        *
+    * ToolBar - ericlin 28/6-17                                          *
     *                                                                    *
 *************************************************************************/
 
 .menu-bar-custom{
-    -fx-background-color: #483D8B;    /*-swatch-toolbar;*/ /*cool purple #9932CC*/
-    	-fx-border-width: 0 0 2 0;
+    -fx-background-color: #00BCD4;    /*-swatch-toolbar;*/ /*cool purple #9932CC*/
+    	-fx-border-width: 0 0 0 0;
     	-fx-border-color: -swatch-grey;
     	-fx-min-height: 48;
     	-fx-alignment: CENTER_LEFT;
     -fx-spacing: 40;
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.50), 6.0, 0.3, 0, 1);
     /*-fx-alignment: CENTER;*/
 }
 .menu-bar-custom-menu-slide{
-    -fx-graphic: url('file:resources/images/iconsPurple/menuLargeWhitePurple.png');
-    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-graphic: url('file:resources/images/iconsViolet/menuLargeWhiteViolet.png');
+    /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1);  Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
+
 }
 
 .menu-bar-undo{
-    -fx-graphic: url('file:resources/images/iconsPurple/undoLargeWhitePurple.png');
-    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-graphic: url('file:resources/images/iconsViolet/undoLargeWhiteViolet.png');
+    /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1);  Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
 }
 
 .menu-bar-redo{
-    -fx-graphic: url('file:resources/images/iconsPurple/redoLargeWhitePurple.png');
-    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-graphic: url('file:resources/images/iconsViolet/redoLargeWhiteViolet.png');
+    /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1);  Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
 }
 
 .menu-bar-math{
-    -fx-graphic: url('file:resources/images/iconsPurple/mathLargeWhitePurple.png');
-    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-graphic: url('file:resources/images/iconsViolet/mathLargeWhiteViolet.png');
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
+    -fx-background-color: transparent;
+    /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1);  Makes it look lika a protruding button. Remove? */
 }
 
 .menu-bar-settings{
-    -fx-graphic: url('file:resources/images/iconsPurple/settingsLargeWhitePurple.png');
-    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-graphic: url('file:resources/images/iconsViolet/settingsLargeWhiteViolet.png');
+    /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1);  Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
 }
+
+.menu-bar-status-box{
+    -fx-background-color: #EC407A;
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.40), 6.0, 0.3, 0, 1);
+    -fx-background-insets: -2 -2 -2 -2, 0 , 1, 2;
 }
 
+.menu-bar-label{
+    -fx-text-fill: #F8F8FF;
+    -fx-font-size: 14.0;
+    -fx-font-family: "Roboto Medium";
+    -fx-font-weight: bold;
+    -fx-background-insets: 10px;
+}
+
+/* CODE FOR HIDING ARROW ON MENU BUTTON */
+.menu-button > .arrow-button{
+    -fx-padding: 0;
+}
+.menu-button >.arrow-button > .arrow{
+    -fx-padding: 0;
+}
 
 
 /*************************************************************************
@@ -886,15 +910,32 @@
 *************************************************************************/
 
 .menu-slide{
-    -fx-background-color: #6A5ACD;
-        -fx-border-width: 0 2 0 0;
+    -fx-background-color: #EC407A;/*#E91E63;*/ /*#6A5ACD*/
+         -fx-border-width: 0 0 0 0;
         -fx-border-color: -swatch-grey;
+
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.45), 6.0, 0.3, 0, 1);
 }
 .menu-slide-item{
     -fx-text-fill: #F8F8FF;
     -fx-font-weight: bold;
     -fx-font-size: 20;
 }
+
+.menu-slide-button{
+    -fx-text-fill: BLACK;
+    -fx-font-weight: bold;
+    -fx-background-radius: 0px;
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 12.0, 0.3, 0,1);
+    -fx-background-color: rgb(250, 250, 250);
+    -fx-min-width: 150px;
+    -fx-min-height: 100px;
+    -fx-background-insets: 0px;
+    -fx-padding: 0px;
+    -fx-accent: derive(-swatch-500, 50.0%), derive(-swatch-500, -20.0%);
+}
+
+
 
 /*************************************************************************
     *                                                                    *
@@ -904,58 +945,109 @@
 
 /***ADDED ericlin 22/6-17***/
 
+.on-screen-slide{
+    -fx-background-color: rgba(255, 255, 255, 0.5);
+    -fx-border-width: 1 1 1 1;
+    -fx-border-color: -swatch-grey;
+    -fx-background-radius: 2px;
+    -fx-effect: dropshadow(gaussian, rgb(0.0,0.0,0.0,0.30), 6.0, 0.3, 0, 1);
+}
+
 .save-button {
     /*-fx-background-color: -swatch-200;*/
-    -fx-graphic: url('file:resources/images/iconsBlack/downloadLargeBlack.png');
-    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-graphic: url('file:resources/images/iconsBlack/downloadSmallBlack.png');
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look like a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+    -fx-background-radius: 2px;
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
 }
 
 .chart-settings{
     /*-fx-background-color: -swatch-200;*/
     -fx-graphic: url('file:resources/images/iconsBlack/chartSettingsSmallBlack.png');
-    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look like a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
+    -fx-background-radius: 2px;
 }
 
 .play-button {
     /*-fx-background-color: -swatch-200;*/
-    -fx-graphic: url('file:resources/images/iconsBlack/playLargeBlack.png');
-    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-graphic: url('file:resources/images/iconsBlack/playSmallBlack.png');
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look like a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+    -fx-background-radius: 2px;
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
 }
 
 .pause-button {
     /*-fx-background-color: -swatch-200;*/
-    -fx-graphic: url('file:resources/images/iconsBlack/pauseLargeBlack.png');
+    -fx-graphic: url('file:resources/images/iconsBlack/pauseSmallBlack.png');
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+    -fx-background-radius: 2px;
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
 }
 
 .reset-button {
     /*-fx-background-color: -swatch-200;*/
-    -fx-graphic: url('file:resources/images/iconsBlack/resetLargeBlack.png');
+    -fx-graphic: url('file:resources/images/iconsBlack/resetSmallBlack.png');
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+    -fx-background-radius: 2px;
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
 }
 
 .chip-button {
     /*-fx-background-color: -swatch-200;*/
-    -fx-graphic: url('file:resources/images/iconsBlack/chipLargeBlack.png');
+    -fx-graphic: url('file:resources/images/iconsBlack/chipSmallBlack.png');
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+    -fx-background-radius: 2px;
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
 }
 
 .chart-click {
     /*-fx-background-color: -swatch-200;*/
-    -fx-graphic: url('file:resources/images/iconsBlack/chartClickLargeBlack.png');
+    -fx-graphic: url('file:resources/images/iconsBlack/chartClickSmallBlack.png');
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+    -fx-background-radius: 2px;
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
 }
 
 .cinematic-button {
     /*-fx-background-color: -swatch-200;*/
-    -fx-graphic: url('file:resources/images/iconsBlack/cinematicLargeBlack.png');
+    -fx-graphic: url('file:resources/images/iconsBlack/cinematicSmallBlack.png');
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
+    -fx-background-radius: 2px;
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+}
+
+/*************************************************************************
+    *                                                                    *
+    * On-screen limiters - ericlin 5/7-17                                *
+    *                                                                    *
+*************************************************************************/
+
+.chart-view-container{
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 12.0, 0.3, 0,1);
+    -fx-background-radius: 0px;
+}
+
+.table-view-container{
+    -fx-background-color: fbfbfb;
+    -fx-background-radius: 0px;
+    -fx-font-weight: normal;
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 12.0, 0.3, 0,1);
+}
+
+/*************************************************************************
+    *                                                                    *
+    * TableView - ericlin 5/7-17                                         *
+    *                                                                    *
+*************************************************************************/
+
+.table-view-2D{
+    -fx-font-weight: normal;
 }

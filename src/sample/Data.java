@@ -10,7 +10,9 @@ import javafx.collections.ObservableList;
 import javafx.scene.chart.XYChart;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
+import java.util.List;
 
 /**
  * Created by Eric on 2017-04-16.
@@ -125,7 +127,14 @@ public class Data {
             nbr = 5;
             System.out.println("Non-valid axis supplied. Using default axis (x)");
         }
-
+        //Pre-allocates two temporary lists
+        List seriesList = new ArrayList();
+        if(progressList!=null) {
+            seriesList = new ArrayList(progressList.get(1));
+        }else{
+            System.out.println("progressList is null in ParseArray");
+        }
+        //List dataList = new ArrayList(progressList.get(1));
         //***************************************************************************************************//
         System.out.println("Beginning to setup datapoints");
         for (int i=lastCount; i<newCount; i++ ) {
@@ -135,7 +144,7 @@ public class Data {
             //System.out.println("Starting line: " + i+1);
             //********************************** XYCHART.Series, Static*********************************************//
             XYChart.Data<Number, Number> staticDataPoint = new XYChart.Data<Number, Number>(fileData[i][1] - offset, fileData[i][nbr]);
-            series.getData().add(staticDataPoint);
+            seriesList.add(i,staticDataPoint);
             //******************************************************************************************************//
 
             //****************List of DataPoints2D, coupled to the double[][] used in the series above****************//
@@ -151,10 +160,19 @@ public class Data {
                 series.getData().get(datapoint.getIndex()).setYValue(datapoint.getY().doubleValue());
                 arr[datapoint.getIndex()][nbr] = newValue.doubleValue();
             });
-
+            //dataList.add(datapoint);
             list.add(datapoint);
             //********************************************************************************************************//
         }
+
+        //**SERIES**//
+        ObservableList<XYChart.Data<Number,Number>> seriesData = FXCollections.observableArrayList(seriesList);
+        series.getData().addAll(seriesData);
+
+        //**DATA**//
+        //ObservableList<DataPoint2D> tableData = FXCollections.observableArrayList(dataList);
+        //list=tableData;
+
     }
     public void setupX(){
         double offset = fileData[0][1]; //Used to set proper offset, as to make the graph begin at t=0
@@ -169,6 +187,49 @@ public class Data {
         double offset = fileData[0][1]; //Used to set proper offset, as to make the graph begin at t=0
         parseArray(fileData, "z", dataSeriesZ, dataZ, null, 0, fileData.length, offset);
     }
+
+    //********************************* MATHEMATICAL OPERATIONS **********************************//
+
+    public int findMaxIndex(){
+        double xMax=fileData[0][5];
+        double xNew;
+        int index=0;
+        for(int i = 1; i<fileData.length; i++){
+            xNew = fileData[i][5];
+            if(xMax<xNew){
+                xMax=xNew;
+                index=i;
+
+            }
+            else{
+                //Do nothing
+            }
+            i++;
+
+        }
+        return index;
+    }
+
+    public int findMinIndex(){
+        double xMin=fileData[0][5];
+        double xNew;
+        int index=0;
+        for(int i = 1; i<fileData.length; i++){
+            System.out.println("Iteration: " + i);
+            xNew = fileData[i][5];
+            if(xMin>xNew){
+                xMin=xNew;
+                index=i;
+                System.out.println("New index: " + index);
+            }
+            else{
+                //Do nothing
+            }
+        }
+        System.out.println("Min point: " + fileData[index][5]);
+        return index;
+    }
+
 
 
     //***************************************************GET**********************************************//
@@ -196,13 +257,18 @@ public class Data {
     }
 
     //*****************************************//
+
+    //************ FILE DATA ****************//
+    public double[][] getFileData(){
+        return fileData;
+    }
     //****************************************************************************************************//
 
     //***************************************************RESET********************************************//
     public  void resetData(){
         //Reset Legend TODO
         dataSeriesX.getData().removeAll(dataSeriesX.getData());
-        dataX.remove(0,dataX.size());
+        dataX.remove(0,dataX.size()); //TODO Make this work with larger files, >20000 rows
         fileData = null; //Creating a new, empty matrix. Cannot make it null?
     }
     //****************************************************************************************************//
@@ -228,7 +294,7 @@ public class Data {
                 i++;
                 int row=i;
                 progressList.set(0,row);
-                System.out.println("Reading file lines. Line: " +i);
+                //System.out.println("Reading file lines. Line: " +i);
             }
         }catch(IOException e){
             System.out.println("FileNotFound");
@@ -265,6 +331,7 @@ public class Data {
         }
         else{
             int length= fileData.length;
+            progressList.set(1, length);
             String[] rows = new String[length];
             for(int i=0; i<length; i++){
                 String currentRow="";
@@ -277,6 +344,7 @@ public class Data {
                     }
                 }
                 rows[i]=currentRow;
+                progressList.set(0,i);
             }
             //Write to a specific file
             PrintWriter fileWriter=null;
@@ -287,6 +355,7 @@ public class Data {
                 for(int i=0; i<length; i++){
                     fileWriter.write(rows[i]);
                     fileWriter.println();
+                    progressList.set(0,i);
                 }
                 fileWriter.close();
                 System.out.println("File written successfully");

@@ -3,6 +3,7 @@ package sample;
 import com.sun.javaws.progress.Progress;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -19,10 +20,9 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import org.gillius.jfxutils.chart.StableTicksAxis;
@@ -42,6 +42,8 @@ public class StandardView {
     private ObservableList<Integer> statusList;
 
     //**** CONTAINERS ****//
+    private AnchorPane onScreenPaneSlide;
+    private AnchorPane onScreenPaneHover;
     private TabPane tabPane;
     private Tab tab;
     private TableView table;
@@ -74,7 +76,6 @@ public class StandardView {
     private boolean timelineIsStopped = false;
     private boolean cinematicMode = false;
 
-
     private boolean settingXHasBeenActivated = false;
     private boolean settingXIsActive = true;
     private boolean settingYHasBeenActivated = false;
@@ -86,17 +87,14 @@ public class StandardView {
     private boolean clickStatusChart = false;
     private int statusPan = 1;
 
-
-
-
     //**** DATA ****//
-
     private ObservableList<DataPoint2D> dataList = FXCollections.observableArrayList();
     private XYChart.Series<Number, Number> seriesX = new XYChart.Series<Number, Number>();
-    private XYChart.Series<Number, Number> seriesY;
-    private XYChart.Series<Number, Number> seriesZ;
+    private XYChart.Series<Number, Number> seriesY = new XYChart.Series<>();
+    private XYChart.Series<Number, Number> seriesZ = new XYChart.Series<>();
     //**** TASKS ****//
     private Task<Void> readTask;
+    private Task<Void> saveTask;
 
     //**** TIMELINE ****//
     KeyFrame keyFrameAnimated;
@@ -115,17 +113,30 @@ public class StandardView {
         data= new Data(rp);
 
         if(isStandard){
-            table = (TableView)((Parent)tab.getContent()).getChildrenUnmodifiable().get(0);
-            lineChart = (LineChart<Number, Number>)((HBox)((VBox)((Parent)tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(0)).getChildren().get(0);
-            chartSetting = (MenuButton)((HBox)((VBox)((Parent)tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(0)).getChildren().get(1);
+            table = (TableView)((StackPane)((Parent)tab.getContent()).getChildrenUnmodifiable().get(0)).getChildren().get(0);
+            lineChart = (LineChart<Number, Number>)((AnchorPane)((StackPane)((Parent)tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(0)).getChildren().get(0);
+            chartSetting = (MenuButton)((AnchorPane)((StackPane)((Parent)tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(0)).getChildren().get(1);
+            xAxis=(StableTicksAxis)lineChart.getXAxis();
+            yAxis=(StableTicksAxis)lineChart.getYAxis();
+
+
+            onScreenPaneHover = ((AnchorPane)((StackPane)((Parent)tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(1));
+            onScreenPaneSlide = (AnchorPane)((AnchorPane)((StackPane)((Parent)tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(1)).getChildren().get(0);
+            cinematicModeToggle = (ToggleButton) ((HBox)((VBox)((Parent)onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(0)).getChildren().get(0);
+            chipModeToggle = (ToggleButton) ((HBox)((VBox)((Parent)onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(0)).getChildren().get(1);
+            readButton = (Button)((HBox)((VBox)((Parent)onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(0)).getChildren().get(2);
+            resetButton = (Button)((HBox)((VBox)((Parent)onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(0)).getChildren().get(3);
+            saveButton = (Button)((HBox)((VBox)((Parent)onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(0)).getChildren().get(4);
+            timelineSlider = (Slider) ((VBox)((Parent)onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(1);
+            prepareSlideButtonAnimation();
+            /*
             cinematicModeToggle = (ToggleButton) ((HBox)((VBox)((Parent)tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(1)).getChildren().get(0);
             chipModeToggle = (ToggleButton) ((HBox)((VBox)((Parent)tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(1)).getChildren().get(1);
             readButton = (Button)((HBox)((VBox)((Parent)tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(1)).getChildren().get(2);
             resetButton = (Button)((HBox)((VBox)((Parent)tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(1)).getChildren().get(3);
             saveButton = (Button)((HBox)((VBox)((Parent)tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(1)).getChildren().get(4);
             timelineSlider=(Slider)((VBox)((Parent)tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(2);
-            xAxis=(StableTicksAxis)lineChart.getXAxis();
-            yAxis=(StableTicksAxis)lineChart.getYAxis();
+            */
         }
         else{
             BorderPane bp = new BorderPane();
@@ -177,6 +188,52 @@ public class StandardView {
         saveButton.setDisable(true);
     }
 
+    public void findMax(){
+        System.out.println("Trying to find max");
+        int index = data.findMaxIndex();
+        System.out.println("Max: " + index);
+        Circle circ = new Circle(5, Color.TRANSPARENT);
+        circ.setStroke(Color.FORESTGREEN);
+        seriesX.getData().get(index+1).setNode(circ);
+        lineChart.getData().setAll(seriesX);
+        table.scrollTo(index+1);
+        table.getSelectionModel().select(index+1);
+    }
+
+    public void findMin(){
+        System.out.println("Trying to find Min");
+        int index = data.findMinIndex();
+        System.out.println("Min: " + index);
+        Circle circ = new Circle(5, Color.TRANSPARENT);
+        circ.setStroke(Color.FIREBRICK);
+        seriesX.getData().get(index).setNode(circ);
+        lineChart.getData().setAll(seriesX);
+        table.scrollTo(index);
+        table.getSelectionModel().select(index);
+    }
+
+    private void prepareSlideButtonAnimation(){
+        TranslateTransition openSlide = new TranslateTransition(new Duration(350), onScreenPaneSlide);
+        TranslateTransition openHover = new TranslateTransition(new Duration(350), onScreenPaneHover);
+        openSlide.setToY(onScreenPaneSlide.getHeight()+2);
+        openHover.setToY(onScreenPaneHover.getHeight()+2);
+        TranslateTransition closeSlide = new TranslateTransition(new Duration(350), onScreenPaneSlide);
+        TranslateTransition closeHover = new TranslateTransition(new Duration(350), onScreenPaneHover);
+
+        onScreenPaneHover.setOnMouseEntered(e -> {
+            openHover.play();
+            openSlide.play();
+
+        });
+
+        onScreenPaneHover.setOnMouseExited(e -> {
+            closeSlide.setToY(onScreenPaneHover.getHeight());
+            closeHover.setToY(onScreenPaneSlide.getHeight() - 38);
+            closeHover.play();
+            closeSlide.play();
+        });
+    }
+
 
     private void setupButtons(){
         //**********************************************BUTTON SETUP*******************************************//
@@ -222,7 +279,10 @@ public class StandardView {
                 } else if (settingXIsActive && !statusChart) {
                     settingXIsActive = false;
                     settingX.setText("Show x");
-                } else if (!settingXHasBeenActivated && !settingXIsActive && statusChart) {
+                }else if(!settingXHasBeenActivated && !settingXIsActive && statusChart && !settingYIsActive && !settingZIsActive){
+                    settingXIsActive=true;
+                    settingX.setText("Show x ok");
+                }else if (!settingXHasBeenActivated && !settingXIsActive && statusChart) {
                     data.setupX();
                     seriesX = data.getDataSeriesY();
                     seriesX.setName("x");
@@ -285,6 +345,7 @@ public class StandardView {
         settingZ.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+
                 if (!settingZIsActive && !statusChart) {
                     settingZIsActive = true;
                     settingZ.setText("Show z ok");
@@ -348,11 +409,13 @@ public class StandardView {
                 this.startAnimatedTimeline("chip");
                 */
                 } else {
+                    if(statusChart) {
+                        resetGraph();
+                    }
                     if(statusChart && !timelineIsFinished && !timelineIsStopped){
                         stopAnimatedTimeline();
                         timelineIsStopped = true;
                     }
-
                     else if (statusChart && timelineIsFinished && timelineIteration + 1 == dataList.size()) {
                         System.out.println("Graph reset");
                         resetGraph();
@@ -426,19 +489,19 @@ public class StandardView {
                                 System.out.println("Reading data");
                                 if(settingXIsActive) {
                                     data.readFile(file, "x", false, progressList);
+                                    System.out.println("Reading x");
                                     settingXHasBeenActivated = true;
                                 }
                                 if(settingYIsActive){
                                     System.out.println("reading y");
                                     data.readFile(file, "y", false, progressList);
+                                    System.out.println("Reading y");
                                     settingYHasBeenActivated = true;
                                 }
                                 if(settingZIsActive){
                                     data.readFile(file, "z", false, progressList);
+                                    System.out.println("Reading z");
                                     settingZHasBeenActivated = true;
-                                }
-                                else{
-                                    System.out.println("Error!");
                                 }
                                 System.out.println("Read successful");
                                 Platform.runLater(new Runnable() {
@@ -526,7 +589,26 @@ public class StandardView {
 
             File file = fileChoose.showOpenDialog(tabPane.getScene().getWindow());
             if (file != null) {
-                data.writeFile(file, progressList, readFromChip);
+                saveTask = new Task<Void>(){
+                    protected Void call(){
+                        data.writeFile(file, progressList, readFromChip);
+
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                progressLabel.setVisible(false);
+                                progressBar.setVisible(false);
+                            }
+                        });
+                        return null;
+                    }
+                };
+                Thread thread = new Thread(saveTask);
+                thread.start();
+                progressLabel.setVisible(true);
+                progressBar.setVisible(true);
+            }else{
+                System.out.println("Error in saveButton: valid file must be supplied");
             }
 
         });
@@ -546,6 +628,8 @@ public class StandardView {
 
     //**********************************************STATIC GRAPH*****************************************************//
     public void initStaticGraph() {
+
+
         dataList = data.getDataX();
         table.setItems(dataList);
         table.getColumns().setAll(xCol, yCol);
@@ -556,7 +640,7 @@ public class StandardView {
             graph = new Graph2D(lineChart, seriesX, xAxis, yAxis, "readStatic");
             graph.setup("x");
             if(!settingYHasBeenActivated && !settingZHasBeenActivated) {
-                System.out.println("Onyl x will be printed");
+                System.out.println("Only x will be printed");
             }else if(settingYHasBeenActivated && !settingZHasBeenActivated){
                 data.setupY();
                 seriesY = data.getDataSeriesY();
@@ -588,7 +672,7 @@ public class StandardView {
             graph = new Graph2D(lineChart, seriesY, xAxis, yAxis, "readStatic");
             graph.setup("y");
             if(!settingXHasBeenActivated && !settingZHasBeenActivated) {
-                System.out.println("Onyl y will be printed");
+                System.out.println("Only y will be printed");
             }else if(settingXHasBeenActivated && !settingZHasBeenActivated){
                 data.setupX();
                 seriesX = data.getDataSeriesX();
@@ -620,7 +704,7 @@ public class StandardView {
             graph = new Graph2D(lineChart, seriesY, xAxis, yAxis, "readStatic");
             graph.setup("z");
             if(!settingXHasBeenActivated && !settingYHasBeenActivated) {
-                System.out.println("Onyl y will be printed");
+                System.out.println("Only y will be printed");
             }else if(settingXHasBeenActivated && !settingYHasBeenActivated){
                 data.setupX();
                 seriesX = data.getDataSeriesX();
@@ -647,9 +731,13 @@ public class StandardView {
                 settingYIsActive = true;
             }
         }
+        else{
 
+            seriesX = data.getDataSeriesX();
+            graph = new Graph2D(lineChart, seriesX, xAxis, yAxis, "readStatic");
+            graph.setup("x");
 
-
+        }
     }
 
     public void resetGraph() {
@@ -661,8 +749,8 @@ public class StandardView {
 
         if(settingXIsActive){
             lineChart.getData().removeAll(seriesX);
-            settingXIsActive=false;
-            settingX.setText("Show x");
+            //settingXIsActive=false;
+            //settingX.setText("Show x");
         }
         if(settingYIsActive){
             lineChart.getData().removeAll(seriesY);

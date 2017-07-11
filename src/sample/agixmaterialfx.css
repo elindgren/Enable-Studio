@@ -851,25 +851,29 @@
 .menu-bar-custom-menu-slide{
     -fx-graphic: url('file:resources/images/iconsViolet/menuLargeWhiteViolet.png');
     /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1);  Makes it look lika a protruding button. Remove? */
-    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+    -fx-background-insets: 4 4 4 4, 0, 1, 2;
+}
 
+.menu-bar-overlay-menu-button{
+    -fx-graphic: url('file:resources/images/iconsViolet/overlayLargeWhiteViolet.png');
+    -fx-background-insets: 4 4 4 4, 0, 1, 2;
 }
 
 .menu-bar-undo{
     -fx-graphic: url('file:resources/images/iconsViolet/undoLargeWhiteViolet.png');
     /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1);  Makes it look lika a protruding button. Remove? */
-    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+    -fx-background-insets: 4 4 4 4, 0, 1, 2;
 }
 
 .menu-bar-redo{
     -fx-graphic: url('file:resources/images/iconsViolet/redoLargeWhiteViolet.png');
     /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1);  Makes it look lika a protruding button. Remove? */
-    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+    -fx-background-insets: 4 4 4 4, 0, 1, 2;
 }
 
 .menu-bar-math{
     -fx-graphic: url('file:resources/images/iconsViolet/mathLargeWhiteViolet.png');
-    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+    -fx-background-insets: 4 4 4 4, 0, 1, 2;
     -fx-background-color: transparent;
     /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1);  Makes it look lika a protruding button. Remove? */
 }
@@ -877,13 +881,18 @@
 .menu-bar-settings{
     -fx-graphic: url('file:resources/images/iconsViolet/settingsLargeWhiteViolet.png');
     /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1);  Makes it look lika a protruding button. Remove? */
-    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+    -fx-background-insets: 4 4 4 4, 0, 1, 2;
 }
 
 .menu-bar-status-box{
     -fx-background-color: #EC407A;
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.40), 6.0, 0.3, 0, 1);
     -fx-background-insets: -2 -2 -2 -2, 0 , 1, 2;
+}
+
+.menu-bar-status-refresh{
+    -fx-graphic: url('file:resources/images/iconsViolet/refreshLargeWhiteCherry.png');
+    -fx-background-insets: 4 4 4 4, 0, 1, 2;
 }
 
 .menu-bar-label{
@@ -916,24 +925,36 @@
 
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.45), 6.0, 0.3, 0, 1);
 }
-.menu-slide-item{
+.menu-slide-button{
     -fx-text-fill: #F8F8FF;
+    -fx-font-family: "Roboto Medium";
+    -fx-border-width: 0 0 1 0;
+    -fx-insets: 1 1 1 1;
+    -fx-border-color: -swatch-grey;
+    -fx-font-style: normal;
     -fx-font-weight: bold;
-    -fx-font-size: 20;
+    -fx-font-size: 16;
+    -fx-background-radius: 0px;
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.45), 6.0, 0.3, 0, 1);
+    -fx-background-color: TRANSPARENT;
+    -fx-accent: #E91E63;
+    -fx-focus-color: #E91E63;
 }
 
+/*
 .menu-slide-button{
-    -fx-text-fill: BLACK;
+    -fx-text-fill: #00BCD4;
     -fx-font-weight: bold;
     -fx-background-radius: 0px;
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 12.0, 0.3, 0,1);
     -fx-background-color: rgb(250, 250, 250);
-    -fx-min-width: 150px;
-    -fx-min-height: 100px;
+    -fx-min-width: 214px;
+    -fx-min-height: 120px;
     -fx-background-insets: 0px;
     -fx-padding: 0px;
     -fx-accent: derive(-swatch-500, 50.0%), derive(-swatch-500, -20.0%);
 }
+*/
 
 
 
@@ -959,7 +980,6 @@
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look like a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
     -fx-background-radius: 2px;
-    -fx-background-insets: 3 3 3 3, 0, 1, 2;
 }
 
 .chart-settings{
@@ -1050,4 +1070,28 @@
 
 .table-view-2D{
     -fx-font-weight: normal;
+}
+
+/*************************************************************************
+    *                                                                    *
+    * OverlayMenu - ericlin 10/7-17                                      *
+    *                                                                    *
+*************************************************************************/
+
+.overlay-menu{
+    -fx-background-color: /*rgb(236, 64, 122, 0.6);*/rgb(158, 158, 158, 0.3);
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 12.0, 0.3, 0,1);
+}
+
+.overlay-menu-button{
+    -fx-text-fill: #00BCD4;
+    -fx-font-weight: bold;
+    -fx-background-radius: 0px;
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 12.0, 0.3, 0,1);
+    -fx-background-color: rgb(250, 250, 250);
+    -fx-min-width: 214px;
+    -fx-min-height: 120px;
+    -fx-background-insets: 0px;
+    -fx-padding: 0px;
+    -fx-accent: derive(-swatch-500, 50.0%), derive(-swatch-500, -20.0%);
 }

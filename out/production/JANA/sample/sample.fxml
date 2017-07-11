@@ -131,10 +131,21 @@
          <content>
                   <BorderPane>
                      <right>
-                        <StackPane prefHeight="150.0" prefWidth="200.0" styleClass="table-view-container">
+                        <StackPane alignment="BOTTOM_CENTER" prefHeight="150.0" prefWidth="200.0" styleClass="table-view-container" BorderPane.alignment="CENTER">
                            <BorderPane.margin>
                               <Insets bottom="8.0" left="8.0" right="8.0" top="4.0" />
                            </BorderPane.margin>
+                           <children>
+                              <AnchorPane>
+                                  <children>
+                                      <Group fx:id="scatterGroup" layoutX="1.0" layoutY="1.0">
+                                          <children>
+
+                                          </children>
+                                      </Group>
+                                  </children>
+                              </AnchorPane>
+                           </children>
                         </StackPane>
                      </right>
                      <center>
@@ -189,30 +200,47 @@
 </TabPane>
         <AnchorPane fx:id="navList" prefWidth="180.0" styleClass="menu-slide" translateX="-180" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="48.0">
             <children>
-                <VBox fx:id="slideMenuBox" alignment="TOP_CENTER" spacing="20" AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="20">
+                <VBox fx:id="slideMenuBox" alignment="TOP_CENTER" spacing="0" AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
                     <children>
-                        <Button fx:id="change2DDefualt" mnemonicParsing="false" styleClass="menu-slide-button" text="2D view-1" />
-                        <Button fx:id="change3DDefualt" mnemonicParsing="false" styleClass="menu-slide-button" text="3D view" />
-                  <Button fx:id="newScene2D" mnemonicParsing="false" styleClass="menu-slide-new-button" text="New 2D view" />
+                        <Button alignment="TOP_LEFT" minWidth="180.0" styleClass="menu-slide-button" text="Control" />
+                        <Button alignment="TOP_LEFT" minWidth="180.0" styleClass="menu-slide-button" text="Mode" />
+                        <Button alignment="TOP_LEFT" minWidth="180.0" styleClass="menu-slide-button" text="Settings" />
+                        <Button alignment="TOP_LEFT" minWidth="180.0" styleClass="menu-slide-button" text="About" />
                     </children>
                 </VBox>
             </children>
         </AnchorPane>
+      <AnchorPane fx:id="overlayPane" nodeOrientation="LEFT_TO_RIGHT" styleClass="overlay-menu" translateY="-960" visible="true" AnchorPane.bottomAnchor="1" AnchorPane.leftAnchor="1" AnchorPane.rightAnchor="1" AnchorPane.topAnchor="48">
+          <children>
+              <VBox alignment="CENTER" spacing="30" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+                  <HBox fx:id="overlayMenuBox2D" alignment="CENTER" spacing="40">
+                      <Button fx:id="change2DDefualt" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" styleClass="overlay-menu-button" text="2D view-1" />
+                      <Button fx:id="newScene2D" mnemonicParsing="false" styleClass="overlay-menu-button" text="New 2D view" />
+                  </HBox>
+                  <HBox fx:id="overlayMenuBox3D" alignment="CENTER" spacing="40">
+                      <Button fx:id="change3DDefualt" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" styleClass="overlay-menu-button" text="3D view" />
+                      <Button fx:id="newScene3D" mnemonicParsing="false" styleClass="overlay-menu-button" text="New 3D view" />
+                  </HBox>
+              </VBox>
+          </children>
+      </AnchorPane>
         <ToolBar minHeight="40.0" prefHeight="48.0" prefWidth="819.0" styleClass="menu-bar-custom" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <items>
             <HBox alignment="CENTER" spacing="20.0">
                <children>
                       <Button fx:id="menuButton" mnemonicParsing="false" styleClass="menu-bar-custom-menu-slide" />
-                      <Button fx:id="undo" mnemonicParsing="false" styleClass="menu-bar-undo" />
-                      <Button fx:id="redo" mnemonicParsing="false" styleClass="menu-bar-redo" />
+                        <Button fx:id="overlayButton" mnemonicParsing="false" styleClass="menu-bar-overlay-menu-button" />
+                      <Button fx:id="undoButton" mnemonicParsing="false" styleClass="menu-bar-undo" />
+                      <Button fx:id="redoButton" mnemonicParsing="false" styleClass="menu-bar-redo" />
                       <MenuButton fx:id="mathButton" mnemonicParsing="false" styleClass="menu-bar-math" />
-                      <Button fx:id="settings" mnemonicParsing="false" styleClass="menu-bar-settings" />
+                      <Button fx:id="settingsButton" mnemonicParsing="false" styleClass="menu-bar-settings" />
                </children>
             </HBox>
             <HBox fx:id="statusBox" alignment="CENTER" spacing="20.0">
                  <children>
-                  <HBox alignment="CENTER" styleClass="menu-bar-status-box">
+                  <HBox alignment="CENTER" spacing="4.0" styleClass="menu-bar-status-box" HBox.hgrow="ALWAYS">
                      <children>
+                        <Button fx:id="refreshButton" mnemonicParsing="false" styleClass="menu-bar-status-refresh" />
                           <Label alignment="CENTER" styleClass="menu-bar-label" text="Chip status: " />
                            <Circle fx:id="statusCircle" fill="#ff1f1f" radius="6.0" stroke="BLACK" strokeType="INSIDE">
                            <HBox.margin>

@@ -61,9 +61,6 @@ public class Data {
             parseArray(fileData, "x", dataSeriesX, dataX, progressList, 0, fileData.length, offset);
             System.out.println("Non-valid axis supplied. Using default axis (x)");
         }
-
-
-
     }
 
     public void readContinouslyFromFile(File file, String series, boolean readFromChip, ObservableList<Integer> progressList){
@@ -199,13 +196,10 @@ public class Data {
             if(xMax<xNew){
                 xMax=xNew;
                 index=i;
-
             }
             else{
                 //Do nothing
             }
-            i++;
-
         }
         return index;
     }
@@ -215,7 +209,6 @@ public class Data {
         double xNew;
         int index=0;
         for(int i = 1; i<fileData.length; i++){
-            System.out.println("Iteration: " + i);
             xNew = fileData[i][5];
             if(xMin>xNew){
                 xMin=xNew;

@@ -42,15 +42,24 @@ public class Controller implements Initializable {
     private ObservableList<Integer> statusListView=FXCollections.observableArrayList(); //StatusList used by all the views, as to not have eventhandlers conflict
 
     @FXML
-    private VBox slideMenuBox;
+    private AnchorPane mainPane;
+
+    @FXML
+    private AnchorPane overlayPane;
+    @FXML
+    private HBox overlayMenuBox2D;
+    @FXML
+    private HBox overlayMenuBox3D;
 
     @FXML
     private Tab tab2D;
     @FXML
     private Tab tab3D;
 
-    private ArrayList<Tab> tabs;
-    private int tabIndex=0;
+    private ArrayList<Tab> tabs2D;
+    private ArrayList<Tab> tabs3D;
+    private int tabIndex2D=0;
+    private int tabIndex3D=0;
 
     @FXML
     private TabPane tabPane;
@@ -59,13 +68,19 @@ public class Controller implements Initializable {
     @FXML
     private Button menuButton;
     @FXML
+    private Button overlayButton;
+    @FXML
     private MenuButton mathButton;
     @FXML
-    private AnchorPane navList;
+    private Button redoButton;
     @FXML
-    private AnchorPane onScreenList;
+    private Button undoButton;
+    @FXML
+    private Button settingsButton;
 
     //ProgressBar & Status - Static View
+    @FXML
+    private Button refreshButton;
     @FXML
     private Label progressLabel;
     @FXML
@@ -81,12 +96,20 @@ public class Controller implements Initializable {
     @FXML
     private Button newScene2D;
 
+    //***** SLIDE IN PANES ****//
+    @FXML
+    private AnchorPane navList;
+    @FXML
+    private AnchorPane onScreenList;
+
 
     //******************************************************//
 
     //******3D******//
     @FXML
     private Group group3D;
+    @FXML
+    private Group scatterGroup;
 
 
     //********************************************************************//
@@ -123,7 +146,7 @@ public class Controller implements Initializable {
     private void setup3D(){
         //***********************3D-view setup*******************//
 
-        View3D view3d = new View3D(true, tabPane, tab3D, rp , progressBar, progressList, progressLabel, statusList, group3D);
+        View3D view3d = new View3D(true, tabPane, tab3D, rp , progressBar, progressList, progressLabel, statusList, group3D, scatterGroup);
         viewList.add(view3d);
 
 
@@ -161,10 +184,12 @@ public class Controller implements Initializable {
 
     private void setupTabs(){
         //**********************************************TAB SETUP**********************************************//
-        tabs= new ArrayList<>();
-        tabs.add(tabIndex,tab2D);
-        tabs.add(tabIndex+1,tab3D);
-        tabIndex++;
+        tabs2D= new ArrayList<>();
+        tabs3D= new ArrayList<>();
+        tabs2D.add(tabIndex2D,tab2D);
+        tabs3D.add(tabIndex3D,tab3D);
+        tabIndex2D++;
+        tabIndex3D++;
         selectionModel=tabPane.getSelectionModel();
         //tabs.makeDroppable(tabPane);
         //tabs.makeDraggable(tabExperimentalView); <- TODO NullpointerException? Why?
@@ -191,15 +216,67 @@ public class Controller implements Initializable {
 
 
     private void setupButtons(){
-        //*************************** SLIDE-MENU BUTTONS ******************************//
+        //*************************** REFRESH STATUS BUTTON *****************************//
+        refreshButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(refreshButton.getRotate()!=0){
+                    refreshButton.setRotate(0);
+                }
+                RotateTransition rot = new RotateTransition(new Duration(350), refreshButton);
+                rot.setByAngle(360);
+                rp.isConnected();
+                rot.play();
+            }
+        });
+
+        redoButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(redoButton.getRotate()!=0){
+                    redoButton.setRotate(0);
+                }
+                RotateTransition rot = new RotateTransition(new Duration(350), redoButton);
+                rot.setByAngle(360);
+                rp.isConnected();
+                rot.play();
+            }
+        });
+        undoButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(undoButton.getRotate()!=0){
+                    undoButton.setRotate(0);
+                }
+                RotateTransition rot = new RotateTransition(new Duration(350), undoButton);
+                rot.setByAngle(-360);
+                rp.isConnected();
+                rot.play();
+            }
+        });
+
+        settingsButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(settingsButton.getRotate()!=0){
+                    settingsButton.setRotate(0);
+                }
+                RotateTransition rot = new RotateTransition(new Duration(350), settingsButton);
+                rot.setByAngle(360);
+                rp.isConnected();
+                rot.play();
+            }
+        });
+
+        //*************************** OVERLAY MENU BUTTONS ******************************//
         newScene2D.setOnAction(e ->{
-            Tab newTab = new Tab("2D view-" + Integer.toString(tabIndex +1));
-            tabs.add(tabIndex,newTab);
-            tabIndex++;
+            Tab newTab = new Tab("2D view-" + Integer.toString(tabIndex2D +1));
+            tabs2D.add(tabIndex2D,newTab);
+            tabIndex2D++;
             tabPane.getTabs().add(newTab);
             StandardView std = new StandardView(false, newTab,tabPane, rp, progressBar, progressList,progressLabel, statusListView);
             viewList.add(std);
-            addNewShortcutButton(newTab);
+            addNewShortcutButton2D(newTab);
         });
         //*****************************************************************************//
 
@@ -241,48 +318,101 @@ public class Controller implements Initializable {
 
     }
 
-    //******************MENU BAR SLIDE ANIMATION****************//
+    //******************MENU BAR & OVERLAY ANIMATION****************//
     //Code taken from StackOverflow question, https://stackoverflow.com/questions/31601900/javafx-how-to-create-slide-in-animation-effect-for-a-pane-inside-a-transparent
     private void prepareSlideMenuAnimation(){
+        RotateTransition openNavRot = new RotateTransition(new Duration(350), menuButton);
+        openNavRot.setByAngle(90);
+        RotateTransition closeNavRot = new RotateTransition(new Duration(350), menuButton);
+
         TranslateTransition openNav = new TranslateTransition(new Duration(350), navList);
         openNav.setToX(0);
         TranslateTransition closeNav = new TranslateTransition(new Duration(350), navList);
         ArrayList<WritableImage> imageList = new ArrayList<>();
         menuButton.setOnAction(e -> {
             if(navList.getTranslateX()!=0){
-                //Setup snapshot views
-                for(int i=0; i < tabs.size(); i++){
-                    //imageList.add(i, new WritableImage((int)tabPane.getHeight(),(int)tabPane.getWidth()));
-                    imageList.add(i, new WritableImage(900,500));
-                    tabs.get(i).getContent().snapshot(new SnapshotParameters(), imageList.get(i));
-                    Button menuButton = (Button)slideMenuBox.getChildren().get(i);
-                    ImageView iw = new ImageView(imageList.get(i));
-                    iw.setSmooth(true);
-                    iw.setPreserveRatio(true);
-                    iw.setFitHeight(menuButton.getHeight());
-                    iw.setFitWidth(menuButton.getWidth());
-                    //menuButton.setBackground(new Background(new BackgroundImage(iw.getImage(), null, null, null, null)));
-                    menuButton.setGraphic(iw);
-                }
                 openNav.play();
+                openNavRot.play();
             }
             else{
                 closeNav.setToX(-(navList.getWidth()));
                 closeNav.play();
+                closeNavRot.setByAngle(-90);
+                closeNavRot.play();
             }
         });
     }
 
     public void prepareOverlayMenuAnimation(){
+        RotateTransition openOverlayRot = new RotateTransition(new Duration(350), overlayButton);
+        openOverlayRot.setByAngle(90);
+        RotateTransition closeOverlayRot = new RotateTransition(new Duration(350), overlayButton);
 
+        TranslateTransition openOverlay = new TranslateTransition(new Duration(350), overlayPane);
+        openOverlay.setToY(0);
+        TranslateTransition closeOverlay = new TranslateTransition(new Duration(350), overlayPane);
+        ArrayList<WritableImage> imageList = new ArrayList<>();
+        overlayButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(overlayPane.getTranslateY()!=0){
+                    for(int i=0; i < tabs2D.size(); i++){
+                        //Setup snapshot views
+                        imageList.add(i, new WritableImage(900,500));
+                        tabs2D.get(i).getContent().snapshot(new SnapshotParameters(), imageList.get(i));
+                        Button menuButton = (Button)overlayMenuBox2D.getChildren().get(i);
+                        ImageView iw = new ImageView(imageList.get(i));
+                        iw.setSmooth(true);
+                        iw.setPreserveRatio(true);
+                        iw.setFitHeight(menuButton.getHeight());
+                        iw.setFitWidth(menuButton.getWidth());
+                        //menuButton.setBackground(new Background(new BackgroundImage(iw.getImage(), null, null, null, null)));
+                        menuButton.setGraphic(iw);
+                    }
+                    for(int i=0; i < tabs3D.size(); i++){
+                        //imageList.add(i, new WritableImage((int)tabPane.getHeight(),(int)tabPane.getWidth()));
+                        imageList.add(i, new WritableImage(900,500));
+                        tabs3D.get(i).getContent().snapshot(new SnapshotParameters(), imageList.get(i));
+                        Button menuButton = (Button)overlayMenuBox3D.getChildren().get(i);
+                        ImageView iw = new ImageView(imageList.get(i));
+                        iw.setSmooth(true);
+                        iw.setPreserveRatio(true);
+                        iw.setFitHeight(menuButton.getHeight());
+                        iw.setFitWidth(menuButton.getWidth());
+                        //menuButton.setBackground(new Background(new BackgroundImage(iw.getImage(), null, null, null, null)));
+                        menuButton.setGraphic(iw);
+                    }
+                    openOverlay.play();
+                    openOverlayRot.play();
+                    selectionModel.getSelectedItem().setDisable(true);
+
+                }else{
+                    closeOverlay.setToY(-(mainPane.getHeight()+overlayPane.getHeight()+20));
+                    closeOverlay.play();
+                    closeOverlayRot.setByAngle(-90);
+                    closeOverlayRot.play();
+                    selectionModel.getSelectedItem().setDisable(false);
+                }
+            }
+        });
+        overlayPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                closeOverlay.setToY(-(mainPane.getHeight()+overlayPane.getHeight()+20));
+                closeOverlay.play();
+                closeOverlayRot.setByAngle(-90);
+                closeOverlayRot.play();
+                selectionModel.getSelectedItem().setDisable(false);
+            }
+        });
     }
 
 
 
-    private void addNewShortcutButton(Tab tab){
-        Button btn = new Button("2D view-" + Integer.toString(tabIndex));
+    private void addNewShortcutButton2D(Tab tab){
+        Button btn = new Button("2D view-" + Integer.toString(tabIndex2D));
         btn.getStyleClass().add("menu-slide-button");
-        slideMenuBox.getChildren().add(tabIndex-1,btn);
+        overlayMenuBox2D.getChildren().add(tabIndex2D-1,btn);
         btn.setOnAction(e->{
             selectionModel.select(tab);
         });

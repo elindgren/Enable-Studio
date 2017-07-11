@@ -4,6 +4,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -31,8 +32,11 @@ import javafx.scene.shape.Box;
 import javafx.scene.shape.MeshView;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
+import org.fxyz3d.shapes.composites.ScatterPlotMesh;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ericl on 2017-07-05.
@@ -47,6 +51,7 @@ public class View3D {
     private ObservableList<Integer> progressList;
     private ObservableList<Integer> statusList;
     private Group group3D;
+    private Group scatterGroup;
 
     //**** CONTAINERS ****//
     private TabPane tabPane;
@@ -125,7 +130,7 @@ public class View3D {
 
     //************************************************//
 
-    public View3D(boolean isStandard, TabPane tabPane, Tab tab, ReadSerialPort rp, ProgressBar progressBar, ObservableList<Integer> progressList, Label progressLabel, ObservableList<Integer> statusList, Group group3D){
+    public View3D(boolean isStandard, TabPane tabPane, Tab tab, ReadSerialPort rp, ProgressBar progressBar, ObservableList<Integer> progressList, Label progressLabel, ObservableList<Integer> statusList, Group group3D, Group scatterGroup){
         this.statusList=statusList;
         this.progressList=progressList;
         this.tabPane = tabPane;
@@ -135,6 +140,7 @@ public class View3D {
         this.tab=tab;
         data= new Data(rp);
         this.group3D = group3D;
+        this.scatterGroup = scatterGroup;
 
         if(isStandard) {
             onScreenPaneHover = ((AnchorPane)((StackPane)((Parent)tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(1));
@@ -161,11 +167,54 @@ public class View3D {
             handleKeyboard(subscene, world);
             handleMouse(subscene, world);
             this.group3D.getChildren().add(subscene);
-        /*
-        buildCamera();
-        buildAxes();
-        scene3D.setCamera(camera);
-        */
+
+
+
+            //*** SCATTER CHART ***//
+            ScatterPlot sPlot = new ScatterPlot(100, 12, true);
+            ScatterPlotMesh aPlot = new ScatterPlotMesh(100, 6, true);
+            ArrayList<Double> xData = new ArrayList<>();
+            ArrayList<Double> yData = new ArrayList<>();
+            ArrayList<Double> zData = new ArrayList<>();
+
+            final Xform world2 = new Xform();
+            final Xform cameraX2form = new Xform();
+            final Xform cameraX2form2 = new Xform();
+            final Xform cameraX2form3 = new Xform();
+
+            for(int i=0; i<100; i++){
+                xData.add(new Double(i)/2);
+                yData.add(new Double(Math.random()*10));
+                zData.add(new Double(Math.random()*100));
+            }
+
+            sPlot.setXYZData(xData, yData, zData);
+            aPlot.setXYZData(xData, yData, zData);
+            world2.getChildren().add(aPlot);
+            SubScene subSceneScatter = new SubScene(world2,500, 500, true, SceneAntialiasing.BALANCED);
+            subSceneScatter.setFill(Color.LIGHTGREY);
+            PerspectiveCamera camera2 = new PerspectiveCamera();
+            scatterGroup.getChildren().add(cameraX2form);
+            cameraX2form.getChildren().add(cameraX2form2);
+            cameraX2form2.getChildren().add(cameraX2form3);
+            cameraX2form3.getChildren().add(camera2);
+            cameraX2form3.setRotateZ(180.0);
+
+            camera2.setNearClip(CAMERA_NEAR_CLIP);
+            camera2.setFarClip(CAMERA_FAR_CLIP);
+            camera2.setTranslateZ(CAMERA_INITIAL_DISTANCE);
+            cameraX2form.ry.setAngle(CAMERA_INITIAL_Y_ANGLE);
+            cameraX2form.rx.setAngle(CAMERA_INITIAL_X_ANGLE);
+
+            subSceneScatter.setCamera(camera2);
+            subSceneScatter.setPickOnBounds(true);
+            subSceneScatter.widthProperty().bind(((AnchorPane) this.scatterGroup.getParent()).widthProperty());
+            subSceneScatter.heightProperty().bind(((AnchorPane) this.scatterGroup.getParent()).heightProperty());
+
+            handleKeyboard(subSceneScatter, world2);
+            handleMouse(subSceneScatter, world2);
+            this.scatterGroup.getChildren().add(subSceneScatter);
+
         }
 
 
@@ -589,7 +638,7 @@ public class View3D {
     }
 
     private SubScene createScene3D(Group group) {
-        SubScene scene3d = new SubScene(group, 500, 500, true, SceneAntialiasing.BALANCED);
+        SubScene scene3d = new SubScene(group, 10, 10, true, SceneAntialiasing.BALANCED);
         scene3d.widthProperty().bind(((AnchorPane) group3D.getParent()).widthProperty());
         scene3d.heightProperty().bind(((AnchorPane) group3D.getParent()).heightProperty());
 
@@ -750,11 +799,15 @@ public class View3D {
 
 
     private void buildBox(){
-        Box box3D = new Box(8*4, 4*4, 2.4*4);
+        Box box3D = new Box(8*4, 2.4*4, 4*4);
         final PhongMaterial blackMaterial = new PhongMaterial();
         blackMaterial.setSpecularColor(Color.LIGHTGREY);
         blackMaterial.setDiffuseColor(Color.GREY);
-        box3D.setMaterial(blackMaterial);
+
+        final PhongMaterial greenMaterial = new PhongMaterial();
+        greenMaterial.setSpecularColor(Color.DARKGREEN);
+        greenMaterial.setDiffuseColor(Color.FORESTGREEN);
+        box3D.setMaterial(greenMaterial);
         /*
         Sphere sphere3D = new Sphere(40.0);
         final PhongMaterial blueMaterial = new PhongMaterial();
@@ -764,7 +817,7 @@ public class View3D {
         */
 
         Xform group3d = new Xform();
-        //group3d.getChildren().add(box3D);
+        group3d.getChildren().add(box3D);
         Point3D point = new Point3D(10,10,10);
         //group3d.getChildren().add(point);
         //group3d.getChildren().add(sphere3D);

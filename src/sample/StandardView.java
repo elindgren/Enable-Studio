@@ -1,6 +1,7 @@
 package sample;
 
 import com.sun.javaws.progress.Progress;
+import com.sun.org.apache.xpath.internal.SourceTree;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
@@ -73,7 +74,6 @@ public class StandardView {
 
     //**** Flags ****//
     private boolean readFromChip = false;
-    private boolean timelineIsStopped = false;
     private boolean cinematicMode = false;
 
     private boolean settingXHasBeenActivated = false;
@@ -87,6 +87,10 @@ public class StandardView {
     private boolean clickStatusChart = false;
     private int statusPan = 1;
 
+    //**MATH**//
+    private boolean findMaxFlag = false;
+    private boolean findMinFlag = false;
+
     //**** DATA ****//
     private ObservableList<DataPoint2D> dataList = FXCollections.observableArrayList();
     private XYChart.Series<Number, Number> seriesX = new XYChart.Series<Number, Number>();
@@ -99,7 +103,8 @@ public class StandardView {
     //**** TIMELINE ****//
     KeyFrame keyFrameAnimated;
     private Timeline timeline;
-    private boolean timelineIsFinished;
+    private boolean timelineIsFinished = false;
+    private boolean timelineIsStopped = false;
     private int timelineIteration = 0;
 
     public StandardView(boolean isStandard, Tab tab, TabPane tabPane, ReadSerialPort rp, ProgressBar progressBar, ObservableList<Integer> progressList, Label progressLabel, ObservableList<Integer> statusList){
@@ -189,27 +194,40 @@ public class StandardView {
     }
 
     public void findMax(){
-        System.out.println("Trying to find max");
         int index = data.findMaxIndex();
-        System.out.println("Max: " + index);
-        Circle circ = new Circle(5, Color.TRANSPARENT);
-        circ.setStroke(Color.FORESTGREEN);
-        seriesX.getData().get(index+1).setNode(circ);
-        lineChart.getData().setAll(seriesX);
-        table.scrollTo(index+1);
-        table.getSelectionModel().select(index+1);
+        if(!findMaxFlag) {
+            System.out.println("Trying to find max");
+            System.out.println("Max: " + index);
+            Circle circ = new Circle(4, Color.TRANSPARENT);
+            circ.setStroke(Color.FORESTGREEN);
+            seriesX.getData().get(index).setNode(circ);
+            lineChart.getData().setAll(seriesX);
+            table.scrollTo(index);
+            table.getSelectionModel().select(index);
+            findMaxFlag = true;
+        }else{
+            seriesX.getData().get(index ).getNode().setVisible(false);
+            findMaxFlag=false;
+        }
+
     }
 
     public void findMin(){
-        System.out.println("Trying to find Min");
         int index = data.findMinIndex();
-        System.out.println("Min: " + index);
-        Circle circ = new Circle(5, Color.TRANSPARENT);
-        circ.setStroke(Color.FIREBRICK);
-        seriesX.getData().get(index).setNode(circ);
-        lineChart.getData().setAll(seriesX);
-        table.scrollTo(index);
-        table.getSelectionModel().select(index);
+        if(!findMinFlag) {
+            System.out.println("Trying to find Min");
+            System.out.println("Min: " + index);
+            Circle circ = new Circle(4, Color.TRANSPARENT);
+            circ.setStroke(Color.FIREBRICK);
+            seriesX.getData().get(index).setNode(circ);
+            lineChart.getData().setAll(seriesX);
+            table.scrollTo(index);
+            table.getSelectionModel().select(index);
+            findMinFlag=true;
+        }else{
+            seriesX.getData().get(index).getNode().setVisible(false);
+            findMinFlag = false;
+        }
     }
 
     private void prepareSlideButtonAnimation(){
@@ -409,24 +427,35 @@ public class StandardView {
                 this.startAnimatedTimeline("chip");
                 */
                 } else {
-                    if(statusChart) {
-                        resetGraph();
-                    }
                     if(statusChart && !timelineIsFinished && !timelineIsStopped){
+                        System.out.println("Stopping timeline");
+                        readButton.setStyle("play-button");
                         stopAnimatedTimeline();
                         timelineIsStopped = true;
                     }
                     else if (statusChart && timelineIsFinished && timelineIteration + 1 == dataList.size()) {
-                        System.out.println("Graph reset");
+                        System.out.println("Resetting chart");
                         resetGraph();
                         readFileCinematic();
                     } else if (!timelineIsFinished && statusChart || (timelineIteration + 1 != dataList.size() && timelineIsFinished)) {
                         //timeline.play();
+                        System.out.println("Starting timeline");
+                        timelineIsStopped=false;
                         startAnimatedTimeline("file");
                     } else {
                         readFileCinematic();
+                        readButton.setStyle("pause-button");
                     }
                 }
+                statusChart = true;
+
+                settingX.setDisable(false);
+                settingY.setDisable(false);
+                settingZ.setDisable(false);
+                settingClickData.setDisable(false);
+                saveButton.setDisable(false);
+
+                System.out.println("readStatic");
             }
             else{
                 //Logic for determining whether to read from chip or from disk
@@ -469,6 +498,16 @@ public class StandardView {
                     progressBar.setVisible(true);
                     progressLabel.setVisible(true);
                     th.start();
+
+                    statusChart = true;
+
+                    settingX.setDisable(false);
+                    settingY.setDisable(false);
+                    settingZ.setDisable(false);
+                    settingClickData.setDisable(false);
+                    saveButton.setDisable(false);
+
+                    System.out.println("readStatic");
                 } else if (!readFromChip) {
                     if (statusChart) {
                         System.out.println("Graph reset");
@@ -522,6 +561,16 @@ public class StandardView {
                         progressBar.setVisible(true);
                         progressLabel.setVisible(true);
                         th.start();
+
+                        statusChart = true;
+
+                        settingX.setDisable(false);
+                        settingY.setDisable(false);
+                        settingZ.setDisable(false);
+                        settingClickData.setDisable(false);
+                        saveButton.setDisable(false);
+
+                        System.out.println("readStatic");
                     }
                     /*
                         try{
@@ -564,15 +613,6 @@ public class StandardView {
                 }
             }
 
-            statusChart = true;
-
-            settingX.setDisable(false);
-            settingY.setDisable(false);
-            settingZ.setDisable(false);
-            settingClickData.setDisable(false);
-            saveButton.setDisable(false);
-
-            System.out.println("readStatic");
         });
 
 
@@ -751,6 +791,9 @@ public class StandardView {
             lineChart.getData().removeAll(seriesX);
             //settingXIsActive=false;
             //settingX.setText("Show x");
+        }else{
+            settingXIsActive=true; //Due to it being default
+            settingX.setText("Show x ok");
         }
         if(settingYIsActive){
             lineChart.getData().removeAll(seriesY);
@@ -848,6 +891,7 @@ public class StandardView {
                 @Override
                 public void handle(ActionEvent event) {
                     timelineIsFinished = true;
+                    readButton.setStyle("play-button");
                     System.out.println("Done!");
                 }
 

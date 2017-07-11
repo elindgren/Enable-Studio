@@ -28,7 +28,7 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) throws Exception {
         //*******************************************SETUP OF MAINWINDOW************************************//
         mainWindow = primaryStage;
-        mainWindow.getIcons().add(new Image("file:resources/images/1497470325_Map_-_Location_Solid_Style_30.png"));
+        mainWindow.getIcons().add(new Image("file:resources/images/enable_no_text.png"));
         //Load the fxml-file
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
 

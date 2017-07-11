@@ -92,7 +92,9 @@ public class StandardView {
     private boolean findMinFlag = false;
 
     //**** DATA ****//
-    private ObservableList<DataPoint2D> dataList = FXCollections.observableArrayList();
+    private ObservableList<DataPoint2D> dataListX = FXCollections.observableArrayList();
+    private ObservableList<DataPoint2D> dataListY = FXCollections.observableArrayList();
+    private ObservableList<DataPoint2D> dataListZ = FXCollections.observableArrayList();
     private XYChart.Series<Number, Number> seriesX = new XYChart.Series<Number, Number>();
     private XYChart.Series<Number, Number> seriesY = new XYChart.Series<>();
     private XYChart.Series<Number, Number> seriesZ = new XYChart.Series<>();
@@ -259,8 +261,10 @@ public class StandardView {
         cinematicModeToggle.setOnAction(e -> {
             if (cinematicMode) {
                 cinematicMode = false;
+                readButton.getStyleClass().set(1,"read-button");
             } else {
                 cinematicMode = true;
+                readButton.getStyleClass().set(1,"play-button");
             }
         });
         //*****************************************//
@@ -429,22 +433,20 @@ public class StandardView {
                 } else {
                     if(statusChart && !timelineIsFinished && !timelineIsStopped){
                         System.out.println("Stopping timeline");
-                        readButton.setStyle("play-button");
                         stopAnimatedTimeline();
                         timelineIsStopped = true;
                     }
-                    else if (statusChart && timelineIsFinished && timelineIteration + 1 == dataList.size()) {
+                    else if (statusChart && timelineIsFinished && timelineIteration + 1 == dataListX.size()) {
                         System.out.println("Resetting chart");
                         resetGraph();
                         readFileCinematic();
-                    } else if (!timelineIsFinished && statusChart || (timelineIteration + 1 != dataList.size() && timelineIsFinished)) {
+                    } else if (!timelineIsFinished && statusChart || (timelineIteration + 1 != dataListX.size() && timelineIsFinished)) {
                         //timeline.play();
                         System.out.println("Starting timeline");
                         timelineIsStopped=false;
                         startAnimatedTimeline("file");
                     } else {
                         readFileCinematic();
-                        readButton.setStyle("pause-button");
                     }
                 }
                 statusChart = true;
@@ -670,8 +672,8 @@ public class StandardView {
     public void initStaticGraph() {
 
 
-        dataList = data.getDataX();
-        table.setItems(dataList);
+        dataListX = data.getDataX();
+        table.setItems(dataListX);
         table.getColumns().setAll(xCol, yCol);
         //Setup of series
 
@@ -781,6 +783,9 @@ public class StandardView {
     }
 
     public void resetGraph() {
+        if(statusChart && !timelineIsFinished && !timelineIsStopped) {
+            timeline.stop();
+        }
         data.resetData();
         lineChart.getData().removeAll(seriesX);
         statusChart = false;
@@ -806,6 +811,8 @@ public class StandardView {
             settingZ.setText("Show z");
         }
 
+
+
         settingXHasBeenActivated=false;
         settingYHasBeenActivated=false;
         settingZHasBeenActivated=false;
@@ -818,6 +825,7 @@ public class StandardView {
         settingClickData.setDisable(true);
 
         timelineIteration=0;
+        timelineSlider.setVisible(false);
 
         saveButton.setDisable(true);
     }
@@ -841,12 +849,111 @@ public class StandardView {
 
     public void initAnimatedGraph() {
         //Fetching data for table
-        dataList = data.getDataX();
-        table.setItems(dataList);
+        dataListX = data.getDataX();
+
+        table.setItems(dataListX);
         table.getColumns().setAll(xCol, yCol);
 
-        graph = new Graph2D(lineChart, seriesX, xAxis, yAxis, "readAnimated");
-        graph.setup("x");
+
+        if(settingXHasBeenActivated) {
+            graph = new Graph2D(lineChart, seriesX, xAxis, yAxis, "readStatic");
+            graph.setup("x");
+            if(!settingYHasBeenActivated && !settingZHasBeenActivated) {
+                System.out.println("Only x will be printed");
+            }else if(settingYHasBeenActivated && !settingZHasBeenActivated){
+                data.setupY();
+                dataListY = data.getDataY();
+                seriesY.setName("y");
+                lineChart.getData().add(seriesY);
+                settingYIsActive = true;
+            }else if(!settingYHasBeenActivated && settingZHasBeenActivated){
+                data.setupZ();
+                dataListZ = data.getDataZ();
+                seriesZ.setName("z");
+                lineChart.getData().add(seriesZ);
+                settingZIsActive = true;
+            }else if(settingYHasBeenActivated && settingZHasBeenActivated){
+                data.setupY();
+                dataListY = data.getDataY();
+                seriesY.setName("y");
+                lineChart.getData().add(seriesY);
+                settingYIsActive = true;
+
+                data.setupZ();
+                dataListZ = data.getDataZ();
+                seriesZ.setName("z");
+                lineChart.getData().add(seriesZ);
+                settingZIsActive = true;
+            }
+        }
+        else if(settingYHasBeenActivated) {
+            graph = new Graph2D(lineChart, seriesY, xAxis, yAxis, "readStatic");
+            graph.setup("y");
+            if(!settingXHasBeenActivated && !settingZHasBeenActivated) {
+                System.out.println("Only y will be printed");
+            }else if(settingXHasBeenActivated && !settingZHasBeenActivated){
+                data.setupX();
+                dataListX = data.getDataX();
+                seriesX.setName("x");
+                lineChart.getData().add(seriesX);
+                settingXIsActive = true;
+            }else if(!settingXHasBeenActivated && settingZHasBeenActivated){
+                data.setupZ();
+                dataListZ = data.getDataZ();
+                seriesZ.setName("z");
+                lineChart.getData().add(seriesZ);
+                settingZIsActive = true;
+            }else if(settingXHasBeenActivated && settingZHasBeenActivated){
+                data.setupX();
+                dataListX = data.getDataX();
+                seriesX.setName("x");
+                lineChart.getData().add(seriesX);
+                settingXIsActive = true;
+
+                data.setupZ();
+                dataListZ = data.getDataZ();
+                seriesZ.setName("z");
+                lineChart.getData().add(seriesZ);
+                settingZIsActive = true;
+            }
+        }
+        else if(settingYHasBeenActivated) {
+            graph = new Graph2D(lineChart, seriesY, xAxis, yAxis, "readStatic");
+            graph.setup("z");
+            if(!settingXHasBeenActivated && !settingYHasBeenActivated) {
+                System.out.println("Only y will be printed");
+            }else if(settingXHasBeenActivated && !settingYHasBeenActivated){
+                data.setupX();
+                dataListX = data.getDataX();
+                seriesX.setName("x");
+                lineChart.getData().add(seriesX);
+                settingXIsActive = true;
+            }else if(!settingXHasBeenActivated && settingYHasBeenActivated){
+                data.setupY();
+                dataListZ = data.getDataZ();
+                seriesY.setName("y");
+                lineChart.getData().add(seriesY);
+                settingYIsActive = true;
+            }else if(settingXHasBeenActivated && settingYHasBeenActivated){
+                data.setupX();
+                dataListX = data.getDataX();
+                seriesX.setName("x");
+                lineChart.getData().add(seriesX);
+                settingXIsActive = true;
+
+                data.setupY();
+                dataListZ = data.getDataZ();
+                seriesY.setName("y");
+                lineChart.getData().add(seriesY);
+                settingYIsActive = true;
+            }
+        }
+        else{
+            seriesX = data.getDataSeriesX();
+            graph = new Graph2D(lineChart, seriesX, xAxis, yAxis, "readAnimated");
+            graph.setup("x");
+
+        }
     }
     //***************************************************************************************************************//
 
@@ -856,9 +963,21 @@ public class StandardView {
         //****************** EVENT HANDLER FOR KEYFRAME ***************************//
         EventHandler onFinishedFile = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
-                XYChart.Data<Number, Number> datapoint = new XYChart.Data<>(dataList.get(timelineIteration).getX(), dataList.get(timelineIteration).getY());
-                seriesX.getData().add(datapoint);
-                double progress = Math.round(((double) timelineIteration / dataList.size()) * 100);
+                if(settingXIsActive) {
+                    XYChart.Data<Number, Number> datapoint = new XYChart.Data<>(dataListX.get(timelineIteration).getX(), dataListX.get(timelineIteration).getY());
+                    seriesX.getData().add(datapoint);
+                }
+
+                if(settingYIsActive){
+                    XYChart.Data<Number, Number> datapoint = new XYChart.Data<>(dataListY.get(timelineIteration).getX(), dataListY.get(timelineIteration).getY());
+                    seriesY.getData().add(datapoint);
+                }
+                if(settingZIsActive){
+                    XYChart.Data<Number, Number> datapoint = new XYChart.Data<>(dataListZ.get(timelineIteration).getX(), dataListZ.get(timelineIteration).getY());
+                    seriesZ.getData().add(datapoint);
+                }
+
+                double progress = Math.round(((double) timelineIteration / dataListX.size()) * 100);
                 System.out.println("Progress: " + progress);
                 System.out.println("timeline Iteration: " + timelineIteration);
                 timelineSlider.setValue(progress);
@@ -884,14 +1003,14 @@ public class StandardView {
         timeline = new Timeline();
         if (str == "file") {
             System.out.println("entered file");
-            timeline.setCycleCount(dataList.size() - timelineIteration); //Cycles of the timeline finishing according to the size of the series
+            timeline.setCycleCount(dataListX.size() - timelineIteration); //Cycles of the timeline finishing according to the size of the series
             //timeline.setAutoReverse(true);
             timelineIsFinished = false;
             timeline.setOnFinished(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
                     timelineIsFinished = true;
-                    readButton.setStyle("play-button");
+                    readButton.setStyle(".play-button");
                     System.out.println("Done!");
                 }
 
@@ -910,12 +1029,14 @@ public class StandardView {
     }
 
     public void startAnimatedTimeline(String str) {
+        readButton.getStyleClass().set(1,"pause-button");
         timelineAnimated(str);
         timelineSlider.setVisible(true);
         timeline.play();
     }
 
     public void stopAnimatedTimeline() {
+        readButton.getStyleClass().set(1,"play-button");
         timeline.stop();
     }
 
@@ -933,7 +1054,22 @@ public class StandardView {
                 @Override
                 protected Void call() {
                     System.out.println("Reading data from file...");
-                    data.readContinouslyFromFile(file, "x", false, progressList);
+                    if(settingXIsActive) {
+                        data.readContinouslyFromFile(file, "x", false, progressList);
+                        System.out.println("Reading x");
+                        settingXHasBeenActivated = true;
+                    }
+                    if(settingYIsActive){
+                        System.out.println("reading y");
+                        data.readContinouslyFromFile(file, "y", false, progressList);
+                        System.out.println("Reading y");
+                        settingYHasBeenActivated = true;
+                    }
+                    if(settingZIsActive){
+                        data.readContinouslyFromFile(file, "z", false, progressList);
+                        System.out.println("Reading z");
+                        settingZHasBeenActivated = true;
+                    }
                     System.out.println("Read successful");
                     Platform.runLater(new Runnable() {
                         @Override
@@ -998,7 +1134,7 @@ public class StandardView {
                     if (newTimelineIteration > timelineIteration) {
                         lineChart.getData().removeAll(seriesX);
                         for (int i = timelineIteration; i < timelineIteration; i++) {
-                            XYChart.Data<Number, Number> datapoint = new XYChart.Data<Number, Number>(dataList.get(i).getX(), dataList.get(i).getY());
+                            XYChart.Data<Number, Number> datapoint = new XYChart.Data<Number, Number>(dataListX.get(i).getX(), dataListX.get(i).getY());
                             seriesX.getData().add(datapoint);
                         }
                         lineChart.getData().add(seriesX);

@@ -937,8 +937,9 @@
     -fx-background-radius: 0px;
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.45), 6.0, 0.3, 0, 1);
     -fx-background-color: TRANSPARENT;
-    -fx-accent: #E91E63;
-    -fx-focus-color: #E91E63;
+}
+.menu-slide-button:focused{
+    -fx-background-color: #EC407A;
 }
 
 /*
@@ -990,13 +991,19 @@
     -fx-background-radius: 2px;
 }
 
+.read-button{
+    -fx-graphic: url('file:resources/images/iconsBlack/readSmallBlack.png');
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+    -fx-background-radius: 2px;
+}
+
 .play-button {
     /*-fx-background-color: -swatch-200;*/
     -fx-graphic: url('file:resources/images/iconsBlack/playSmallBlack.png');
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look like a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
     -fx-background-radius: 2px;
-    -fx-background-insets: 3 3 3 3, 0, 1, 2;
 }
 
 .pause-button {
@@ -1005,7 +1012,6 @@
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
     -fx-background-radius: 2px;
-    -fx-background-insets: 3 3 3 3, 0, 1, 2;
 }
 
 .reset-button {
@@ -1014,7 +1020,6 @@
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
     -fx-background-radius: 2px;
-    -fx-background-insets: 3 3 3 3, 0, 1, 2;
 }
 
 .chip-button {
@@ -1023,7 +1028,6 @@
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
     -fx-background-radius: 2px;
-    -fx-background-insets: 3 3 3 3, 0, 1, 2;
 }
 
 .chart-click {
@@ -1032,7 +1036,6 @@
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
     -fx-background-radius: 2px;
-    -fx-background-insets: 3 3 3 3, 0, 1, 2;
 }
 
 .cinematic-button {
@@ -1041,7 +1044,6 @@
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
     -fx-background-radius: 2px;
-    -fx-background-insets: 3 3 3 3, 0, 1, 2;
 }
 
 /*************************************************************************

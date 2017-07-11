@@ -273,17 +273,19 @@ public class ReadSerialPort {
                 //System.out.println("ch = " + ch + " byte: " + (byte)ch);
                 i++;
             }
+            System.out.println("Found char");
             ch = (char)RandomFile.readByte();
             while (ch != ','){
                 line += Character.toString(ch);
                 ch = (char)RandomFile.readByte();
             }
+            System.out.println("Closing RandomFile");
             RandomFile.close();
         } catch (IOException e) {
             System.out.println("Something went wrong :(");
             e.printStackTrace();
         }
-
+        System.out.println("Returning integer rows");
         return Integer.parseInt(line) + 1;
     }
 

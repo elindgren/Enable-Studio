@@ -99,7 +99,7 @@
                                                                  <String fx:value="chip-button" />
                                                              </styleClass>
                                                          </ToggleButton>
-                                                         <Button fx:id="readStatic" mnemonicParsing="false" styleClass="play-button">
+                                                         <Button fx:id="readStatic" mnemonicParsing="false" styleClass="read-button">
                                                          </Button>
                                                          <Button fx:id="resetStatic" mnemonicParsing="false" styleClass="reset-button" />
                                                          <Button fx:id="saveButton" mnemonicParsing="false">
@@ -176,7 +176,7 @@
                                                             <String fx:value="chip-button" />
                                                             </styleClass>
                                                       </ToggleButton>
-                                                      <Button fx:id="readStatic1" mnemonicParsing="false" styleClass="play-button" />
+                                                      <Button fx:id="readStatic1" mnemonicParsing="false" styleClass="read-button" />
                                                       <Button fx:id="resetStatic1" mnemonicParsing="false" styleClass="reset-button" />
                                                       <Button fx:id="saveButton1" mnemonicParsing="false" styleClass="save-button" />
                                                    </children>

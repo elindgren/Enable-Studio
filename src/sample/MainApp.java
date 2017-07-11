@@ -50,7 +50,7 @@ public class MainApp extends Application {
             closeAlert.setContentText("Are your sure you want to exit?");
 
             Optional<ButtonType> result = closeAlert.showAndWait();
-            if(result.get() ==ButtonType.OK){
+            if(result.get() == ButtonType.OK){
                 e.consume();
                 //TODO - End threads
                 System.exit(0);

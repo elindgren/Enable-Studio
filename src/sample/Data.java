@@ -78,7 +78,7 @@ public class Data {
 
         double offset = fileData[0][1];
 
-        parseArray(fileData, "x", dataSeriesX, dataX, progressList, 0, fileData.length, offset);
+        parseArray(fileData, series, dataSeriesX, dataX, progressList, 0, fileData.length, offset);
     }
     //****************************************************************************************************//
 
@@ -172,15 +172,18 @@ public class Data {
 
     }
     public void setupX(){
+        System.out.println("Setup x");
         double offset = fileData[0][1]; //Used to set proper offset, as to make the graph begin at t=0
         parseArray(fileData, "x", dataSeriesX, dataX, null, 0, fileData.length, offset);
     }
     public void setupY(){
+        System.out.println("Setup y");
         double offset = fileData[0][1]; //Used to set proper offset, as to make the graph begin at t=0
         parseArray(fileData, "y", dataSeriesY, dataY, null, 0, fileData.length, offset);
     }
 
     public void setupZ(){
+        System.out.println("Setup z");
         double offset = fileData[0][1]; //Used to set proper offset, as to make the graph begin at t=0
         parseArray(fileData, "z", dataSeriesZ, dataZ, null, 0, fileData.length, offset);
     }
@@ -262,6 +265,13 @@ public class Data {
         //Reset Legend TODO
         dataSeriesX.getData().removeAll(dataSeriesX.getData());
         dataX.remove(0,dataX.size()); //TODO Make this work with larger files, >20000 rows
+
+        dataSeriesY.getData().removeAll(dataSeriesY.getData());
+        dataY.remove(0,dataY.size()); //TODO Make this work with larger files, >20000 rows
+
+        dataSeriesZ.getData().removeAll(dataSeriesZ.getData());
+        dataZ.remove(0,dataZ.size()); //TODO Make this work with larger files, >20000 rows
+
         fileData = null; //Creating a new, empty matrix. Cannot make it null?
     }
     //****************************************************************************************************//
@@ -287,7 +297,7 @@ public class Data {
                 i++;
                 int row=i;
                 progressList.set(0,row);
-                //System.out.println("Reading file lines. Line: " +i);
+                System.out.println("Reading file lines. Line: " +i);
             }
         }catch(IOException e){
             System.out.println("FileNotFound");

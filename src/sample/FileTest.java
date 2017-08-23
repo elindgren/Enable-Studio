@@ -1,6 +1,7 @@
 /**
  * Created by simon on 2017-06-15.
  */
+package sample;
 import java.util.*;
 import java.io.*;
 

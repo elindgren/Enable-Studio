@@ -1,5 +1,9 @@
 package sample;
 
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.controls.JFXProgressBar;
+import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
 import javafx.animation.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -65,6 +69,7 @@ public class Controller implements Initializable {
     private TabPane tabPane;
     SingleSelectionModel<Tab> selectionModel;
     //*********************MENU BAR************************//
+
     @FXML
     private Button menuButton;
     @FXML
@@ -84,7 +89,7 @@ public class Controller implements Initializable {
     @FXML
     private Label progressLabel;
     @FXML
-    private ProgressBar progressBar;
+    private JFXProgressBar progressBar;
     @FXML
     private Circle statusCircle;
 
@@ -101,6 +106,14 @@ public class Controller implements Initializable {
     private AnchorPane navList;
     @FXML
     private AnchorPane onScreenList;
+
+    //Navigation drawer
+    @FXML
+    private VBox navBox;
+    @FXML
+    private JFXDrawer navDrawer;
+    @FXML
+    private JFXHamburger menuHamburger;
 
 
     //******************************************************//
@@ -137,6 +150,7 @@ public class Controller implements Initializable {
         setupTabs();
         prepareSlideMenuAnimation(); //Setup of slide-in menu
         prepareOverlayMenuAnimation();
+        prepareSlideMenuAnimationHamburger();
 
         //*******************************************************//
     }
@@ -145,11 +159,8 @@ public class Controller implements Initializable {
     //*********************************************SETUP METHODS******************************************************//
     private void setup3D(){
         //***********************3D-view setup*******************//
-
         View3D view3d = new View3D(true, tabPane, tab3D, rp , progressBar, progressList, progressLabel, statusList, group3D, scatterGroup);
         viewList.add(view3d);
-
-
     }
 
 
@@ -173,7 +184,7 @@ public class Controller implements Initializable {
 
         if (rp.isConnected()) {
             statusCircle.setFill(Color.FORESTGREEN);
-            rp.setupPorts();
+            //rp.setupPorts();
             System.out.println("Chip available. Defualt to reading from chip.");
         } else {
             statusCircle.setFill(Color.FIREBRICK);
@@ -238,7 +249,6 @@ public class Controller implements Initializable {
                 }
                 RotateTransition rot = new RotateTransition(new Duration(350), redoButton);
                 rot.setByAngle(360);
-                rp.isConnected();
                 rot.play();
             }
         });
@@ -250,7 +260,6 @@ public class Controller implements Initializable {
                 }
                 RotateTransition rot = new RotateTransition(new Duration(350), undoButton);
                 rot.setByAngle(-360);
-                rp.isConnected();
                 rot.play();
             }
         });
@@ -263,7 +272,6 @@ public class Controller implements Initializable {
                 }
                 RotateTransition rot = new RotateTransition(new Duration(350), settingsButton);
                 rot.setByAngle(360);
-                rp.isConnected();
                 rot.play();
             }
         });
@@ -319,6 +327,24 @@ public class Controller implements Initializable {
     }
 
     //******************MENU BAR & OVERLAY ANIMATION****************//
+    private void prepareSlideMenuAnimationHamburger(){
+        HamburgerSlideCloseTransition burgerTask = new HamburgerSlideCloseTransition(menuHamburger);
+        burgerTask.setRate(-1);
+
+        //navDrawer.setSidePane(navBox);
+
+        menuHamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+            System.out.println("Hamburger presssed");
+            if(navDrawer.isShown()){
+                navDrawer.close();
+            }
+            else{
+                navDrawer.open();
+            }
+            burgerTask.setRate(burgerTask.getRate()*-1);
+            burgerTask.play();
+        });
+    }
     //Code taken from StackOverflow question, https://stackoverflow.com/questions/31601900/javafx-how-to-create-slide-in-animation-effect-for-a-pane-inside-a-transparent
     private void prepareSlideMenuAnimation(){
         RotateTransition openNavRot = new RotateTransition(new Duration(350), menuButton);

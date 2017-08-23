@@ -510,7 +510,8 @@ public class View3D {
                 @Override
                 protected Void call() {
                     System.out.println("Reading data from file...");
-                    data.readContinouslyFromFile(file, "x", false, progressList);
+                    data.setData(1,10);
+                    data.readContinouslyFromFile(file, false, progressList);
                     System.out.println("Read successful");
                     Platform.runLater(new Runnable() {
                         @Override

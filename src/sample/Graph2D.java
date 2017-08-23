@@ -13,6 +13,8 @@ import javafx.scene.paint.Color;
 import org.gillius.jfxutils.chart.ChartPanManager;
 import org.gillius.jfxutils.chart.JFXChartUtil;
 
+import java.util.ArrayList;
+
 import static java.awt.event.MouseEvent.MOUSE_ENTERED;
 
 /**
@@ -91,6 +93,7 @@ public class Graph2D {
             }
         });
         panManager.start();
+        //lineChart.setCreateSymbols(true);
         lineChart.getData().setAll(series);
 
 
@@ -101,27 +104,50 @@ public class Graph2D {
 
     public void setDataClickable(boolean status){
         if(!status) {
-            ObservableList<XYChart.Data<Number, Number>> list = series.getData();
-            for (int i = 0; i < list.size(); i++) {
-                list.get(i).setNode(new ClickedThresholdNode(list.get(i).getXValue(),list.get(i).getYValue()));
+            ArrayList lists = new ArrayList<ObservableList<XYChart.Data<Number, Number>>>();
+            //ObservableList<XYChart.Data<Number, Number>> list = lineChart.getData().get(0).getData();//series.getData();
+            lists.add(0,lineChart.getData().get(0).getData());
+            for(int i=1; i<lineChart.getData().size(); i++){
+                lists.add(i,lineChart.getData().get(i).getData());
             }
-            lineChart.getData().setAll(series);
+            for(int i=0; i<lists.size(); i++) { //Acessing all of the current series of the lineChart and setting them up individually
+                for (int j = 0; j < ((ObservableList)lists.get(i)).size(); j++) {
+                    //list.get(i).setNode(new ClickedThresholdNode(list.get(j).getXValue(),list.get(j).getYValue()));
+                    ((ObservableList<XYChart.Data<Number, Number>>)lists.get(i)).get(j).setNode(new ClickedThresholdNode(i,((ObservableList<XYChart.Data<Number, Number>>)lists.get(i)).get(j).getXValue(),((ObservableList<XYChart.Data<Number, Number>>)lists.get(i)).get(j).getYValue()));
+                }
+            }
+            for(int i=0; i<lists.size(); i++) {
+                lineChart.getData().set(i,lineChart.getData().get(i));
+            }
         }
         else{
-            ObservableList<XYChart.Data<Number, Number>> list = series.getData();
-
-            for (int i = 0; i < list.size(); i++) {
-                list.get(i).getNode().setVisible(false); //TODO Have to replace with blank nodes, not null
+            ArrayList lists = new ArrayList<ObservableList<XYChart.Data<Number, Number>>>();
+            //ObservableList<XYChart.Data<Number, Number>> list = lineChart.getData().get(0).getData();//series.getData();
+            lists.add(0,lineChart.getData().get(0).getData());
+            for(int i=1; i<lineChart.getData().size(); i++){
+                lists.add(i,lineChart.getData().get(i).getData());
             }
-            lineChart.getData().setAll(series);
+            for(int i=0; i<lists.size(); i++) { //Acessing all of the current series of the lineChart and setting them up individually
+                for (int j = 0; j < ((ObservableList)lists.get(i)).size(); j++) {
+                    //list.get(i).setNode(new ClickedThresholdNode(list.get(j).getXValue(),list.get(j).getYValue()));
+                    ((ObservableList<XYChart.Data<Number, Number>>)lists.get(i)).get(j).getNode().setVisible(false); //TODO Have to replace with blank nodes, not null
+                }
+            }
+
+            //list.get(i).getNode().setVisible(false); //TODO Have to replace with blank nodes, not null
+
+            //lineChart.getData().setAll(lineChart.getData().get(0)); //lineChart.getData().setAll(series);
+            for(int i=0; i<lists.size(); i++) {
+                lineChart.getData().set(i,lineChart.getData().get(i));
+            }
         }
     }
 
     class ClickedThresholdNode extends StackPane {
-        ClickedThresholdNode(Number xValue, Number yValue) {
+        ClickedThresholdNode(int series, Number xValue, Number yValue) {
             setPrefSize(5,5);
 
-            final Label label = createDataThresholdLabel(xValue, yValue);
+            final Label label = createDataThresholdLabel(series, xValue, yValue);
 
             setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
@@ -140,9 +166,18 @@ public class Graph2D {
             });
         }
 
-        private Label createDataThresholdLabel(Number xValue, Number yValue) {
+        private Label createDataThresholdLabel(int series, Number xValue, Number yValue) {
             final Label label = new Label("x=" + xValue + ", " + "y=" + yValue);
-            label.getStyleClass().addAll("default-color0","chart-line-symbol","chart-series-line");
+            if(series==0){
+                label.getStyleClass().addAll("default-color0","chart-line-symbol","chart-series-line");
+            }
+            else if(series==1){
+                label.getStyleClass().addAll("default-color1","chart-line-symbol","chart-series-line");
+            }
+            else if(series==2){
+                label.getStyleClass().addAll("default-color2","chart-line-symbol","chart-series-line");
+            }
+            //label.getStyleClass().addAll("default-color0","chart-line-symbol","chart-series-line");
             label.setStyle("-fx-font-size: 12; -fx-font-weight: bold");
 
             if(yValue.doubleValue()==0){

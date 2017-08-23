@@ -938,8 +938,8 @@
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.45), 6.0, 0.3, 0, 1);
     -fx-background-color: TRANSPARENT;
 }
-.menu-slide-button:focused{
-    -fx-background-color: #EC407A;
+.menu-slide-button:hover{
+    -fx-background-color: #6A5ACD;
 }
 
 /*
@@ -1097,3 +1097,44 @@
     -fx-padding: 0px;
     -fx-accent: derive(-swatch-500, 50.0%), derive(-swatch-500, -20.0%);
 }
+
+/*******************************************************************************
+ *                                                                             *
+ * JFX-Slider                                                                  *
+ *                                                                             *
+ ******************************************************************************/
+.jfx-slider {
+	-fx-padding: 10 0 10 0;
+}
+
+.jfx-slider:vertical {
+	-fx-padding: 0 10 0 10;
+}
+
+.jfx-slider>.track {
+	-fx-background-color: -swatch-grey;
+	-fx-background-insets: 1.5;
+}
+
+.jfx-slider>.thumb {
+	-fx-background-color: -swatch-500;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * JFX-Hamburger                                                               *
+ *                                                                             *
+ ******************************************************************************/
+
+.jfx-hamburger-icon{
+    -fx-spacing:5;
+    -fx-cursor: hand;
+}
+.jfx-hamburger-icon StackPane{
+    -fx-pref-width: 30px;
+    -fx-pref-height: 4px;
+    -fx-background-color: #F8F8FF;
+    -fx-background-radius: 0px;
+}
+
+

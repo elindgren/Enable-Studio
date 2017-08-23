@@ -13,9 +13,9 @@
     //-fx-effects: null;
 }
 /*COLOR for the chart lines*/
-.default-color0.chart-series-line {-fx-stroke: #e2211d} //line0, red
-.default-color1.chart-series-line {-fx-stroke: #6666ff} //line1, lightblue
-.default-color2.chart-series-line {-fx-stroke: #72c66b} //line2, lightgreen
+.default-color0.chart-series-line {-fx-stroke: #e2211d} /*line0, red*/
+.default-color1.chart-series-line {-fx-stroke: #6666ff} /*line1, lightblue*/
+.default-color2.chart-series-line {-fx-stroke: #72c66b} /*line2, lightgreen*/
 /*COLOR for the corresponding legend items*/
 .default-color0.chart-line-symbol { -fx-background-color: #e2211d, white; }
 .default-color1.chart-line-symbol { -fx-background-color: #6666ff, white; }

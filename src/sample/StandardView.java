@@ -1,5 +1,6 @@
 package sample;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXSlider;
 import com.sun.javaws.progress.Progress;
@@ -64,7 +65,7 @@ public class StandardView implements View{
 
     //**** Buttons ****//
     private MenuButton chartSetting;
-    private Button readButton;
+    private JFXButton readButton;
     private Button resetButton;
     private Button saveButton;
     private ToggleButton chipModeToggle;
@@ -140,7 +141,7 @@ public class StandardView implements View{
             onScreenPaneSlide = (AnchorPane)((AnchorPane)((StackPane)((Parent)tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(1)).getChildren().get(0);
             cinematicModeToggle = (ToggleButton) ((HBox)((VBox)((Parent)onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(0)).getChildren().get(0);
             chipModeToggle = (ToggleButton) ((HBox)((VBox)((Parent)onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(0)).getChildren().get(1);
-            readButton = (Button)((HBox)((VBox)((Parent)onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(0)).getChildren().get(2);
+            readButton = (JFXButton)((HBox)((VBox)((Parent)onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(0)).getChildren().get(2);
             resetButton = (Button)((HBox)((VBox)((Parent)onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(0)).getChildren().get(3);
             saveButton = (Button)((HBox)((VBox)((Parent)onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(0)).getChildren().get(4);
             timelineSlider = (JFXSlider) ((VBox)((Parent)onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(1);
@@ -170,7 +171,7 @@ public class StandardView implements View{
             chipModeToggle = new ToggleButton("Chip");
             chipModeToggle.applyCss();
 
-            readButton = new Button("Read");
+            readButton = new JFXButton("Read");
             readButton.applyCss();
 
             resetButton = new Button("Reset");
@@ -199,7 +200,7 @@ public class StandardView implements View{
         setupSlider();
         setupStatusListener();
         if(statusList.get(0)==0){
-            //chipModeToggle.setDisable(true); TODO
+            chipModeToggle.setDisable(true);
         }
         saveButton.setDisable(true);
     }
@@ -1278,7 +1279,6 @@ public class StandardView implements View{
 
     public void setupSlider(){
         //**********************SLIDER SETUP*********************//
-        timelineSlider.setVisible(false);
         timelineSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {

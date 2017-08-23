@@ -1,9 +1,10 @@
 package sample;
 
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.controls.JFXProgressBar;
+import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
+import de.jensd.fx.glyphs.GlyphsDude;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
 import javafx.animation.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -28,6 +29,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.*;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -95,11 +97,11 @@ public class Controller implements Initializable {
 
     //**** BUTTONS ****//
     @FXML
-    private Button change2DDefualt;
+    private JFXButton change2DDefualt;
     @FXML
-    private Button change3DDefualt;
+    private JFXButton change3DDefualt;
     @FXML
-    private Button newScene2D;
+    private JFXButton newScene2D;
 
     //***** SLIDE IN PANES ****//
     @FXML
@@ -108,10 +110,6 @@ public class Controller implements Initializable {
     private AnchorPane onScreenList;
 
     //Navigation drawer
-    @FXML
-    private VBox navBox;
-    @FXML
-    private JFXDrawer navDrawer;
     @FXML
     private JFXHamburger menuHamburger;
 
@@ -153,6 +151,7 @@ public class Controller implements Initializable {
         prepareSlideMenuAnimationHamburger();
 
         //*******************************************************//
+
     }
 
 
@@ -227,6 +226,8 @@ public class Controller implements Initializable {
 
 
     private void setupButtons(){
+        //Setting for controlling size of icons:
+        String iconSize="35px";
         //*************************** REFRESH STATUS BUTTON *****************************//
         refreshButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -240,6 +241,11 @@ public class Controller implements Initializable {
                 rot.play();
             }
         });
+        Node iconRefresh = GlyphsDude.createIcon(MaterialDesignIcon.REFRESH,iconSize);
+        //icon.setStyle("-fx-background-color: transparent");
+        refreshButton.setGraphic(iconRefresh);
+        refreshButton.setStyle("-fx-background-color: transparent");
+
 
         redoButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -252,6 +258,12 @@ public class Controller implements Initializable {
                 rot.play();
             }
         });
+        //Styling for button, with icon.
+        Node iconRedo = GlyphsDude.createIcon(MaterialDesignIcon.REDO,iconSize);
+        //icon.setStyle("-fx-background-color: transparent");
+        redoButton.setGraphic(iconRedo);
+        redoButton.setStyle("-fx-background-color: transparent");
+
         undoButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -263,6 +275,10 @@ public class Controller implements Initializable {
                 rot.play();
             }
         });
+        Node iconUndo = GlyphsDude.createIcon(MaterialDesignIcon.UNDO,iconSize);
+        //icon.setStyle("-fx-background-color: transparent");
+        undoButton.setGraphic(iconUndo);
+        undoButton.setStyle("-fx-background-color: transparent");
 
         settingsButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -275,6 +291,10 @@ public class Controller implements Initializable {
                 rot.play();
             }
         });
+        Node iconSettings = GlyphsDude.createIcon(MaterialDesignIcon.SETTINGS,iconSize);
+        //icon.setStyle("-fx-background-color: transparent");
+        settingsButton.setGraphic(iconSettings);
+        settingsButton.setStyle("-fx-background-color: transparent");
 
         //*************************** OVERLAY MENU BUTTONS ******************************//
         newScene2D.setOnAction(e ->{
@@ -321,9 +341,19 @@ public class Controller implements Initializable {
                 System.out.println("Min found");
             }
         });
+        //Setting up material design rippler for mathButton //TODO
+        Node iconMath = GlyphsDude.createIcon(MaterialDesignIcon.MATH_COMPASS,iconSize);
+        //icon.setStyle("-fx-background-color: transparent");
+        mathButton.setGraphic(iconMath);
+        mathButton.setStyle("-fx-background-color: transparent");
 
         mathButton.getItems().addAll(findMax, findMin);
 
+
+        Node iconOverlay = GlyphsDude.createIcon(MaterialDesignIcon.APPS,iconSize);
+        //icon.setStyle("-fx-background-color: transparent");
+        overlayButton.setGraphic(iconOverlay);
+        overlayButton.setStyle("-fx-background-color: transparent");
     }
 
     //******************MENU BAR & OVERLAY ANIMATION****************//
@@ -331,15 +361,17 @@ public class Controller implements Initializable {
         HamburgerSlideCloseTransition burgerTask = new HamburgerSlideCloseTransition(menuHamburger);
         burgerTask.setRate(-1);
 
-        //navDrawer.setSidePane(navBox);
+        TranslateTransition openNav = new TranslateTransition(new Duration(350), navList);
+        openNav.setToX(0);
+        TranslateTransition closeNav = new TranslateTransition(new Duration(350), navList);
 
         menuHamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
-            System.out.println("Hamburger presssed");
-            if(navDrawer.isShown()){
-                navDrawer.close();
+            if(navList.getTranslateX()!=0){
+                openNav.play();
             }
             else{
-                navDrawer.open();
+                closeNav.setToX(-(navList.getWidth()));
+                closeNav.play();
             }
             burgerTask.setRate(burgerTask.getRate()*-1);
             burgerTask.play();
@@ -347,26 +379,8 @@ public class Controller implements Initializable {
     }
     //Code taken from StackOverflow question, https://stackoverflow.com/questions/31601900/javafx-how-to-create-slide-in-animation-effect-for-a-pane-inside-a-transparent
     private void prepareSlideMenuAnimation(){
-        RotateTransition openNavRot = new RotateTransition(new Duration(350), menuButton);
-        openNavRot.setByAngle(90);
-        RotateTransition closeNavRot = new RotateTransition(new Duration(350), menuButton);
 
-        TranslateTransition openNav = new TranslateTransition(new Duration(350), navList);
-        openNav.setToX(0);
-        TranslateTransition closeNav = new TranslateTransition(new Duration(350), navList);
-        ArrayList<WritableImage> imageList = new ArrayList<>();
-        menuButton.setOnAction(e -> {
-            if(navList.getTranslateX()!=0){
-                openNav.play();
-                openNavRot.play();
-            }
-            else{
-                closeNav.setToX(-(navList.getWidth()));
-                closeNav.play();
-                closeNavRot.setByAngle(-90);
-                closeNavRot.play();
-            }
-        });
+
     }
 
     public void prepareOverlayMenuAnimation(){

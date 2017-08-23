@@ -76,6 +76,12 @@
      * text; selected items in menus, lists, trees, and tables; progress bars */
 	-fx-accent: -swatch-400;
 	-fx-dark-text-color: white;
+
+    /*My own colors - Eric L, 23/8-2017*/
+    -main-color:  -swatch-500; /*Toolbar color etc.*/ /*Cool cyan #00BCD4*/
+    -accent-color:  -swatch-300;
+    -navigation-drawer: #fafafa; /*Color of navigation menu etc*/
+    -text-color: -fx-body-color;
 }
 
 /*******************************************************************************
@@ -839,7 +845,7 @@
 *************************************************************************/
 
 .menu-bar-custom{
-    -fx-background-color: #00BCD4;    /*-swatch-toolbar;*/ /*cool purple #9932CC*/
+    -fx-background-color: -main-color;    /*-swatch-toolbar;*/ /*cool purple #9932CC*/
     	-fx-border-width: 0 0 0 0;
     	-fx-border-color: -swatch-grey;
     	-fx-min-height: 48;
@@ -849,55 +855,58 @@
     /*-fx-alignment: CENTER;*/
 }
 .menu-bar-custom-menu-slide{
-    -fx-graphic: url('file:resources/images/iconsViolet/menuLargeWhiteViolet.png');
+    /*-fx-graphic: url('file:resources/images/iconsViolet/menuLargeWhiteViolet.png');*/
     /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1);  Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 4 4 4 4, 0, 1, 2;
+
 }
 
 .menu-bar-overlay-menu-button{
-    -fx-graphic: url('file:resources/images/iconsViolet/overlayLargeWhiteViolet.png');
+    /*-fx-graphic: url('file:resources/images/iconsViolet/overlayLargeWhiteViolet.png');*/
     -fx-background-insets: 4 4 4 4, 0, 1, 2;
+    -fx-background-color: transparent;
 }
 
 .menu-bar-undo{
-    -fx-graphic: url('file:resources/images/iconsViolet/undoLargeWhiteViolet.png');
+    /*-fx-graphic: url('file:resources/images/iconsViolet/undoLargeWhiteViolet.png');*/
     /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1);  Makes it look lika a protruding button. Remove? */
+
     -fx-background-insets: 4 4 4 4, 0, 1, 2;
 }
 
 .menu-bar-redo{
-    -fx-graphic: url('file:resources/images/iconsViolet/redoLargeWhiteViolet.png');
+    /*-fx-graphic: url('file:resources/images/iconsViolet/redoLargeWhiteViolet.png');*/
     /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1);  Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 4 4 4 4, 0, 1, 2;
 }
 
 .menu-bar-math{
-    -fx-graphic: url('file:resources/images/iconsViolet/mathLargeWhiteViolet.png');
+    /*-fx-graphic: url('file:resources/images/iconsViolet/mathLargeWhiteViolet.png');*/
     -fx-background-insets: 4 4 4 4, 0, 1, 2;
     -fx-background-color: transparent;
     /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1);  Makes it look lika a protruding button. Remove? */
 }
 
 .menu-bar-settings{
-    -fx-graphic: url('file:resources/images/iconsViolet/settingsLargeWhiteViolet.png');
+    /*-fx-graphic: url('file:resources/images/iconsViolet/settingsLargeWhiteViolet.png');*/
     /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1);  Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 4 4 4 4, 0, 1, 2;
 }
 
 .menu-bar-status-box{
-    -fx-background-color: #EC407A;
+    -fx-background-color: -accent-color;
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.40), 6.0, 0.3, 0, 1);
     -fx-background-insets: -2 -2 -2 -2, 0 , 1, 2;
 }
 
 .menu-bar-status-refresh{
-    -fx-graphic: url('file:resources/images/iconsViolet/refreshLargeWhiteCherry.png');
+    /*-fx-graphic: url('file:resources/images/iconsViolet/refreshLargeWhiteCherry.png');*/
     -fx-background-insets: 4 4 4 4, 0, 1, 2;
 }
 
 .menu-bar-label{
     -fx-text-fill: #F8F8FF;
-    -fx-font-size: 14.0;
+    -fx-font-size: 20;
     -fx-font-family: "Roboto Medium";
     -fx-font-weight: bold;
     -fx-background-insets: 10px;
@@ -919,27 +928,36 @@
 *************************************************************************/
 
 .menu-slide{
-    -fx-background-color: #EC407A;/*#E91E63;*/ /*#6A5ACD*/
+    -fx-background-color: -navigation-drawer;/*#E91E63;*/ /*#6A5ACD*/
          -fx-border-width: 0 0 0 0;
-        -fx-border-color: -swatch-grey;
+        -fx-border-color: -swatch-light-grey;
 
-    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.45), 6.0, 0.3, 0, 1);
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.45), 6.0, 0.3, 0, 0);
 }
 .menu-slide-button{
-    -fx-text-fill: #F8F8FF;
-    -fx-font-family: "Roboto Medium";
+    -fx-font-size: 15;
     -fx-border-width: 0 0 1 0;
-    -fx-insets: 1 1 1 1;
-    -fx-border-color: -swatch-grey;
+    /*-fx-insets: 1 1 1 1;*/
     -fx-font-style: normal;
+    -fx-font-smoothing-type: lcd;
     -fx-font-weight: bold;
-    -fx-font-size: 16;
+    /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.45), 6.0, 0.3, 0, 1);*/
+    -fx-text-fill: -fx-text-base-color;
+    -fx-background-color: transparent;
+    /*-fx-border-color: -swatch-dark-grey;*/
     -fx-background-radius: 0px;
-    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.45), 6.0, 0.3, 0, 1);
-    -fx-background-color: TRANSPARENT;
 }
 .menu-slide-button:hover{
-    -fx-background-color: #6A5ACD;
+    -fx-background-color: -fx-faint-focus-color ;
+}
+.menu-slide-button:focused{
+    -fx-background-color: -swatch-grey;
+}
+
+.menu-slide-image{
+    -fx-background-color: #6666ff;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: -swatch-dark-grey;
 }
 
 /*
@@ -981,6 +999,7 @@
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look like a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
     -fx-background-radius: 2px;
+    -fx-background-color:  #F8F8FF;
 }
 
 .chart-settings{
@@ -989,6 +1008,7 @@
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look like a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
     -fx-background-radius: 2px;
+	-fx-background-color:  #F8F8FF;
 }
 
 .read-button{
@@ -996,6 +1016,7 @@
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
     -fx-background-radius: 2px;
+	-fx-background-color:  #F8F8FF;
 }
 
 .play-button {
@@ -1004,6 +1025,7 @@
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look like a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
     -fx-background-radius: 2px;
+    -fx-background-color:  #F8F8FF;
 }
 
 .pause-button {
@@ -1012,6 +1034,7 @@
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
     -fx-background-radius: 2px;
+    -fx-background-color:  #F8F8FF;
 }
 
 .reset-button {
@@ -1020,6 +1043,7 @@
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
     -fx-background-radius: 2px;
+    -fx-background-color:  #F8F8FF;
 }
 
 .chip-button {
@@ -1028,6 +1052,7 @@
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
     -fx-background-radius: 2px;
+    -fx-background-color:  #F8F8FF;
 }
 
 .chart-click {
@@ -1036,6 +1061,7 @@
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
     -fx-background-radius: 2px;
+    -fx-background-color:  #F8F8FF;
 }
 
 .cinematic-button {
@@ -1044,6 +1070,7 @@
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
     -fx-background-radius: 2px;
+    -fx-background-color:  #F8F8FF;
 }
 
 /*************************************************************************
@@ -1103,22 +1130,23 @@
  * JFX-Slider                                                                  *
  *                                                                             *
  ******************************************************************************/
-.jfx-slider {
-	-fx-padding: 10 0 10 0;
+.slider {
+    -fx-padding: 10 0 10 0;
 }
 
-.jfx-slider:vertical {
-	-fx-padding: 0 10 0 10;
+.slider:vertical {
+    -fx-padding: 0 10 0 10;
 }
 
-.jfx-slider>.track {
-	-fx-background-color: -swatch-grey;
-	-fx-background-insets: 1.5;
+.slider>.track {
+    -fx-background-color: -swatch-grey;
+    -fx-background-insets: 1.5;
 }
 
-.jfx-slider>.thumb {
-	-fx-background-color: -swatch-500;
+.slider>.thumb {
+    -fx-background-color: -main-color;
 }
+
 
 /*******************************************************************************
  *                                                                             *
@@ -1135,6 +1163,50 @@
     -fx-pref-height: 4px;
     -fx-background-color: #F8F8FF;
     -fx-background-radius: 0px;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * JFX-Progressbar                                                             *
+ *                                                                             *
+ ******************************************************************************/
+
+.jfx-progressbar{
+    -fx-background-color: -fx-faint-focus-color;
+    -fx-fill: -fx-faint-focus-color;
+}
+
+.jfx-progress-bar>.track {
+    -fx-background-color: derive(-swatch-grey, 50.0%);
+    -fx-background-radius: 2.0;
+    -fx-padding: 0.0;
+}
+
+.jfx-progress-bar>.bar {
+    -fx-background-color: -fx-faint-focus-color;
+    -fx-background-radius: 2.0;
+    -fx-background-insets: 0.0;
+    -fx-border-width: 0.0;
+    -fx-effect: null;
+}
+
+.jfx-progress-bar:indeterminate>.bar {
+    -fx-background-color: derive(-swatch-500, 50.0%);
+    -fx-background-radius: 2.0;
+    -fx-background-insets: 0.0;
+    -fx-border-width: 0.0;
+    -fx-effect: null;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Icons                                                                       *
+ *                                                                             *
+ ******************************************************************************/
+
+.icons{
+    -fx-font-family: FontAwesome;
+    -fx-font-size: 16px;
 }
 
 

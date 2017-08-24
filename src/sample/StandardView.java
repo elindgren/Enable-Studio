@@ -41,6 +41,7 @@ import java.io.File;
 public class StandardView implements View{
 
     private int measurementIndex = 0;
+    private int frameTime = 10; //Polling rate of the cinematic view
     //**** Inter-class communication ****//
     private Data data;
     private ReadSerialPort rp;
@@ -86,11 +87,8 @@ public class StandardView implements View{
     private boolean readFromChip = false;
     private boolean cinematicMode = false;
 
-    private boolean settingXHasBeenActivated = false;
     private boolean settingXIsActive = true;
-    private boolean settingYHasBeenActivated = false;
     private boolean settingYIsActive = false;
-    private boolean settingZHasBeenActivated = false;
     private boolean settingZIsActive = false;
 
     private boolean statusChart = false; //TODO Change data so that it is the resulting data
@@ -322,18 +320,16 @@ public class StandardView implements View{
                     settingXIsActive = true;
                 } else if (settingX.isSelected() && !statusChart) {
                     settingX.setSelected(false);
-                }else if(!settingXHasBeenActivated && !settingX.isSelected() && statusChart && !settingYIsActive && !settingZIsActive){
+                }else if(!settingXIsActive && !settingX.isSelected() && statusChart && !settingYIsActive && !settingZIsActive){
                     settingXIsActive=true;
-                }else if (!settingXHasBeenActivated && !settingXIsActive && statusChart) {
+                }else if (!settingX.isSelected() && !settingXIsActive && statusChart) {
                     data.setupX();
                     seriesX = data.getDataSeriesY();
                     seriesX.setName("x");
                     lineChart.getData().add(seriesX);
-                    settingXHasBeenActivated = true;
                     settingXIsActive = true;
-                } else if (!settingXIsActive && settingXHasBeenActivated && statusChart) {
+                } else if (!settingXIsActive && settingX.isSelected() && statusChart) {
                     lineChart.getData().add(seriesX);
-                    settingXHasBeenActivated = true;
                     settingXIsActive = true;
                 } else if (settingXIsActive && statusChart) {
                     lineChart.getData().removeAll(seriesX);
@@ -353,16 +349,14 @@ public class StandardView implements View{
                     settingYIsActive = true;
                 } else if (settingYIsActive && !statusChart) {
                     settingYIsActive = false;
-                } else if (!settingYHasBeenActivated && !settingYIsActive && statusChart) {
+                } else if (!settingY.isSelected() && !settingYIsActive && statusChart) {
                     data.setupY();
                     seriesY = data.getDataSeriesY();
                     seriesY.setName("y");
                     lineChart.getData().add(seriesY);
-                    settingYHasBeenActivated = true;
                     settingYIsActive = true;
-                } else if (!settingYIsActive && settingYHasBeenActivated && statusChart) {
+                } else if (!settingYIsActive && settingY.isSelected() && statusChart) {
                     lineChart.getData().add(seriesY);
-                    settingYHasBeenActivated = true;
                     settingYIsActive = true;
                 } else if (settingYIsActive && statusChart) {
                     lineChart.getData().removeAll(seriesY);
@@ -377,21 +371,18 @@ public class StandardView implements View{
         settingZ.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
                 if (!settingZIsActive && !statusChart) {
                     settingZIsActive = true;
                 } else if (settingZIsActive && !statusChart) {
                     settingZIsActive = false;
-                } else if (!settingZHasBeenActivated && !settingZIsActive && statusChart) {
+                } else if (!settingZ.isSelected() && !settingZIsActive && statusChart) {
                     data.setupZ();
                     seriesZ = data.getDataSeriesZ();
                     seriesZ.setName("z");
                     lineChart.getData().add(seriesZ);
-                    settingZHasBeenActivated = true;
                     settingZIsActive = true;
-                } else if (!settingZIsActive && settingZHasBeenActivated && statusChart) {
+                } else if (!settingZIsActive && settingZ.isSelected() && statusChart) {
                     lineChart.getData().add(seriesZ);
-                    settingZHasBeenActivated = true;
                     settingZIsActive = true;
                 } else if (settingZIsActive && statusChart) {
                     lineChart.getData().removeAll(seriesZ);
@@ -589,19 +580,13 @@ public class StandardView implements View{
 
                             if(settingXIsActive) {
                                 System.out.println("reading x...");
-                                data.setData(1,10);
                                 data.readFile(null, true, progressList);
-                                settingXHasBeenActivated = true;
                             }
                             if(settingYIsActive){
-                                data.setData(1,11);
                                 data.readFile(null, true, progressList);
-                                settingYHasBeenActivated = true;
                             }
                             if(settingZIsActive){
-                                data.setData(1,12);
                                 data.readFile(null, true, progressList);
-                                settingZHasBeenActivated = true;
                             }
                             Platform.runLater(new Runnable() {
                                 @Override
@@ -648,21 +633,18 @@ public class StandardView implements View{
                                 System.out.println("Reading data");
                                 if(settingXIsActive) {
                                     System.out.println("Reading x");
-                                    data.setData(1,10);
+                                    //data.setData(1,10);
                                     data.readFile(file, false, progressList);
-                                    settingXHasBeenActivated = true;
                                 }
                                 if(settingYIsActive){
                                     System.out.println("Reading y");
-                                    data.setData(1,11);
+                                    //data.setData(1,11);
                                     data.readFile(file, false, progressList);
-                                    settingYHasBeenActivated = true;
                                 }
                                 if(settingZIsActive){
                                     System.out.println("Reading z");
-                                    data.setData(1,12);
+                                    //data.setData(1,12);
                                     data.readFile(file, false, progressList);
-                                    settingZHasBeenActivated = true;
                                 }
                                 System.out.println("Read successful");
                                 Platform.runLater(new Runnable() {
@@ -693,6 +675,8 @@ public class StandardView implements View{
                         saveButton.setDisable(false);
 
                         System.out.println("readStatic");
+                    }else{
+                        System.out.println("File not found! Please try again. This is here to prevent an exception");
                     }
                     /*
                         try{
@@ -796,25 +780,25 @@ public class StandardView implements View{
         table.getColumns().setAll(xCol, yCol);
         //Setup of series
 
-        if(settingXHasBeenActivated) {
+        if(settingX.isSelected()) {
             seriesX = data.getDataSeriesX();
             graph = new Graph2D(lineChart, seriesX, xAxis, yAxis, "readStatic");
             graph.setup("x");
-            if(!settingYHasBeenActivated && !settingZHasBeenActivated) {
+            if(!settingY.isSelected() && !settingZ.isSelected()) {
                 System.out.println("Only x will be printed");
-            }else if(settingYHasBeenActivated && !settingZHasBeenActivated){
+            }else if(settingY.isSelected() && !settingZ.isSelected()){
                 data.setupY();
                 seriesY = data.getDataSeriesY();
                 seriesY.setName("y");
                 lineChart.getData().add(seriesY);
                 settingYIsActive = true;
-            }else if(!settingYHasBeenActivated && settingZHasBeenActivated){
+            }else if(!settingY.isSelected() && settingZ.isSelected()){
                 data.setupZ();
                 seriesZ = data.getDataSeriesZ();
                 seriesZ.setName("z");
                 lineChart.getData().add(seriesZ);
                 settingZIsActive = true;
-            }else if(settingYHasBeenActivated && settingZHasBeenActivated){
+            }else if(settingY.isSelected() && settingZ.isSelected()){
                 data.setupY();
                 seriesY = data.getDataSeriesY();
                 seriesY.setName("y");
@@ -828,25 +812,25 @@ public class StandardView implements View{
                 settingZIsActive = true;
             }
         }
-        else if(settingYHasBeenActivated) {
+        else if(settingY.isSelected()) {
             seriesY = data.getDataSeriesY();
             graph = new Graph2D(lineChart, seriesY, xAxis, yAxis, "readStatic");
             graph.setup("y");
-            if(!settingXHasBeenActivated && !settingZHasBeenActivated) {
+            if(!settingX.isSelected() && !settingZ.isSelected()) {
                 System.out.println("Only y will be printed");
-            }else if(settingXHasBeenActivated && !settingZHasBeenActivated){
+            }else if(settingX.isSelected() && !settingZ.isSelected()){
                 data.setupX();
                 seriesX = data.getDataSeriesX();
                 seriesX.setName("x");
                 lineChart.getData().add(seriesX);
                 settingXIsActive = true;
-            }else if(!settingXHasBeenActivated && settingZHasBeenActivated){
+            }else if(!settingX.isSelected() && settingZ.isSelected()){
                 data.setupZ();
                 seriesZ = data.getDataSeriesZ();
                 seriesZ.setName("z");
                 lineChart.getData().add(seriesZ);
                 settingZIsActive = true;
-            }else if(settingXHasBeenActivated && settingZHasBeenActivated){
+            }else if(settingX.isSelected() && settingZ.isSelected()){
                 data.setupX();
                 seriesX = data.getDataSeriesX();
                 seriesX.setName("x");
@@ -860,25 +844,25 @@ public class StandardView implements View{
                 settingZIsActive = true;
             }
         }
-        else if(settingYHasBeenActivated) {
+        else if(settingZ.isSelected()) {
             seriesY = data.getDataSeriesY();
             graph = new Graph2D(lineChart, seriesY, xAxis, yAxis, "readStatic");
             graph.setup("z");
-            if(!settingXHasBeenActivated && !settingYHasBeenActivated) {
+            if(!settingX.isSelected() && !settingY.isSelected()) {
                 System.out.println("Only y will be printed");
-            }else if(settingXHasBeenActivated && !settingYHasBeenActivated){
+            }else if(settingX.isSelected() && !settingY.isSelected()){
                 data.setupX();
                 seriesX = data.getDataSeriesX();
                 seriesX.setName("x");
                 lineChart.getData().add(seriesX);
                 settingXIsActive = true;
-            }else if(!settingXHasBeenActivated && settingYHasBeenActivated){
+            }else if(!settingX.isSelected() && settingY.isSelected()){
                 data.setupY();
                 seriesY = data.getDataSeriesY();
                 seriesY.setName("y");
                 lineChart.getData().add(seriesY);
                 settingYIsActive = true;
-            }else if(settingXHasBeenActivated && settingYHasBeenActivated){
+            }else if(settingX.isSelected() && settingY.isSelected()){
                 data.setupX();
                 seriesX = data.getDataSeriesX();
                 seriesX.setName("x");
@@ -940,9 +924,6 @@ public class StandardView implements View{
         settingGPSData.setSelected(false);
         settingGPSData.setGraphic(new ImageView(new Image("file:resources/images/iconsBlack/gpsOff.png")));
 
-        settingXHasBeenActivated=false;
-        settingYHasBeenActivated=false;
-        settingZHasBeenActivated=false;
 
         /*
         settingX.setDisable(true);
@@ -986,24 +967,24 @@ public class StandardView implements View{
         table.getColumns().setAll(xCol, yCol);
 
 
-        if(settingXHasBeenActivated) {
+        if(settingX.isSelected()) {
             graph = new Graph2D(lineChart, seriesX, xAxis, yAxis, "readStatic");
             graph.setup("x");
-            if(!settingYHasBeenActivated && !settingZHasBeenActivated) {
+            if(!settingY.isSelected() && !settingZ.isSelected()) {
                 System.out.println("Only x will be printed");
-            }else if(settingYHasBeenActivated && !settingZHasBeenActivated){
+            }else if(settingY.isSelected() && !settingZ.isSelected()){
                 data.setupY();
                 dataListY = data.getDataY();
                 seriesY.setName("y");
                 lineChart.getData().add(seriesY);
                 settingYIsActive = true;
-            }else if(!settingYHasBeenActivated && settingZHasBeenActivated){
+            }else if(!settingY.isSelected() && settingZ.isSelected()){
                 data.setupZ();
                 dataListZ = data.getDataZ();
                 seriesZ.setName("z");
                 lineChart.getData().add(seriesZ);
                 settingZIsActive = true;
-            }else if(settingYHasBeenActivated && settingZHasBeenActivated){
+            }else if(settingY.isSelected() && settingZ.isSelected()){
                 data.setupY();
                 dataListY = data.getDataY();
                 seriesY.setName("y");
@@ -1017,24 +998,24 @@ public class StandardView implements View{
                 settingZIsActive = true;
             }
         }
-        else if(settingYHasBeenActivated) {
+        else if(settingY.isSelected()) {
             graph = new Graph2D(lineChart, seriesY, xAxis, yAxis, "readStatic");
             graph.setup("y");
-            if(!settingXHasBeenActivated && !settingZHasBeenActivated) {
+            if(!settingX.isSelected() && !settingZ.isSelected()) {
                 System.out.println("Only y will be printed");
-            }else if(settingXHasBeenActivated && !settingZHasBeenActivated){
+            }else if(settingX.isSelected() && !settingZ.isSelected()){
                 data.setupX();
                 dataListX = data.getDataX();
                 seriesX.setName("x");
                 lineChart.getData().add(seriesX);
                 settingXIsActive = true;
-            }else if(!settingXHasBeenActivated && settingZHasBeenActivated){
+            }else if(!settingX.isSelected() && settingZ.isSelected()){
                 data.setupZ();
                 dataListZ = data.getDataZ();
                 seriesZ.setName("z");
                 lineChart.getData().add(seriesZ);
                 settingZIsActive = true;
-            }else if(settingXHasBeenActivated && settingZHasBeenActivated){
+            }else if(settingX.isSelected() && settingZ.isSelected()){
                 data.setupX();
                 dataListX = data.getDataX();
                 seriesX.setName("x");
@@ -1048,24 +1029,24 @@ public class StandardView implements View{
                 settingZIsActive = true;
             }
         }
-        else if(settingYHasBeenActivated) {
+        else if(settingY.isSelected()) {
             graph = new Graph2D(lineChart, seriesY, xAxis, yAxis, "readStatic");
             graph.setup("z");
-            if(!settingXHasBeenActivated && !settingYHasBeenActivated) {
+            if(!settingX.isSelected() && !settingY.isSelected()) {
                 System.out.println("Only y will be printed");
-            }else if(settingXHasBeenActivated && !settingYHasBeenActivated){
+            }else if(settingX.isSelected() && !settingY.isSelected()){
                 data.setupX();
                 dataListX = data.getDataX();
                 seriesX.setName("x");
                 lineChart.getData().add(seriesX);
                 settingXIsActive = true;
-            }else if(!settingXHasBeenActivated && settingYHasBeenActivated){
+            }else if(!settingX.isSelected() && settingY.isSelected()){
                 data.setupY();
                 dataListZ = data.getDataZ();
                 seriesY.setName("y");
                 lineChart.getData().add(seriesY);
                 settingYIsActive = true;
-            }else if(settingXHasBeenActivated && settingYHasBeenActivated){
+            }else if(settingX.isSelected() && settingY.isSelected()){
                 data.setupX();
                 dataListX = data.getDataX();
                 seriesX.setName("x");
@@ -1123,19 +1104,19 @@ public class StandardView implements View{
 
                 for (int i = 0; i < series.getData().size(); i++) {
                     //seriesX.getData().setAll(series.getData().get(i)); //TODO, CLEAR UP
-                    if(series.getData().size()!=0) {
+                    if(series.getData().get(series.getData().size()-1)!=null) { //If reaches the end without the file having stopped.
+                    }
                         //seriesX = series;
-                    }
-                    if(settingXIsActive) {
-                        seriesX=data.getDataSeriesX();
-                    }
+                        if (settingXIsActive) {
+                            seriesX = data.getDataSeriesX();
+                        }
 
-                    if(settingYIsActive){
-                        seriesY=data.getDataSeriesY();
-                    }
-                    if(settingZIsActive){
-                        seriesZ=data.getDataSeriesZ();
-                    }
+                        if (settingYIsActive) {
+                            seriesY = data.getDataSeriesY();
+                        }
+                        if (settingZIsActive) {
+                            seriesZ = data.getDataSeriesZ();
+                        }
                 }
 
                 /*
@@ -1168,14 +1149,14 @@ public class StandardView implements View{
                 }
 
             });
-            Duration duration = Duration.millis(10);
+            Duration duration = Duration.millis(frameTime);
             //I don't know how to do actionhandling for keyframe with lambda expression
             keyFrameAnimated = new KeyFrame(duration, onFinishedFile);
             timeline.getKeyFrames().add(keyFrameAnimated);
         } else if (str == "chip") {
             System.out.println("Reading chip");
             timeline.setCycleCount(Timeline.INDEFINITE);
-            Duration duration = Duration.millis(10);
+            Duration duration = Duration.millis(frameTime);
             keyFrameAnimated = new KeyFrame(duration, onFinishedChip);
             timeline.getKeyFrames().add(keyFrameAnimated);
         }
@@ -1212,19 +1193,16 @@ public class StandardView implements View{
                         System.out.println("Reading x");
                         data.setData(1,10);
                         data.readContinouslyFromFile(file, false, progressList);
-                        settingXHasBeenActivated = true;
                     }
                     if(settingYIsActive){
                         System.out.println("Reading y");
                         data.setData(1,11);
                         data.readContinouslyFromFile(file, false, progressList);
-                        settingYHasBeenActivated = true;
                     }
                     if(settingZIsActive){
                         System.out.println("Reading z");
                         data.setData(1,12);
                         data.readContinouslyFromFile(file,  false, progressList);
-                        settingZHasBeenActivated = true;
                     }
                     System.out.println("Read successful");
                     Platform.runLater(new Runnable() {
@@ -1244,6 +1222,8 @@ public class StandardView implements View{
             //progressBarStaticView.setVisible(true);
             //progressLabelStaticView.setVisible(true);
             th.start();
+        }else{
+            System.out.println("File not found! Please try again. This is here to prevent an exception");
         }
     }
 

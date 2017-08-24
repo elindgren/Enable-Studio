@@ -30,6 +30,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -41,6 +42,9 @@ public class Controller implements Initializable {
     //********************************************************************//
     ReadSerialPort rp;
     private ArrayList viewList = new ArrayList(); //A list of all the active views
+
+    //Setting for controlling size of icons:
+    String iconSize="38px";
 
     //Below are used by various progressbars.
     private ObservableList<Integer> progressList;
@@ -226,44 +230,50 @@ public class Controller implements Initializable {
 
 
     private void setupButtons(){
-        //Setting for controlling size of icons:
-        String iconSize="35px";
         //*************************** REFRESH STATUS BUTTON *****************************//
+
         refreshButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                rp.isConnected();
+                /*
                 if(refreshButton.getRotate()!=0){
                     refreshButton.setRotate(0);
                 }
-                RotateTransition rot = new RotateTransition(new Duration(350), refreshButton);
-                rot.setByAngle(360);
-                rp.isConnected();
-                rot.play();
+                //RotateTransition rot = new RotateTransition(new Duration(350), refreshButton);
+                //rot.setByAngle(360);
+
+                //rot.play();
+                */
             }
         });
+
         Node iconRefresh = GlyphsDude.createIcon(MaterialDesignIcon.REFRESH,iconSize);
-        //icon.setStyle("-fx-background-color: transparent");
+        iconRefresh.getStyleClass().add("material-icon");
         refreshButton.setGraphic(iconRefresh);
-        refreshButton.setStyle("-fx-background-color: transparent");
+        refreshButton.getStyleClass().setAll("material-icon-container");
 
 
         redoButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                /*
                 if(redoButton.getRotate()!=0){
                     redoButton.setRotate(0);
                 }
                 RotateTransition rot = new RotateTransition(new Duration(350), redoButton);
                 rot.setByAngle(360);
                 rot.play();
+                */
             }
         });
+
         //Styling for button, with icon.
         Node iconRedo = GlyphsDude.createIcon(MaterialDesignIcon.REDO,iconSize);
-        //icon.setStyle("-fx-background-color: transparent");
+        iconRedo.getStyleClass().add("material-icon");
         redoButton.setGraphic(iconRedo);
-        redoButton.setStyle("-fx-background-color: transparent");
-
+        redoButton.getStyleClass().setAll("material-icon-container");
+        /*
         undoButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -275,11 +285,12 @@ public class Controller implements Initializable {
                 rot.play();
             }
         });
+        */
         Node iconUndo = GlyphsDude.createIcon(MaterialDesignIcon.UNDO,iconSize);
-        //icon.setStyle("-fx-background-color: transparent");
+        iconUndo.getStyleClass().add("material-icon");
         undoButton.setGraphic(iconUndo);
-        undoButton.setStyle("-fx-background-color: transparent");
-
+        undoButton.getStyleClass().setAll("material-icon-container");
+        /*
         settingsButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -291,10 +302,11 @@ public class Controller implements Initializable {
                 rot.play();
             }
         });
+        */
         Node iconSettings = GlyphsDude.createIcon(MaterialDesignIcon.SETTINGS,iconSize);
-        //icon.setStyle("-fx-background-color: transparent");
+        iconSettings.getStyleClass().add("material-icon");
         settingsButton.setGraphic(iconSettings);
-        settingsButton.setStyle("-fx-background-color: transparent");
+        settingsButton.getStyleClass().setAll("material-icon-container");
 
         //*************************** OVERLAY MENU BUTTONS ******************************//
         newScene2D.setOnAction(e ->{
@@ -343,17 +355,16 @@ public class Controller implements Initializable {
         });
         //Setting up material design rippler for mathButton //TODO
         Node iconMath = GlyphsDude.createIcon(MaterialDesignIcon.MATH_COMPASS,iconSize);
-        //icon.setStyle("-fx-background-color: transparent");
+        iconMath.getStyleClass().add("material-icon");
         mathButton.setGraphic(iconMath);
-        mathButton.setStyle("-fx-background-color: transparent");
+        mathButton.getStyleClass().setAll("material-icon-container");
 
         mathButton.getItems().addAll(findMax, findMin);
 
-
         Node iconOverlay = GlyphsDude.createIcon(MaterialDesignIcon.APPS,iconSize);
-        //icon.setStyle("-fx-background-color: transparent");
+        iconOverlay.getStyleClass().add("material-icon");
         overlayButton.setGraphic(iconOverlay);
-        overlayButton.setStyle("-fx-background-color: transparent");
+        overlayButton.getStyleClass().setAll("material-icon-container");
     }
 
     //******************MENU BAR & OVERLAY ANIMATION****************//
@@ -384,9 +395,11 @@ public class Controller implements Initializable {
     }
 
     public void prepareOverlayMenuAnimation(){
+        /*
         RotateTransition openOverlayRot = new RotateTransition(new Duration(350), overlayButton);
         openOverlayRot.setByAngle(90);
         RotateTransition closeOverlayRot = new RotateTransition(new Duration(350), overlayButton);
+        */
 
         TranslateTransition openOverlay = new TranslateTransition(new Duration(350), overlayPane);
         openOverlay.setToY(0);
@@ -423,14 +436,14 @@ public class Controller implements Initializable {
                         menuButton.setGraphic(iw);
                     }
                     openOverlay.play();
-                    openOverlayRot.play();
+                    //openOverlayRot.play();
                     selectionModel.getSelectedItem().setDisable(true);
 
                 }else{
                     closeOverlay.setToY(-(mainPane.getHeight()+overlayPane.getHeight()+20));
                     closeOverlay.play();
-                    closeOverlayRot.setByAngle(-90);
-                    closeOverlayRot.play();
+                    //closeOverlayRot.setByAngle(-90);
+                    //closeOverlayRot.play();
                     selectionModel.getSelectedItem().setDisable(false);
                 }
             }
@@ -440,8 +453,8 @@ public class Controller implements Initializable {
             public void handle(MouseEvent event) {
                 closeOverlay.setToY(-(mainPane.getHeight()+overlayPane.getHeight()+20));
                 closeOverlay.play();
-                closeOverlayRot.setByAngle(-90);
-                closeOverlayRot.play();
+                //closeOverlayRot.setByAngle(-90);
+                //closeOverlayRot.play();
                 selectionModel.getSelectedItem().setDisable(false);
             }
         });

@@ -77,11 +77,17 @@
 	-fx-accent: -swatch-400;
 	-fx-dark-text-color: white;
 
+
+
     /*My own colors - Eric L, 23/8-2017*/
-    -main-color:  -swatch-500; /*Toolbar color etc.*/ /*Cool cyan #00BCD4*/
-    -accent-color:  -swatch-300;
-    -navigation-drawer: #fafafa; /*Color of navigation menu etc*/
+    -main-color:    #3f51b5; /*Toolbar color etc.*/ /*Cool cyan #00BCD4*/
+    -accent-color:   -swatch-500;
+    -navigation-drawer: #fbfbfb; /*Color of navigation menu etc*/
+	-navigation-drawer-focused: -swatch-grey;
     -text-color: -fx-body-color;
+	-icon-color: -fx-body-color;
+	-background-color: #f1f1f1; /*The background color for the program, used underneath the cards*/
+	-content-background-color: #fbfbfb;
 }
 
 /*******************************************************************************
@@ -929,18 +935,18 @@
 
 .menu-slide{
     -fx-background-color: -navigation-drawer;/*#E91E63;*/ /*#6A5ACD*/
-         -fx-border-width: 0 0 0 0;
-        -fx-border-color: -swatch-light-grey;
-
+	-fx-border-width: 0 0 0 0;
+	-fx-border-color: -swatch-light-grey;
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.45), 6.0, 0.3, 0, 0);
 }
 .menu-slide-button{
+	-fx-min-width: 210;
     -fx-font-size: 15;
     -fx-border-width: 0 0 1 0;
     /*-fx-insets: 1 1 1 1;*/
     -fx-font-style: normal;
     -fx-font-smoothing-type: lcd;
-    -fx-font-weight: bold;
+    -fx-font-weight: normal;
     /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.45), 6.0, 0.3, 0, 1);*/
     -fx-text-fill: -fx-text-base-color;
     -fx-background-color: transparent;
@@ -948,16 +954,18 @@
     -fx-background-radius: 0px;
 }
 .menu-slide-button:hover{
-    -fx-background-color: -fx-faint-focus-color ;
+    -fx-background-color: -fx-faint-focus-color;
 }
 .menu-slide-button:focused{
-    -fx-background-color: -swatch-grey;
+    -fx-background-color: -navigation-drawer-focused;
 }
 
 .menu-slide-image{
-    -fx-background-color: #6666ff;
+    /*-fx-background-color: -accent-color;*/
     -fx-border-width: 0 0 1 0;
-    -fx-border-color: -swatch-dark-grey;
+	-fx-border-insets: 0 -5 0 0;
+    -fx-border-color: -swatch-grey;
+	-fx-background-color: transparent;
 }
 
 /*
@@ -1085,7 +1093,7 @@
 }
 
 .table-view-container{
-    -fx-background-color: fbfbfb;
+    -fx-background-color: -content-background-color;
     -fx-background-radius: 0px;
     -fx-font-weight: normal;
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 12.0, 0.3, 0,1);
@@ -1113,7 +1121,7 @@
 }
 
 .overlay-menu-button{
-    -fx-text-fill: #00BCD4;
+    -fx-text-fill: -main-color;
     -fx-font-weight: bold;
     -fx-background-radius: 0px;
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 12.0, 0.3, 0,1);
@@ -1155,12 +1163,12 @@
  ******************************************************************************/
 
 .jfx-hamburger-icon{
-    -fx-spacing:5;
+    -fx-spacing: 5; /*Controls how spread apart the lines in the hamburger are*/
     -fx-cursor: hand;
 }
 .jfx-hamburger-icon StackPane{
-    -fx-pref-width: 30px;
-    -fx-pref-height: 4px;
+    -fx-pref-width: 30px;  /*Ratio between width and height should be 5:1 for proper look, i.e. 30 to 6.*/
+    -fx-pref-height: 4px; /*The thickness of each of the lines that make up the hamburger*/
     -fx-background-color: #F8F8FF;
     -fx-background-radius: 0px;
 }
@@ -1200,13 +1208,69 @@
 
 /*******************************************************************************
  *                                                                             *
+ * Material Accordion - by ericlin 24/8                                        *
+ *                                                                             *
+ ******************************************************************************/
+
+.material-accordion{
+	-fx-font-size: 15;
+	-fx-font-weight: bold;
+	-fx-background-color: transparent;
+	-fx-box-border: transparent;
+	-fx-alignment: center;
+}
+
+.material-accordion-titled-pane{
+	-fx-font-size: 15;
+	-fx-font-weight: bold;
+	-fx-background-color: transparent;
+	-fx-border-width: 0 0 0 0;
+	-fx-alignment: center-left;
+}
+
+/*
+.material-accordion-titled-pane:collapsed {
+}
+*/
+
+.material-accordion-titled-pane > .title{
+	-fx-background-color: transparent;
+	-fx-box-border: transparent;
+	-fx-inner-border: transparent;
+}
+
+.material-accordion-titled-pane:focused > .title{
+	-fx-background-color: -navigation-drawer-focused;
+}
+.material-accordion-titled-pane:hover > .title{
+	-fx-background-color: -fx-faint-focus-color;
+}
+
+.material-accordion-titled-pane > .title > .arrow-button > .arrow{
+	-fx-background-color: transparent;
+}
+
+.material-accordion-titled-pane > .content{
+	-fx-background-color: transparent;
+	-fx-box-border: transparent;
+}
+/*******************************************************************************
+ *                                                                             *
  * Icons                                                                       *
  *                                                                             *
  ******************************************************************************/
 
-.icons{
-    -fx-font-family: FontAwesome;
-    -fx-font-size: 16px;
+/*Icon settings, including icon fill*/
+.material-icon{
+    -fx-fill: -icon-color;
+	-fx-font-smoothing-type: gray;
 }
+/*Icon container settings, i.e buttons;*/
+.material-icon-container{
+	-fx-background-color: transparent;
+	-fx-background-radius: 2px;
+}
+
+
 
 

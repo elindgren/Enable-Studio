@@ -11,7 +11,9 @@ public class MaterialAccordion extends Accordion {
 
     public MaterialAccordion(){
         super();
+        //Adding css styling
+        this.getStylesheets().add("file:src/sample/agixmaterialfx.css");
+        this.getStyleClass().add("root");
         this.getStyleClass().add("material-accordion");
-
     }
 }

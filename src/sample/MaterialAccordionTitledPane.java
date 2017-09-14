@@ -12,9 +12,11 @@ public class MaterialAccordionTitledPane extends TitledPane {
         super();
 
         //Adding css styling
-        this.getStyleClass().add("-material-accordion-titled-pane");
+        this.getStylesheets().add("file:src/sample/agixmaterialfx.css");
+        this.getStyleClass().add("root");
+        this.getStyleClass().add("material-accordion-titled-pane");
 
         //Creating rippler for ripple effect.
-        rippler = new JFXRippler(this);
+        rippler = new JFXRippler(this, JFXRippler.RipplerMask.CIRCLE, JFXRippler.RipplerPos.BACK);
     }
 }

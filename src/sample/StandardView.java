@@ -1,10 +1,6 @@
 package sample;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXProgressBar;
-import com.jfoenix.controls.JFXSlider;
-import com.sun.javaws.progress.Progress;
-import com.sun.org.apache.xpath.internal.SourceTree;
+import com.jfoenix.controls.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
@@ -17,12 +13,9 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
-import javafx.geometry.Side;
-import javafx.scene.Node;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.ValueAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -33,12 +26,14 @@ import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import org.gillius.jfxutils.chart.StableTicksAxis;
+
+import java.awt.*;
 import java.io.File;
 
 /**
  * Created by ericl on 2017-06-29.
  */
-public class StandardView implements View{
+public class StandardView implements View {
 
     private int measurementIndex = 0;
     private int frameTime = 10; //Polling rate of the cinematic view
@@ -46,7 +41,6 @@ public class StandardView implements View{
     private Data data;
     private ReadSerialPort rp;
     private JFXProgressBar progressBar;
-    private Label progressLabel;
     private ObservableList<Integer> progressList;
     private ObservableList<Integer> statusList;
 
@@ -58,30 +52,29 @@ public class StandardView implements View{
     private TableView table;
     private TableColumn xCol;
     private TableColumn yCol;
-    private LineChart<Number,Number> lineChart;
+    private LineChart<Number, Number> lineChart;
     private Graph2D graph;
     private StableTicksAxis xAxis;
     private StableTicksAxis yAxis;
 
 
     //**** Buttons ****//
-    private MenuButton chartSetting;
+    private JFXButton chartSetting;
     private JFXButton readButton;
-    private Button resetButton;
-    private Button saveButton;
+    private JFXButton resetButton;
+    private JFXButton saveButton;
     private ToggleButton chipModeToggle;
     private ToggleButton cinematicModeToggle;
 
-    private CheckMenuItem settingX;
-    private CheckMenuItem settingY;
-    private CheckMenuItem settingZ;
-    private CheckMenuItem settingClickData;
-    private CheckMenuItem settingGPSData;
-    private Menu settingAcc;
-    private MenuItem settingForceZeroInRange;
+    private JFXCheckBox settingX;
+    private JFXCheckBox settingY;
+    private JFXCheckBox settingZ;
+    private JFXCheckBox settingClickData;
+    private JFXCheckBox settingGPSData;
+    private JFXCheckBox settingForceZeroInRange;
 
     //**** SLIDER ****//
-    private JFXSlider timelineSlider;
+    private Slider timelineSlider;
 
     //**** Flags ****//
     private boolean readFromChip = false;
@@ -117,32 +110,30 @@ public class StandardView implements View{
     private boolean timelineIsStopped = false;
     private int timelineIteration = 0;
 
-    public StandardView(boolean isStandard, Tab tab, TabPane tabPane, ReadSerialPort rp, JFXProgressBar progressBar, ObservableList<Integer> progressList, Label progressLabel, ObservableList<Integer> statusList){
-        this.statusList=statusList;
-        this.progressList=progressList;
+    public StandardView(boolean isStandard, Tab tab, TabPane tabPane, ReadSerialPort rp, JFXProgressBar progressBar, ObservableList<Integer> progressList, ObservableList<Integer> statusList) {
+        this.statusList = statusList;
+        this.progressList = progressList;
         this.tabPane = tabPane;
-        this.rp=rp;
+        this.rp = rp;
         this.progressBar = progressBar;
-        this.progressLabel = progressLabel;
-        this.tab=tab;
-        data= new Data(rp);
+        this.tab = tab;
+        data = new Data(rp);
 
-        if(isStandard){
-            table = (TableView)((StackPane)((Parent)tab.getContent()).getChildrenUnmodifiable().get(0)).getChildren().get(0);
-            lineChart = (LineChart<Number, Number>)((AnchorPane)((StackPane)((Parent)tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(0)).getChildren().get(0);
-            chartSetting = (MenuButton)((AnchorPane)((StackPane)((Parent)tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(0)).getChildren().get(1);
-            xAxis=(StableTicksAxis)lineChart.getXAxis();
-            yAxis=(StableTicksAxis)lineChart.getYAxis();
+        if (isStandard) {
+            table = (TableView) ((StackPane) ((Parent) tab.getContent()).getChildrenUnmodifiable().get(0)).getChildren().get(0);
+            lineChart = (LineChart<Number, Number>) ((AnchorPane) ((StackPane) ((Parent) tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(0)).getChildren().get(0);
+            chartSetting = (JFXButton) ((AnchorPane) ((StackPane) ((Parent) tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(0)).getChildren().get(1);
+            xAxis = (StableTicksAxis) lineChart.getXAxis();
+            yAxis = (StableTicksAxis) lineChart.getYAxis();
 
-
-            onScreenPaneHover = ((AnchorPane)((StackPane)((Parent)tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(1));
-            onScreenPaneSlide = (AnchorPane)((AnchorPane)((StackPane)((Parent)tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(1)).getChildren().get(0);
-            cinematicModeToggle = (ToggleButton) ((HBox)((VBox)((Parent)onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(0)).getChildren().get(0);
-            chipModeToggle = (ToggleButton) ((HBox)((VBox)((Parent)onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(0)).getChildren().get(1);
-            readButton = (JFXButton)((HBox)((VBox)((Parent)onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(0)).getChildren().get(2);
-            resetButton = (Button)((HBox)((VBox)((Parent)onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(0)).getChildren().get(3);
-            saveButton = (Button)((HBox)((VBox)((Parent)onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(0)).getChildren().get(4);
-            timelineSlider = (JFXSlider) ((VBox)((Parent)onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(1);
+            onScreenPaneHover = ((AnchorPane) ((StackPane) ((Parent) tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(1));
+            onScreenPaneSlide = (AnchorPane) ((AnchorPane) ((StackPane) ((Parent) tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(1)).getChildren().get(0);
+            timelineSlider = (Slider) ((VBox) ((Parent) onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(0);
+            cinematicModeToggle = (ToggleButton) ((HBox) ((VBox) ((Parent) onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(1)).getChildren().get(0);
+            chipModeToggle = (ToggleButton) ((HBox) ((VBox) ((Parent) onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(1)).getChildren().get(1);
+            readButton = (JFXButton) ((HBox) ((VBox) ((Parent) onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(1)).getChildren().get(2);
+            resetButton = (JFXButton) ((HBox) ((VBox) ((Parent) onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(1)).getChildren().get(3);
+            saveButton = (JFXButton) ((HBox) ((VBox) ((Parent) onScreenPaneSlide).getChildrenUnmodifiable().get(0)).getChildren().get(1)).getChildren().get(4);
             prepareSlideButtonAnimation();
             /*
             cinematicModeToggle = (ToggleButton) ((HBox)((VBox)((Parent)tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(1)).getChildren().get(0);
@@ -152,15 +143,14 @@ public class StandardView implements View{
             saveButton = (Button)((HBox)((VBox)((Parent)tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(1)).getChildren().get(4);
             timelineSlider=(Slider)((VBox)((Parent)tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(2);
             */
-        }
-        else{
+        } else {
             BorderPane bp = new BorderPane();
-            table= new TableView();
+            table = new TableView();
             xAxis = new StableTicksAxis();
             yAxis = new StableTicksAxis();
-            lineChart = new LineChart<Number, Number>(xAxis,yAxis);
+            lineChart = new LineChart<Number, Number>(xAxis, yAxis);
 
-            chartSetting = new MenuButton();
+            chartSetting = new JFXButton();
 
 
             cinematicModeToggle = new ToggleButton("Cinematic Mode");
@@ -172,10 +162,10 @@ public class StandardView implements View{
             readButton = new JFXButton("Read");
             readButton.applyCss();
 
-            resetButton = new Button("Reset");
+            resetButton = new JFXButton("Reset");
             resetButton.applyCss();
 
-            saveButton = new Button("Save");
+            saveButton = new JFXButton("Save");
             saveButton.applyCss();
 
             timelineSlider = new JFXSlider();
@@ -197,15 +187,17 @@ public class StandardView implements View{
         setupTable();
         setupSlider();
         setupStatusListener();
-        if(statusList.get(0)==0){
+        if (statusList.get(0) == 0) {
             chipModeToggle.setDisable(true);
         }
         saveButton.setDisable(true);
+
+        //Setup of axis - making sure they are squared
     }
 
-    public void findMax(){
+    public void findMax() {
         int index = data.findMaxIndex();
-        if(!findMaxFlag) {
+        if (!findMaxFlag && statusChart) {
             System.out.println("Trying to find max");
             System.out.println("Max: " + index);
             Circle circ = new Circle(4, Color.TRANSPARENT);
@@ -215,16 +207,16 @@ public class StandardView implements View{
             table.scrollTo(index);
             table.getSelectionModel().select(index);
             findMaxFlag = true;
-        }else{
-            seriesX.getData().get(index ).getNode().setVisible(false);
-            findMaxFlag=false;
+        } else if(findMaxFlag && statusChart) {
+            seriesX.getData().get(index).getNode().setVisible(false);
+            findMaxFlag = false;
         }
 
     }
 
-    public void findMin(){
+    public void findMin() {
         int index = data.findMinIndex();
-        if(!findMinFlag) {
+        if (!findMinFlag && statusChart) {
             System.out.println("Trying to find Min");
             System.out.println("Min: " + index);
             Circle circ = new Circle(4, Color.TRANSPARENT);
@@ -233,18 +225,18 @@ public class StandardView implements View{
             lineChart.getData().setAll(seriesX);
             table.scrollTo(index);
             table.getSelectionModel().select(index);
-            findMinFlag=true;
-        }else{
+            findMinFlag = true;
+        } else if(findMinFlag && statusChart){
             seriesX.getData().get(index).getNode().setVisible(false);
             findMinFlag = false;
         }
     }
 
-    public void prepareSlideButtonAnimation(){
+    public void prepareSlideButtonAnimation() {
         TranslateTransition openSlide = new TranslateTransition(new Duration(350), onScreenPaneSlide);
         TranslateTransition openHover = new TranslateTransition(new Duration(350), onScreenPaneHover);
-        openSlide.setToY(onScreenPaneSlide.getHeight()+2);
-        openHover.setToY(onScreenPaneHover.getHeight()+2);
+        openSlide.setToY(onScreenPaneSlide.getHeight() + 2);
+        openHover.setToY(onScreenPaneHover.getHeight() + 2);
         TranslateTransition closeSlide = new TranslateTransition(new Duration(350), onScreenPaneSlide);
         TranslateTransition closeHover = new TranslateTransition(new Duration(350), onScreenPaneHover);
 
@@ -263,16 +255,16 @@ public class StandardView implements View{
     }
 
 
-    public void setupButtons(){
+    public void setupButtons() {
         //**********************************************BUTTON SETUP*******************************************//
         //******Toggle: Cinematic mode***********//
         cinematicModeToggle.setOnAction(e -> {
             if (cinematicMode) {
                 cinematicMode = false;
-                readButton.getStyleClass().set(1,"read-button");
+                readButton.getStyleClass().set(1, "read-button");
             } else {
                 cinematicMode = true;
-                readButton.getStyleClass().set(1,"play-button");
+                readButton.getStyleClass().set(1, "play-button");
             }
         });
         //*****************************************//
@@ -286,32 +278,26 @@ public class StandardView implements View{
         });
         //*****************************************//
         //**SETUP OF SETTING-box**//
-
-        settingX = new CheckMenuItem("X");
-        settingX.setGraphic(new ImageView(new Image("file:resources/images/iconsBlack/chartLineSmallBlack.png")));
+        settingX = new JFXCheckBox("X");
+        //settingX.setGraphic(new ImageView(new Image("file:resources/images/iconsBlack/chartLineSmallBlack.png")));
         settingX.setSelected(true);
         //settingX.setDisable(true);
-        settingY = new CheckMenuItem("Y");
-        settingY.setGraphic(new ImageView(new Image("file:resources/images/iconsBlack/chartLineSmallBlack.png")));
+        settingY = new JFXCheckBox("Y");
+        //settingY.setGraphic(new ImageView(new Image("file:resources/images/iconsBlack/chartLineSmallBlack.png")));
         //settingY.setDisable(true);
-        settingZ = new CheckMenuItem("Z");
-        settingZ.setGraphic(new ImageView(new Image("file:resources/images/iconsBlack/chartLineSmallBlack.png")));
+        settingZ = new JFXCheckBox("Z");
+        //settingZ.setGraphic(new ImageView(new Image("file:resources/images/iconsBlack/chartLineSmallBlack.png")));
         //settingZ.setDisable(true);
 
-        settingGPSData = new CheckMenuItem("Position");
+        settingGPSData = new JFXCheckBox("Position");
         settingGPSData.setGraphic(new ImageView(new Image("file:resources/images/iconsBlack/gpsOff.png")));
 
-        settingClickData = new CheckMenuItem("Clickable data");
+        settingClickData = new JFXCheckBox("Clickable data");
         settingClickData.setGraphic(new ImageView(new Image("file:resources/images/iconsBlack/chartClickSmallBlack.png")));
         settingClickData.setDisable(true);
 
-        settingForceZeroInRange = new MenuItem("Force zero in range");
+        settingForceZeroInRange = new JFXCheckBox("Force zero in range");
 
-        settingAcc = new Menu("Acc");
-
-        Accordion settingsAccordion = new Accordion();
-        TitledPane tp = new TitledPane("Hej", new Button("Button"));
-        settingsAccordion.getPanes().add(tp);
 
         settingX.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -319,10 +305,10 @@ public class StandardView implements View{
                 if (!settingX.isSelected() && !statusChart) {
                     settingXIsActive = true;
                 } else if (settingX.isSelected() && !statusChart) {
-                    settingX.setSelected(false);
-                }else if(!settingXIsActive && !settingX.isSelected() && statusChart && !settingYIsActive && !settingZIsActive){
-                    settingXIsActive=true;
-                }else if (!settingX.isSelected() && !settingXIsActive && statusChart) {
+                    settingXIsActive=false;
+                } else if (!settingXIsActive && !settingX.isSelected() && statusChart && !settingYIsActive && !settingZIsActive) {
+                    settingXIsActive = true;
+                } else if (settingX.isSelected() && !settingXIsActive && statusChart && seriesX.getData().size()==0) {
                     data.setupX();
                     seriesX = data.getDataSeriesY();
                     seriesX.setName("x");
@@ -349,7 +335,8 @@ public class StandardView implements View{
                     settingYIsActive = true;
                 } else if (settingYIsActive && !statusChart) {
                     settingYIsActive = false;
-                } else if (!settingY.isSelected() && !settingYIsActive && statusChart) {
+                } else if (settingY.isSelected() && !settingYIsActive && statusChart && seriesY.getData().size()==0) {   //Adding a check to keep track if the series have been loaded from data before
+                    System.out.println("3");
                     data.setupY();
                     seriesY = data.getDataSeriesY();
                     seriesY.setName("y");
@@ -375,7 +362,7 @@ public class StandardView implements View{
                     settingZIsActive = true;
                 } else if (settingZIsActive && !statusChart) {
                     settingZIsActive = false;
-                } else if (!settingZ.isSelected() && !settingZIsActive && statusChart) {
+                } else if (settingZ.isSelected() && !settingZIsActive && statusChart && seriesZ.getData().size()==0) {
                     data.setupZ();
                     seriesZ = data.getDataSeriesZ();
                     seriesZ.setName("z");
@@ -397,13 +384,12 @@ public class StandardView implements View{
         settingGPSData.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(!data.getDataMode()) {
+                if (!data.getDataMode()) {
                     data.setDataMode("GPS");
                     settingGPSData.setGraphic(new ImageView(new Image("file:resources/images/iconsBlack/gpsOn.png")));
                     xCol.setText("Long.");
                     yCol.setText("Lat.");
-                }
-                else{
+                } else {
                     /*
                     data.setDataMode("Acceleration");
                     chartSetting.getItems().add(0,settingX);
@@ -422,65 +408,171 @@ public class StandardView implements View{
         settingForceZeroInRange.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(settingForceZeroInRange.getText() == "Force zero in range"){
+                if (settingForceZeroInRange.getText() == "Force zero in range") {
                     xAxis.setForceZeroInRange(false);
                 }
             }
         });
-        Menu acc = new Menu("Acceleration");
-        //acc.getItems().setAll(settingX,settingY,settingZ);
-        Menu gps = new Menu("GPS");
-        Menu rotation = new Menu("Rotation");
-        Menu magnetic = new Menu("Magnetic");
 
-        acc.setOnAction(new EventHandler<ActionEvent>() {
+        VBox menus = new VBox();
+        menus.setAlignment(Pos.CENTER);
+        menus.setSpacing(5);
+
+        MaterialAccordion accMenu = new MaterialAccordion();
+        MaterialAccordionTitledPane acc = new MaterialAccordionTitledPane();
+        VBox settingsBoxAcc = new VBox();
+        acc.setText("Acceleration");
+        acc.setContent(settingsBoxAcc);
+        accMenu.getPanes().add(acc);
+
+        //acc.getItems().setAll(settingX,settingY,settingZ);
+
+        MaterialAccordion gpsMenu = new MaterialAccordion();
+        MaterialAccordionTitledPane gps = new MaterialAccordionTitledPane();
+        VBox settingsBoxGPS = new VBox();
+        gps.setText("GPS");
+        gps.setContent(settingsBoxGPS);
+        gpsMenu.getPanes().add(gps);
+
+        MaterialAccordion rotationMenu = new MaterialAccordion();
+        MaterialAccordionTitledPane rotation = new MaterialAccordionTitledPane();
+        VBox settingsBoxRotation = new VBox();
+        rotation.setText("Rotation");
+        rotation.setContent(settingsBoxRotation);
+        rotationMenu.getPanes().add(rotation);
+
+        MaterialAccordion magneticMenu = new MaterialAccordion();
+        MaterialAccordionTitledPane magnetic = new MaterialAccordionTitledPane();
+        VBox settingsBoxMagnetic = new VBox();
+        magnetic.setText("Magnetic");
+        magnetic.setContent(settingsBoxMagnetic);
+        magneticMenu.getPanes().add(magnetic);
+
+        MaterialAccordion utilitiesMenu = new MaterialAccordion();
+        MaterialAccordionTitledPane utilities = new MaterialAccordionTitledPane();
+        utilities.setText("Utilities");
+        utilities.setContent(settingClickData);
+        utilitiesMenu.getPanes().add(utilities);
+
+
+        menus.getChildren().setAll(accMenu, gpsMenu, rotationMenu, magneticMenu, utilitiesMenu);
+
+        /*
+        acc = new Menu();
+        gps = new Menu();
+        rotation = new Menu();
+        magnetic = new Menu();
+        */
+
+        acc.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {
             @Override
-            public void handle(ActionEvent event) {
+            public void handle(javafx.scene.input.MouseEvent event) {
                 System.out.println("Acc");
+                if (settingX.getParent() != settingsBoxAcc) {
+                    if(settingX.getParent()!= null) {
+                        ((VBox) settingX.getParent()).getChildren().removeAll(settingX, settingY, settingZ);
+                        System.out.println("Removed settings from previous contextmenu");
+                    }
+                    settingsBoxAcc.getChildren().addAll(settingX, settingY, settingZ);
+                    data.setDataMode("Acceleration");
+                    settingX.setText("X");
+                    settingY.setText("Y");
+                    settingZ.setText("Z");
+                }
+
+                /*
                 if(settingX.getParentMenu()!= null) {
                     settingX.getParentMenu().getItems().remove(0, 3); //Removing the menuitem from the other menus, if it has already been used
                     System.out.println("Removed settings from previous contextmenu");
                 }
-                acc.getItems().setAll(settingX,settingY,settingZ);
-                data.setDataMode("Acceleration");
-                settingX.setText("X");
-                settingY.setText("Y");
-                settingZ.setText("Z");
-                acc.show();
+                */
+
             }
         });
-        gps.setOnAction(new EventHandler<ActionEvent>() {
+
+        gps.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {
             @Override
-            public void handle(ActionEvent event) {
+            public void handle(javafx.scene.input.MouseEvent event) {
                 System.out.println("GPS");
-                if(settingX.getParentMenu() != null) {
-                    settingX.getParentMenu().getItems().remove(0, 3); //Removing the menuitem from the other menus, if it has already been used
+                if (settingX.getParent() != settingsBoxGPS) {
+                    if(settingX.getParent()!= null) {
+                        ((VBox) settingX.getParent()).getChildren().removeAll(settingX, settingY, settingZ);
+                        System.out.println("Removed settings from previous contextmenu");
+                    }
+                    settingsBoxGPS.getChildren().addAll(settingX, settingY, settingZ);
+                    data.setDataMode("GPS");
+                    settingX.setText("Longtitude");
+                    settingY.setText("Latitude");
+                    settingZ.setText("Altitude");
+
+                }
+                /*
+                if(settingsBox.getParent() != null) {
+                    settingsBox.getParent().getChildrenUnmodifiable().remove(settingsBox); //Removing the menuitem from the other menus, if it has already been used
                     System.out.println("Removed settings from previous contextmenu");
                 }
-                gps.getItems().setAll(settingX,settingY,settingZ,settingGPSData);
-                data.setDataMode("GPS");
-                settingX.setText("Longtitude");
-                settingY.setText("Latitude");
-                settingZ.setText("Altitude");
-                gps.show();
+                */
+
             }
         });
-        rotation.setOnAction(new EventHandler<ActionEvent>() {
+
+
+        magnetic.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {
             @Override
-            public void handle(ActionEvent event) {
-                System.out.println("Rotation");
-                if(settingX.getParentMenu() != null) {
-                    settingX.getParentMenu().getItems().remove(0, 3); //Removing the menuitem from the other menus, if it has already been used
+            public void handle(javafx.scene.input.MouseEvent event) {
+                System.out.println("Magnetic");
+                if (settingX.getParent() != settingsBoxMagnetic) {
+                    if(settingX.getParent()!= null) {
+                        ((VBox) settingX.getParent()).getChildren().removeAll(settingX, settingY, settingZ);
+                        System.out.println("Removed settings from previous contextmenu");
+                    }
+                    settingsBoxMagnetic.getChildren().addAll(settingX, settingY, settingZ);
+                    data.setDataMode("Magnetic");
+                    settingX.setText("X");
+                    settingY.setText("Y");
+                    settingZ.setText("Z");
+
+                }
+                /*
+                if(settingsBox.getParent() != null) {
+                    settingsBox.getParent().getChildrenUnmodifiable().remove(settingsBox); //Removing the menuitem from the other menus, if it has already been used
                     System.out.println("Removed settings from previous contextmenu");
                 }
-                rotation.getItems().setAll(settingX,settingY,settingZ);
-                data.setDataMode("Rotation");
-                settingX.setText("Pitch");
-                settingY.setText("Jaw");
-                settingZ.setText("Roll");
-                rotation.show();
+                */
+
             }
         });
+
+        rotation.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {
+            @Override
+            public void handle(javafx.scene.input.MouseEvent event) {
+                System.out.println("Rotation");
+                if (settingX.getParent() != settingsBoxRotation) {
+                    if(settingX.getParent()!= null) {
+                        ((VBox) settingX.getParent()).getChildren().removeAll(settingX, settingY, settingZ);
+                        System.out.println("Removed settings from previous contextmenu");
+                    }
+                    settingsBoxRotation.getChildren().addAll(settingX, settingY, settingZ);
+                    data.setDataMode("Rotation");
+                    settingX.setText("X");
+                    settingY.setText("Y");
+                    settingZ.setText("Z");
+
+                }
+                /*
+                if(settingsBox.getParent() != null) {
+                    settingsBox.getParent().getChildrenUnmodifiable().remove(settingsBox); //Removing the menuitem from the other menus, if it has already been used
+                    System.out.println("Removed settings from previous contextmenu");
+                }
+                */
+
+            }
+        });
+
+        /*
+
+
+
         magnetic.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -497,7 +589,7 @@ public class StandardView implements View{
                 magnetic.show();
             }
         });
-
+        */
         settingClickData.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -511,24 +603,37 @@ public class StandardView implements View{
             }
         });
 
-        //chartSetting.getItems().setAll(Acc, settingX, settingY, settingZ,settingClickData, settingGPSData, settingAcc, settingForceZeroInRange);
-        chartSetting.getItems().setAll(acc,rotation,gps,magnetic, settingClickData, settingForceZeroInRange);
+        //Creating a listview and adding each of the menuItems to it. This will in turn be added to the popup.
+        //JFXPopup
+        JFXPopup menuPopup = new JFXPopup(menus);
+        menuPopup.setStyle("-fx-padding: 2px;");
+
+
+        chartSetting.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>() {
+            @Override
+            public void handle(javafx.scene.input.MouseEvent event) {
+                if (!menuPopup.isShowing()) {
+                    menuPopup.show(chartSetting, JFXPopup.PopupVPosition.BOTTOM, JFXPopup.PopupHPosition.RIGHT);
+                    //menuPopup.show(chartSetting, JFXPopup.PopupVPosition.BOTTOM, JFXPopup.PopupHPosition.RIGHT, event.getX(), event.getY());
+                }
+            }
+        });
+        chartSetting.setButtonType(JFXButton.ButtonType.RAISED);
 
         //******************************BUTTONS - STATIC VIEW********************************//
         readButton.setOnAction(e -> {
-            if(cinematicMode) {
+            if (cinematicMode) {
                 System.out.println("Trying to read from chip");
                 if (readFromChip) {
                     if (statusChart && !timelineIsStopped) {
                         timeline.stop();
-                        timelineIsStopped=true;
-                    }
-                    else if(statusChart && timelineIsStopped) {
+                        timelineIsStopped = true;
+                    } else if (statusChart && timelineIsStopped) {
                         timeline.play();
-                        timelineIsStopped=false;
+                        timelineIsStopped = false;
                         //System.out.println("Graph reset");
                         //resetGraph();
-                    }else {
+                    } else {
                         readChipCinematic();
                     }
                     //statusChart=true;
@@ -537,19 +642,18 @@ public class StandardView implements View{
                 this.startAnimatedTimeline("chip");
                 */
                 } else {
-                    if(statusChart && !timelineIsFinished && !timelineIsStopped){
+                    if (statusChart && !timelineIsFinished && !timelineIsStopped) {
                         System.out.println("Stopping timeline");
                         stopAnimatedTimeline();
                         timelineIsStopped = true;
-                    }
-                    else if (statusChart && timelineIsFinished && timelineIteration + 1 == dataListX.size()) {
+                    } else if (statusChart && timelineIsFinished && timelineIteration + 1 == dataListX.size()) {
                         System.out.println("Resetting chart");
                         resetGraph();
                         readFileCinematic();
                     } else if (!timelineIsFinished && statusChart || (timelineIteration + 1 != dataListX.size() && timelineIsFinished)) {
                         //timeline.play();
                         System.out.println("Starting timeline");
-                        timelineIsStopped=false;
+                        timelineIsStopped = false;
                         startAnimatedTimeline("file");
                     } else {
                         readFileCinematic();
@@ -564,8 +668,7 @@ public class StandardView implements View{
                 saveButton.setDisable(false);
 
                 System.out.println("readStatic");
-            }
-            else{
+            } else {
                 //Logic for determining whether to read from chip or from disk
                 if (readFromChip) {
                     if (statusChart) {
@@ -578,21 +681,20 @@ public class StandardView implements View{
                             //Fetching data for table
                             System.out.println("Reading data");
 
-                            if(settingXIsActive) {
+                            if (settingXIsActive) {
                                 System.out.println("reading x...");
                                 data.readFile(null, true, progressList);
                             }
-                            if(settingYIsActive){
+                            if (settingYIsActive) {
                                 data.readFile(null, true, progressList);
                             }
-                            if(settingZIsActive){
+                            if (settingZIsActive) {
                                 data.readFile(null, true, progressList);
                             }
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
                                     initStaticGraph();
-                                    progressLabel.setText("Done");
                                 }
                             });
                             return null;
@@ -601,7 +703,6 @@ public class StandardView implements View{
                     Thread th = new Thread(readTask);
                     System.out.println("Starting new readThread");
                     progressBar.setVisible(true);
-                    progressLabel.setVisible(true);
                     th.start();
 
                     statusChart = true;
@@ -631,17 +732,17 @@ public class StandardView implements View{
                             @Override
                             protected Void call() {
                                 System.out.println("Reading data");
-                                if(settingXIsActive) {
+                                if (settingXIsActive) {
                                     System.out.println("Reading x");
                                     //data.setData(1,10);
                                     data.readFile(file, false, progressList);
                                 }
-                                if(settingYIsActive){
+                                if (settingYIsActive) {
                                     System.out.println("Reading y");
                                     //data.setData(1,11);
                                     data.readFile(file, false, progressList);
                                 }
-                                if(settingZIsActive){
+                                if (settingZIsActive) {
                                     System.out.println("Reading z");
                                     //data.setData(1,12);
                                     data.readFile(file, false, progressList);
@@ -652,8 +753,6 @@ public class StandardView implements View{
                                     public void run() {
                                         initStaticGraph();
                                         progressBar.setVisible(false);
-                                        progressLabel.setVisible(false);
-                                        progressLabel.setText("Done");
                                     }
                                 });
                                 return null;
@@ -663,7 +762,6 @@ public class StandardView implements View{
                         //progressBarStaticView.setProgress(0);
                         System.out.println("Starting new readThread");
                         progressBar.setVisible(true);
-                        progressLabel.setVisible(true);
                         th.start();
 
                         statusChart = true;
@@ -675,7 +773,7 @@ public class StandardView implements View{
                         saveButton.setDisable(false);
 
                         System.out.println("readStatic");
-                    }else{
+                    } else {
                         System.out.println("File not found! Please try again. This is here to prevent an exception");
                     }
                     /*
@@ -734,14 +832,13 @@ public class StandardView implements View{
 
             File file = fileChoose.showOpenDialog(tabPane.getScene().getWindow());
             if (file != null) {
-                saveTask = new Task<Void>(){
-                    protected Void call(){
+                saveTask = new Task<Void>() {
+                    protected Void call() {
                         data.writeFile(file, progressList, readFromChip);
 
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                progressLabel.setVisible(false);
                                 progressBar.setVisible(false);
                             }
                         });
@@ -750,15 +847,15 @@ public class StandardView implements View{
                 };
                 Thread thread = new Thread(saveTask);
                 thread.start();
-                progressLabel.setVisible(true);
                 progressBar.setVisible(true);
-            }else{
+            } else {
                 System.out.println("Error in saveButton: valid file must be supplied");
             }
 
         });
     }
-    public void setupStatusListener(){
+
+    public void setupStatusListener() {
         statusList.addListener(new ListChangeListener<Integer>() {
             @Override
             public void onChanged(Change<? extends Integer> c) {
@@ -780,25 +877,25 @@ public class StandardView implements View{
         table.getColumns().setAll(xCol, yCol);
         //Setup of series
 
-        if(settingX.isSelected()) {
+        if (settingX.isSelected()) {
             seriesX = data.getDataSeriesX();
             graph = new Graph2D(lineChart, seriesX, xAxis, yAxis, "readStatic");
             graph.setup("x");
-            if(!settingY.isSelected() && !settingZ.isSelected()) {
+            if (!settingY.isSelected() && !settingZ.isSelected()) {
                 System.out.println("Only x will be printed");
-            }else if(settingY.isSelected() && !settingZ.isSelected()){
+            } else if (settingY.isSelected() && !settingZ.isSelected()) {
                 data.setupY();
                 seriesY = data.getDataSeriesY();
                 seriesY.setName("y");
                 lineChart.getData().add(seriesY);
                 settingYIsActive = true;
-            }else if(!settingY.isSelected() && settingZ.isSelected()){
+            } else if (!settingY.isSelected() && settingZ.isSelected()) {
                 data.setupZ();
                 seriesZ = data.getDataSeriesZ();
                 seriesZ.setName("z");
                 lineChart.getData().add(seriesZ);
                 settingZIsActive = true;
-            }else if(settingY.isSelected() && settingZ.isSelected()){
+            } else if (settingY.isSelected() && settingZ.isSelected()) {
                 data.setupY();
                 seriesY = data.getDataSeriesY();
                 seriesY.setName("y");
@@ -811,26 +908,25 @@ public class StandardView implements View{
                 lineChart.getData().add(seriesZ);
                 settingZIsActive = true;
             }
-        }
-        else if(settingY.isSelected()) {
+        } else if (settingY.isSelected()) {
             seriesY = data.getDataSeriesY();
             graph = new Graph2D(lineChart, seriesY, xAxis, yAxis, "readStatic");
             graph.setup("y");
-            if(!settingX.isSelected() && !settingZ.isSelected()) {
+            if (!settingX.isSelected() && !settingZ.isSelected()) {
                 System.out.println("Only y will be printed");
-            }else if(settingX.isSelected() && !settingZ.isSelected()){
+            } else if (settingX.isSelected() && !settingZ.isSelected()) {
                 data.setupX();
                 seriesX = data.getDataSeriesX();
                 seriesX.setName("x");
                 lineChart.getData().add(seriesX);
                 settingXIsActive = true;
-            }else if(!settingX.isSelected() && settingZ.isSelected()){
+            } else if (!settingX.isSelected() && settingZ.isSelected()) {
                 data.setupZ();
                 seriesZ = data.getDataSeriesZ();
                 seriesZ.setName("z");
                 lineChart.getData().add(seriesZ);
                 settingZIsActive = true;
-            }else if(settingX.isSelected() && settingZ.isSelected()){
+            } else if (settingX.isSelected() && settingZ.isSelected()) {
                 data.setupX();
                 seriesX = data.getDataSeriesX();
                 seriesX.setName("x");
@@ -843,26 +939,25 @@ public class StandardView implements View{
                 lineChart.getData().add(seriesZ);
                 settingZIsActive = true;
             }
-        }
-        else if(settingZ.isSelected()) {
+        } else if (settingZ.isSelected()) {
             seriesY = data.getDataSeriesY();
             graph = new Graph2D(lineChart, seriesY, xAxis, yAxis, "readStatic");
             graph.setup("z");
-            if(!settingX.isSelected() && !settingY.isSelected()) {
+            if (!settingX.isSelected() && !settingY.isSelected()) {
                 System.out.println("Only y will be printed");
-            }else if(settingX.isSelected() && !settingY.isSelected()){
+            } else if (settingX.isSelected() && !settingY.isSelected()) {
                 data.setupX();
                 seriesX = data.getDataSeriesX();
                 seriesX.setName("x");
                 lineChart.getData().add(seriesX);
                 settingXIsActive = true;
-            }else if(!settingX.isSelected() && settingY.isSelected()){
+            } else if (!settingX.isSelected() && settingY.isSelected()) {
                 data.setupY();
                 seriesY = data.getDataSeriesY();
                 seriesY.setName("y");
                 lineChart.getData().add(seriesY);
                 settingYIsActive = true;
-            }else if(settingX.isSelected() && settingY.isSelected()){
+            } else if (settingX.isSelected() && settingY.isSelected()) {
                 data.setupX();
                 seriesX = data.getDataSeriesX();
                 seriesX.setName("x");
@@ -875,8 +970,7 @@ public class StandardView implements View{
                 lineChart.getData().add(seriesY);
                 settingYIsActive = true;
             }
-        }
-        else{
+        } else {
 
             seriesX = data.getDataSeriesX();
             graph = new Graph2D(lineChart, seriesX, xAxis, yAxis, "readStatic");
@@ -886,37 +980,37 @@ public class StandardView implements View{
     }
 
     public void resetGraph() {
-        if(timeline != null && statusChart && !timelineIsFinished && !timelineIsStopped) {
+        if (timeline != null && statusChart && !timelineIsFinished && !timelineIsStopped) {
             System.out.println("Stopping timeline");
             timeline.stop();
         }
 
-        if(settingClickData.selectedProperty().get()){ //resetting ClickableData
+        if (settingClickData.selectedProperty().get()) { //resetting ClickableData
             graph.setDataClickable(clickStatusChart);
-            clickStatusChart=false;
+            clickStatusChart = false;
             settingClickData.setSelected(false);
         }
 
-        if(settingX.selectedProperty().getValue()){
+        if (settingX.selectedProperty().getValue()) {
             lineChart.getData().removeAll(seriesX);
-            seriesX= new XYChart.Series<>();
+            seriesX = new XYChart.Series<>();
             //settingXIsActive=false;
             //settingX.setText("Show x");
-        }else{
-            settingXIsActive=true; //Due to it being default
+        } else {
+            settingXIsActive = true; //Due to it being default
             settingX.setSelected(true);
         }
-        if(settingY.selectedProperty().getValue()){
+        if (settingY.selectedProperty().getValue()) {
             lineChart.getData().removeAll(seriesY);
-            seriesY= new XYChart.Series<>();
+            seriesY = new XYChart.Series<>();
             settingY.setSelected(false);
-            settingYIsActive=false;
+            settingYIsActive = false;
         }
-        if(settingZ.selectedProperty().getValue()){
+        if (settingZ.selectedProperty().getValue()) {
             lineChart.getData().removeAll(seriesZ);
-            seriesZ= new XYChart.Series<>();
+            seriesZ = new XYChart.Series<>();
             settingZ.setSelected(false);
-            settingZIsActive=false;
+            settingZIsActive = false;
         }
 
 
@@ -924,18 +1018,19 @@ public class StandardView implements View{
         settingGPSData.setSelected(false);
         settingGPSData.setGraphic(new ImageView(new Image("file:resources/images/iconsBlack/gpsOff.png")));
 
+        findMaxFlag=false;
+        findMinFlag=false;
 
         /*
         settingX.setDisable(true);
         settingY.setDisable(true);
         settingZ.setDisable(true);
         */
-        timelineIsFinished=false;
-        timelineIsStopped=false;
-        timelineIteration=0;
-        timelineSlider.setVisible(false);
+        timelineIsFinished = false;
+        timelineIsStopped = false;
+        timelineIteration = 0;
+        timelineSlider.setDisable(true);
         progressBar.setVisible(false);
-        progressLabel.setVisible(false);
         saveButton.setDisable(true);
 
         data.resetData();
@@ -944,7 +1039,7 @@ public class StandardView implements View{
 
     //***************************************************************************************************************//
 
-    public void setupTable(){
+    public void setupTable() {
         //*************SETUP OF STATIC TABLEVIEW***************//
         //Setup of static TableView.
         table.setEditable(true);
@@ -952,7 +1047,7 @@ public class StandardView implements View{
         xCol = new TableColumn("Time, <s>");
         TableCol xColStatic = new TableCol(xCol, "x");
         //Y-column
-        yCol=  new TableColumn("Acc, <m/s^2>");
+        yCol = new TableColumn("Acc, <m/s^2>");
         TableCol yColStatic = new TableCol(yCol, "y");
         //****************************************************//
     }
@@ -967,24 +1062,24 @@ public class StandardView implements View{
         table.getColumns().setAll(xCol, yCol);
 
 
-        if(settingX.isSelected()) {
+        if (settingX.isSelected()) {
             graph = new Graph2D(lineChart, seriesX, xAxis, yAxis, "readStatic");
             graph.setup("x");
-            if(!settingY.isSelected() && !settingZ.isSelected()) {
+            if (!settingY.isSelected() && !settingZ.isSelected()) {
                 System.out.println("Only x will be printed");
-            }else if(settingY.isSelected() && !settingZ.isSelected()){
+            } else if (settingY.isSelected() && !settingZ.isSelected()) {
                 data.setupY();
                 dataListY = data.getDataY();
                 seriesY.setName("y");
                 lineChart.getData().add(seriesY);
                 settingYIsActive = true;
-            }else if(!settingY.isSelected() && settingZ.isSelected()){
+            } else if (!settingY.isSelected() && settingZ.isSelected()) {
                 data.setupZ();
                 dataListZ = data.getDataZ();
                 seriesZ.setName("z");
                 lineChart.getData().add(seriesZ);
                 settingZIsActive = true;
-            }else if(settingY.isSelected() && settingZ.isSelected()){
+            } else if (settingY.isSelected() && settingZ.isSelected()) {
                 data.setupY();
                 dataListY = data.getDataY();
                 seriesY.setName("y");
@@ -997,25 +1092,24 @@ public class StandardView implements View{
                 lineChart.getData().add(seriesZ);
                 settingZIsActive = true;
             }
-        }
-        else if(settingY.isSelected()) {
+        } else if (settingY.isSelected()) {
             graph = new Graph2D(lineChart, seriesY, xAxis, yAxis, "readStatic");
             graph.setup("y");
-            if(!settingX.isSelected() && !settingZ.isSelected()) {
+            if (!settingX.isSelected() && !settingZ.isSelected()) {
                 System.out.println("Only y will be printed");
-            }else if(settingX.isSelected() && !settingZ.isSelected()){
+            } else if (settingX.isSelected() && !settingZ.isSelected()) {
                 data.setupX();
                 dataListX = data.getDataX();
                 seriesX.setName("x");
                 lineChart.getData().add(seriesX);
                 settingXIsActive = true;
-            }else if(!settingX.isSelected() && settingZ.isSelected()){
+            } else if (!settingX.isSelected() && settingZ.isSelected()) {
                 data.setupZ();
                 dataListZ = data.getDataZ();
                 seriesZ.setName("z");
                 lineChart.getData().add(seriesZ);
                 settingZIsActive = true;
-            }else if(settingX.isSelected() && settingZ.isSelected()){
+            } else if (settingX.isSelected() && settingZ.isSelected()) {
                 data.setupX();
                 dataListX = data.getDataX();
                 seriesX.setName("x");
@@ -1028,25 +1122,24 @@ public class StandardView implements View{
                 lineChart.getData().add(seriesZ);
                 settingZIsActive = true;
             }
-        }
-        else if(settingY.isSelected()) {
+        } else if (settingY.isSelected()) {
             graph = new Graph2D(lineChart, seriesY, xAxis, yAxis, "readStatic");
             graph.setup("z");
-            if(!settingX.isSelected() && !settingY.isSelected()) {
+            if (!settingX.isSelected() && !settingY.isSelected()) {
                 System.out.println("Only y will be printed");
-            }else if(settingX.isSelected() && !settingY.isSelected()){
+            } else if (settingX.isSelected() && !settingY.isSelected()) {
                 data.setupX();
                 dataListX = data.getDataX();
                 seriesX.setName("x");
                 lineChart.getData().add(seriesX);
                 settingXIsActive = true;
-            }else if(!settingX.isSelected() && settingY.isSelected()){
+            } else if (!settingX.isSelected() && settingY.isSelected()) {
                 data.setupY();
                 dataListZ = data.getDataZ();
                 seriesY.setName("y");
                 lineChart.getData().add(seriesY);
                 settingYIsActive = true;
-            }else if(settingX.isSelected() && settingY.isSelected()){
+            } else if (settingX.isSelected() && settingY.isSelected()) {
                 data.setupX();
                 dataListX = data.getDataX();
                 seriesX.setName("x");
@@ -1059,8 +1152,7 @@ public class StandardView implements View{
                 lineChart.getData().add(seriesY);
                 settingYIsActive = true;
             }
-        }
-        else{
+        } else {
             seriesX = data.getDataSeriesX();
             graph = new Graph2D(lineChart, seriesX, xAxis, yAxis, "readAnimated");
             graph.setup("x");
@@ -1075,20 +1167,20 @@ public class StandardView implements View{
         //****************** EVENT HANDLER FOR KEYFRAME ***************************//
         EventHandler onFinishedFile = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
-                if(settingXIsActive) {
+                if (settingXIsActive) {
                     XYChart.Data<Number, Number> datapoint = new XYChart.Data<>(dataListX.get(timelineIteration).getX(), dataListX.get(timelineIteration).getY());
                     seriesX.getData().add(datapoint);
                 }
-                if(settingYIsActive){
+                if (settingYIsActive) {
                     XYChart.Data<Number, Number> datapoint = new XYChart.Data<>(dataListY.get(timelineIteration).getX(), dataListY.get(timelineIteration).getY());
                     seriesY.getData().add(datapoint);
                 }
-                if(settingZIsActive){
+                if (settingZIsActive) {
                     XYChart.Data<Number, Number> datapoint = new XYChart.Data<>(dataListZ.get(timelineIteration).getX(), dataListZ.get(timelineIteration).getY());
                     seriesZ.getData().add(datapoint);
                 }
 
-                double progress = Math.round(((double) timelineIteration / dataListX  .size()) * 100);
+                double progress = Math.round(((double) timelineIteration / dataListX.size()) * 100);
                 System.out.println("Progress: " + progress);
                 System.out.println("timeline Iteration: " + timelineIteration);
                 timelineSlider.setValue(progress);
@@ -1104,19 +1196,19 @@ public class StandardView implements View{
 
                 for (int i = 0; i < series.getData().size(); i++) {
                     //seriesX.getData().setAll(series.getData().get(i)); //TODO, CLEAR UP
-                    if(series.getData().get(series.getData().size()-1)!=null) { //If reaches the end without the file having stopped.
+                    if (series.getData().get(series.getData().size() - 1) != null) { //If reaches the end without the file having stopped.
                     }
-                        //seriesX = series;
-                        if (settingXIsActive) {
-                            seriesX = data.getDataSeriesX();
-                        }
+                    //seriesX = series;
+                    if (settingXIsActive) {
+                        seriesX = data.getDataSeriesX();
+                    }
 
-                        if (settingYIsActive) {
-                            seriesY = data.getDataSeriesY();
-                        }
-                        if (settingZIsActive) {
-                            seriesZ = data.getDataSeriesZ();
-                        }
+                    if (settingYIsActive) {
+                        seriesY = data.getDataSeriesY();
+                    }
+                    if (settingZIsActive) {
+                        seriesZ = data.getDataSeriesZ();
+                    }
                 }
 
                 /*
@@ -1137,7 +1229,7 @@ public class StandardView implements View{
         timeline = new Timeline();
         if (str == "file") {
             System.out.println("entered file");
-            timeline.setCycleCount(dataListX.size()- timelineIteration); //Cycles of the timeline finishing according to the size of the series //
+            timeline.setCycleCount(dataListX.size() - timelineIteration); //Cycles of the timeline finishing according to the size of the series //
             //timeline.setAutoReverse(true);
             timelineIsFinished = false;
             timeline.setOnFinished(new EventHandler<ActionEvent>() {
@@ -1163,14 +1255,14 @@ public class StandardView implements View{
     }
 
     public void startAnimatedTimeline(String str) {
-        readButton.getStyleClass().set(1,"pause-button");
+        readButton.getStyleClass().set(1, "pause-button");
         timelineAnimated(str);
-        timelineSlider.setVisible(true);
+        timelineSlider.setDisable(false);
         timeline.play();
     }
 
     public void stopAnimatedTimeline() {
-        readButton.getStyleClass().set(1,"play-button");
+        readButton.getStyleClass().set(1, "play-button");
         System.out.println("Timeline stopped");
         timeline.stop();
     }
@@ -1189,20 +1281,20 @@ public class StandardView implements View{
                 @Override
                 protected Void call() {
                     System.out.println("Reading data from file...");
-                    if(settingXIsActive) {
+                    if (settingXIsActive) {
                         System.out.println("Reading x");
-                        data.setData(1,10);
+                        data.setData(1, 10);
                         data.readContinouslyFromFile(file, false, progressList);
                     }
-                    if(settingYIsActive){
+                    if (settingYIsActive) {
                         System.out.println("Reading y");
-                        data.setData(1,11);
+                        data.setData(1, 11);
                         data.readContinouslyFromFile(file, false, progressList);
                     }
-                    if(settingZIsActive){
+                    if (settingZIsActive) {
                         System.out.println("Reading z");
-                        data.setData(1,12);
-                        data.readContinouslyFromFile(file,  false, progressList);
+                        data.setData(1, 12);
+                        data.readContinouslyFromFile(file, false, progressList);
                     }
                     System.out.println("Read successful");
                     Platform.runLater(new Runnable() {
@@ -1222,7 +1314,7 @@ public class StandardView implements View{
             //progressBarStaticView.setVisible(true);
             //progressLabelStaticView.setVisible(true);
             th.start();
-        }else{
+        } else {
             System.out.println("File not found! Please try again. This is here to prevent an exception");
         }
     }
@@ -1248,7 +1340,6 @@ public class StandardView implements View{
             }
         };
         progressBar.setVisible(false);
-        progressLabel.setVisible(false);
         Thread th = new Thread(readTask);
         System.out.println("Starting new readThread: from chip");
         th.start();
@@ -1257,7 +1348,7 @@ public class StandardView implements View{
     }
     //***************************************************************************************************************//
 
-    public void setupSlider(){
+    public void setupSlider() {
         //**********************SLIDER SETUP*********************//
         timelineSlider.valueProperty().addListener(new ChangeListener<Number>() {
             @Override

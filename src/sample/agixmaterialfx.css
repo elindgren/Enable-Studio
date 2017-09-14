@@ -80,14 +80,16 @@
 
 
     /*My own colors - Eric L, 23/8-2017*/
-    -main-color:    #3f51b5; /*Toolbar color etc.*/ /*Cool cyan #00BCD4*/
-    -accent-color:   -swatch-500;
-    -navigation-drawer: #fbfbfb; /*Color of navigation menu etc*/
+    -main-color:    #37474f; /*Toolbar color etc.*/ /*Cool cyan #00BCD4*/
+    -accent-color:  #00c853;
+    -navigation-drawer: white; /*Color of navigation menu etc*/
 	-navigation-drawer-focused: -swatch-grey;
-    -text-color: -fx-body-color;
+    -text-color:  -fx-body-color;
 	-icon-color: -fx-body-color;
 	-background-color: #f1f1f1; /*The background color for the program, used underneath the cards*/
-	-content-background-color: #fbfbfb;
+	-content-background-color: white;
+	-on-screen-button-color: white;
+	-accent-hover-color: #00e676;
 }
 
 /*******************************************************************************
@@ -170,22 +172,27 @@
 }
 
 .toggle-button:focused, .button:focused, .button:default:focused {
-	-fx-background-color: -swatch-light-grey;
+	/*-fx-background-color: -swatch-light-grey;*/
 }
 
 .toggle-button:focused:selected {
+	/*
 	-fx-background-color: derive(-swatch-500, 50.0%),
 		derive(-swatch-500, -20.0%);
+		*/
+	/*-fx-background-color: -accent-color;*/
+    /*-fx-background-color: -accent-color;*/
 	-fx-background-insets: 0.0, 0.2em;
 	-fx-text-fill: -fx-text-button-colored;
 }
 
 .toggle-button:armed, .toggle-button:selected, .button:armed, .button:default:armed
 	{
-	-fx-background-color: -swatch-grey;
+	/*-fx-background-color: -swatch-grey;*/
+    -fx-background-color: -accent-color;
 	-fx-text-fill: -fx-text-button-colored;
 }
-
+/*
 .icon-button {
 	-fx-background-color: transparent;
 	-fx-pref-height: 42;
@@ -199,9 +206,7 @@
 	-fx-font-family: 'MaterialDesignIconicFont';
 	-fx-font-size: 24px;
 }
-
-
-
+*/
 
 /* ------------------------*/
 
@@ -882,7 +887,7 @@
 
 .menu-bar-redo{
     /*-fx-graphic: url('file:resources/images/iconsViolet/redoLargeWhiteViolet.png');*/
-    /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1);  Makes it look lika a protruding button. Remove? */
+    /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1);  Makes it look lika a protruding button. Remove?*/
     -fx-background-insets: 4 4 4 4, 0, 1, 2;
 }
 
@@ -902,7 +907,7 @@
 .menu-bar-status-box{
     -fx-background-color: -accent-color;
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.40), 6.0, 0.3, 0, 1);
-    -fx-background-insets: -2 -2 -2 -2, 0 , 1, 2;
+    /*-fx-background-insets: -2 -2 -2 -2, 0 , 1, 2;*/
 }
 
 .menu-bar-status-refresh{
@@ -954,10 +959,13 @@
     -fx-background-radius: 0px;
 }
 .menu-slide-button:hover{
-    -fx-background-color: -fx-faint-focus-color;
+	/*-fx-background-color: -navigation-drawer-focused;*/
+	-fx-text-fill: -navigation-drawer-focused;
+
 }
 .menu-slide-button:focused{
-    -fx-background-color: -navigation-drawer-focused;
+	-fx-background-color: -accent-hover-color;
+	-fx-background-insets: 0 200 0 -4;
 }
 
 .menu-slide-image{
@@ -966,6 +974,24 @@
 	-fx-border-insets: 0 -5 0 0;
     -fx-border-color: -swatch-grey;
 	-fx-background-color: transparent;
+}
+
+.menu-slide-scroll-pane{
+	-fx-background-color: transparent;
+}
+.menu-slide-scroll-pane > .viewport{
+	-fx-background-color: transparent; /*For making the scroll pane transparent*/
+}
+
+.menu-slide-version-label-container{
+	-fx-border-width: 1 0 0 0;
+	-fx-border-color: -swatch-grey;
+	-fx-background-color: #f1f1f1;
+}
+
+.menu-slide-version-label{
+	-fx-font-size: 15;
+	-fx-font-style: italic;
 }
 
 /*
@@ -981,6 +1007,7 @@
     -fx-padding: 0px;
     -fx-accent: derive(-swatch-500, 50.0%), derive(-swatch-500, -20.0%);
 }
+
 */
 
 
@@ -994,8 +1021,9 @@
 /***ADDED ericlin 22/6-17***/
 
 .on-screen-slide{
-    -fx-background-color: rgba(255, 255, 255, 0.5);
-    -fx-border-width: 1 1 1 1;
+    /*-fx-background-color: rgba(255, 255, 255, 0.5);*/
+	-fx-background-color: linear-gradient(transparent, rgba(255, 255, 255, 0.5));
+    -fx-border-width: 0 0 0 0;
     -fx-border-color: -swatch-grey;
     -fx-background-radius: 2px;
     -fx-effect: dropshadow(gaussian, rgb(0.0,0.0,0.0,0.30), 6.0, 0.3, 0, 1);
@@ -1007,16 +1035,20 @@
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look like a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
     -fx-background-radius: 2px;
-    -fx-background-color:  #F8F8FF;
+    -fx-background-color:  -on-screen-button-color;
 }
 
 .chart-settings{
     /*-fx-background-color: -swatch-200;*/
     -fx-graphic: url('file:resources/images/iconsBlack/chartSettingsSmallBlack.png');
-    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look like a protruding button. Remove? */
-    -fx-background-insets: 3 3 3 3, 0, 1, 2;
-    -fx-background-radius: 2px;
-	-fx-background-color:  #F8F8FF;
+    /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look like a protruding button. Remove? */
+    -fx-background-insets: -3 -3 -3 -3, 0, 1, 2;
+    -fx-background-radius: 50px;
+	-fx-background-color: -accent-color; /*-on-screen-button-color;*/
+
+	/*-fx-border-width:   3 3 3 3;
+	-fx-border-color: derive(-accent-color, 20%), derive(-accent-hover-color, -20.0%);
+	*/
 }
 
 .read-button{
@@ -1024,7 +1056,7 @@
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
     -fx-background-radius: 2px;
-	-fx-background-color:  #F8F8FF;
+	-fx-background-color:  -on-screen-button-color;
 }
 
 .play-button {
@@ -1033,7 +1065,7 @@
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look like a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
     -fx-background-radius: 2px;
-    -fx-background-color:  #F8F8FF;
+    -fx-background-color:  -on-screen-button-color;
 }
 
 .pause-button {
@@ -1042,7 +1074,7 @@
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
     -fx-background-radius: 2px;
-    -fx-background-color:  #F8F8FF;
+    -fx-background-color:  -on-screen-button-color;
 }
 
 .reset-button {
@@ -1051,7 +1083,7 @@
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
     -fx-background-radius: 2px;
-    -fx-background-color:  #F8F8FF;
+    -fx-background-color:  -on-screen-button-color;
 }
 
 .chip-button {
@@ -1060,7 +1092,7 @@
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
     -fx-background-radius: 2px;
-    -fx-background-color:  #F8F8FF;
+    -fx-background-color:  -on-screen-button-color;
 }
 
 .chart-click {
@@ -1069,7 +1101,7 @@
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
     -fx-background-radius: 2px;
-    -fx-background-color:  #F8F8FF;
+    -fx-background-color:  -on-screen-button-color;
 }
 
 .cinematic-button {
@@ -1078,7 +1110,7 @@
     -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
     -fx-background-insets: 3 3 3 3, 0, 1, 2;
     -fx-background-radius: 2px;
-    -fx-background-color:  #F8F8FF;
+    -fx-background-color:  -on-screen-button-color;
 }
 
 /*************************************************************************
@@ -1138,21 +1170,42 @@
  * JFX-Slider                                                                  *
  *                                                                             *
  ******************************************************************************/
-.slider {
-    -fx-padding: 10 0 10 0;
+.jfx-slider-style {
+    /*-fx-padding: 10 0 10 0;*/
+	-fx-min-height: 5px;
+	-fx-min-width: 5px;
+	/*-fx-background-insets: 3 3 3 3, 0, 1, 2;*/
 }
 
-.slider:vertical {
-    -fx-padding: 0 10 0 10;
+.jfx-slider-style:vertical {
+    /*-fx-padding: 0 10 0 10;*/
 }
 
-.slider>.track {
-    -fx-background-color: -swatch-grey;
-    -fx-background-insets: 1.5;
+.jfx-slider-style:disabled{
+	-fx-opacity: 1;
 }
 
-.slider>.thumb {
-    -fx-background-color: -main-color;
+.jfx-slider-style .track{
+	-fx-background-color: -accent-color;
+	-fx-pref-height: 5px;
+	-fx-pref-width: 5px;
+}
+
+.jfx-slider-style:disabled .track{
+	-fx-background-color: -accent-color;
+	-fx-pref-height: 5px;
+	-fx-pref-width: 5px;
+}
+
+.jfx-slider-style>.thumb {
+    -fx-background-color: -accent-color;
+}
+
+
+.jfx-slider-style:disabled>.thumb {
+	-fx-pref-width: 0;
+	-fx-pref-height: 0;
+	-fx-background-color: transparent;
 }
 
 
@@ -1180,8 +1233,8 @@
  ******************************************************************************/
 
 .jfx-progressbar{
-    -fx-background-color: -fx-faint-focus-color;
-    -fx-fill: -fx-faint-focus-color;
+    -fx-background-color: -accent-color;
+    -fx-fill: -accent-color;
 }
 
 .jfx-progress-bar>.track {
@@ -1191,7 +1244,7 @@
 }
 
 .jfx-progress-bar>.bar {
-    -fx-background-color: -fx-faint-focus-color;
+    -fx-background-color: -accent-color;
     -fx-background-radius: 2.0;
     -fx-background-insets: 0.0;
     -fx-border-width: 0.0;
@@ -1243,7 +1296,7 @@
 	-fx-background-color: -navigation-drawer-focused;
 }
 .material-accordion-titled-pane:hover > .title{
-	-fx-background-color: -fx-faint-focus-color;
+	-fx-background-color: -accent-hover-color;;
 }
 
 .material-accordion-titled-pane > .title > .arrow-button > .arrow{
@@ -1271,6 +1324,27 @@
 	-fx-background-radius: 2px;
 }
 
+/*******************************************************************************
+ *                                                                             *
+ * Enable Studio Label                                                         *
+ *                                                                             *
+ ******************************************************************************/
 
+.enable-studio-label{
+	-fx-font-size: 24px;
+	-fx-font-weight: bold;
+	-fx-text-fill: black;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * JFX-Popup                                                                   *
+ *                                                                             *
+ ******************************************************************************/
+
+.jfx-popup{
+	-fx-background-radius: 4px;
+	-fx-padding: 2px;
+}
 
 

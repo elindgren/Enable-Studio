@@ -93,8 +93,6 @@ public class Controller implements Initializable {
     @FXML
     private Button refreshButton;
     @FXML
-    private Label progressLabel;
-    @FXML
     private JFXProgressBar progressBar;
     @FXML
     private Circle statusCircle;
@@ -141,7 +139,7 @@ public class Controller implements Initializable {
         progressList.add(0, 0);
         progressList.add(1, 1);
         statusListView.add(0,0);
-        StandardView std = new StandardView(true,tab2D,tabPane, rp, progressBar, progressList,progressLabel, statusListView);
+        StandardView std = new StandardView(true,tab2D,tabPane, rp, progressBar, progressList, statusListView);
         viewList.add(std);
 
         //**********************SETUP*******************//
@@ -162,7 +160,7 @@ public class Controller implements Initializable {
     //*********************************************SETUP METHODS******************************************************//
     private void setup3D(){
         //***********************3D-view setup*******************//
-        View3D view3d = new View3D(true, tabPane, tab3D, rp , progressBar, progressList, progressLabel, statusList, group3D, scatterGroup);
+        View3D view3d = new View3D(true, tabPane, tab3D, rp , progressBar, progressList, statusList, group3D, scatterGroup);
         viewList.add(view3d);
     }
 
@@ -314,7 +312,7 @@ public class Controller implements Initializable {
             tabs2D.add(tabIndex2D,newTab);
             tabIndex2D++;
             tabPane.getTabs().add(newTab);
-            StandardView std = new StandardView(false, newTab,tabPane, rp, progressBar, progressList,progressLabel, statusListView);
+            StandardView std = new StandardView(false, newTab,tabPane, rp, progressBar, progressList, statusListView);
             viewList.add(std);
             addNewShortcutButton2D(newTab);
         });

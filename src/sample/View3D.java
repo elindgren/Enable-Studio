@@ -47,7 +47,6 @@ public class View3D {
     private Data data;
     private ReadSerialPort rp;
     private ProgressBar progressBar;
-    private Label progressLabel;
     private ObservableList<Integer> progressList;
     private ObservableList<Integer> statusList;
     private Group group3D;
@@ -130,13 +129,12 @@ public class View3D {
 
     //************************************************//
 
-    public View3D(boolean isStandard, TabPane tabPane, Tab tab, ReadSerialPort rp, ProgressBar progressBar, ObservableList<Integer> progressList, Label progressLabel, ObservableList<Integer> statusList, Group group3D, Group scatterGroup){
+    public View3D(boolean isStandard, TabPane tabPane, Tab tab, ReadSerialPort rp, ProgressBar progressBar, ObservableList<Integer> progressList, ObservableList<Integer> statusList, Group group3D, Group scatterGroup){
         this.statusList=statusList;
         this.progressList=progressList;
         this.tabPane = tabPane;
         this.rp=rp;
         this.progressBar = progressBar;
-        this.progressLabel = progressLabel;
         this.tab=tab;
         data= new Data(rp);
         this.group3D = group3D;
@@ -312,7 +310,6 @@ public class View3D {
                                 @Override
                                 public void run() {
 
-                                    progressLabel.setText("Done");
                                 }
                             });
                             return null;
@@ -321,7 +318,6 @@ public class View3D {
                     Thread th = new Thread(readTask);
                     System.out.println("Starting new readThread");
                     progressBar.setVisible(true);
-                    progressLabel.setVisible(true);
                     th.start();
                 } else if (!readFromChip) {
 
@@ -344,9 +340,7 @@ public class View3D {
                                     @Override
                                     public void run() {
                                         progressBar.setVisible(false);
-                                        progressLabel.setVisible(false);
-                                        progressLabel.setText("Done");
-                                    }
+                                }
                                 });
                                 return null;
                             }
@@ -355,7 +349,6 @@ public class View3D {
                         //progressBarStaticView.setProgress(0);
                         System.out.println("Starting new readThread");
                         progressBar.setVisible(true);
-                        progressLabel.setVisible(true);
                         th.start();
                     }
                     /*
@@ -424,7 +417,6 @@ public class View3D {
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                progressLabel.setVisible(false);
                                 progressBar.setVisible(false);
                             }
                         });
@@ -433,7 +425,6 @@ public class View3D {
                 };
                 Thread thread = new Thread(saveTask);
                 thread.start();
-                progressLabel.setVisible(true);
                 progressBar.setVisible(true);
             }else{
                 System.out.println("Error in saveButton: valid file must be supplied");

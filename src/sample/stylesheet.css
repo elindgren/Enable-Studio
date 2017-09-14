@@ -1,16 +1,16 @@
-.root{ //Settings for the whole color
+.root{ /*Settings for the whole color*/
     -fx-background-color: #f1f1f1;
 }   /*Class controlling the chart itself*/
 .chart{
-    -fx-background-color: #f1f1f1;
+    -fx-background-color: white;
     -fx-background-radius: 0px;
 }
 .chart-plot-background{ /*Background color of chart*/
-    -fx-background-color: #fbfbfb;
+    -fx-background-color: white;
 }
 .chart-series-line{  /*Settings for the chart lines*/
     -fx-stroke-width: 1px;
-    //-fx-effects: null;
+    -fx-effects: null;
 }
 /*COLOR for the chart lines*/
 .default-color0.chart-series-line {-fx-stroke: #e2211d} /*line0, red*/
@@ -26,9 +26,16 @@
 .myDialog{
     -fx-background-color: #fbfbfb;
 }
-myDialog .button{
+.myDialog .button{
     -fx-background-color: color0;
 }
+
+.jfx-popup{
+    -fx-padding: 2px;
+}
+
+
+
 
 
 

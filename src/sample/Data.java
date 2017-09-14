@@ -204,11 +204,11 @@ public class Data {
     //********************************* MATHEMATICAL OPERATIONS **********************************//
 
     public int findMaxIndex(){
-        double xMax=fileData[0][10]; //TODO Correct? Check formatting on files
+        double xMax=fileData[0][yAxis]; //TODO Correct? Check formatting on files
         double xNew;
         int index=0;
         for(int i = 1; i<fileData.length; i++){
-            xNew = fileData[i][10];
+            xNew = fileData[i][yAxis];
             if(xMax<xNew){
                 xMax=xNew;
                 index=i;
@@ -221,11 +221,11 @@ public class Data {
     }
 
     public int findMinIndex(){
-        double xMin=fileData[0][10];
+        double xMin=fileData[0][yAxis];
         double xNew;
         int index=0;
         for(int i = 1; i<fileData.length; i++){
-            xNew = fileData[i][10];
+            xNew = fileData[i][yAxis];
             if(xMin>xNew){
                 xMin=xNew;
                 index=i;

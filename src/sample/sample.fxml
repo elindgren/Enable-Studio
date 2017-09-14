@@ -33,284 +33,303 @@
 <?import sample.MaterialAccordionTitledPane?>
 
 <StackPane xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
-<AnchorPane fx:id="mainPane" styleClass="root">
-    <children>
-<TabPane fx:id="tabPane" side="TOP" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="48.0">
-   <tabs>
-       <Tab fx:id="tab2D" text="2D View-1 ">
-         <content>
-            <BorderPane>
-               <left>
-                   <StackPane styleClass="table-view-container">
-                           <children>
-                        <TableView fx:id="tableStatic" editable="true" styleClass="table-view-2D" tableMenuButtonVisible="true">
-                          <columns>
-                            <TableColumn minWidth="0.0" prefWidth="114.0" text="X Axis" />
-                            <TableColumn minWidth="0.0" prefWidth="133.0" text="Y Axis" />
-                          </columns>
-                           <padding>
-                              <Insets bottom="8.0" left="16.0" right="8.0" top="8.0" />
-                           </padding>
-                                 <StackPane.margin>
-                                    <Insets />
-                                 </StackPane.margin>
-                        </TableView>
-                           </children>
-                           <BorderPane.margin>
-                              <Insets bottom="8.0" left="8.0" right="4.0" top="4.0" />
-                           </BorderPane.margin>
-                   </StackPane>
-               </left>
-               <center>
-                   <StackPane alignment="BOTTOM_CENTER" styleClass="chart-view-container">
-                       <children>
-                              <AnchorPane>
-                                 <children>
-                                   <LineChart fx:id="lineChartStatic" createSymbols="false" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
-                                       <xAxis>
-                                           <StableTicksAxis side="BOTTOM" fx:id="xAxisStatic" />
-                                       </xAxis>
-                                       <yAxis>
-                                           <StableTicksAxis fx:id="yAxisStatic" side="LEFT" />
-                                       </yAxis>
-                                       <styleClass>
-                                           <String fx:value="chart-plot-background" />
-                                           <String fx:value="chart-series-line" />
-                                       </styleClass>
-                                   </LineChart>
-                                   <MenuButton fx:id="settingsDropDownStatic" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" styleClass="chart-settings" AnchorPane.rightAnchor="12" AnchorPane.topAnchor="12" />
-                                 </children>
-                              </AnchorPane>
-                           <AnchorPane maxHeight="100.0" maxWidth="400.0" minHeight="100.0" minWidth="400" prefHeight="100" prefWidth="400" translateY="70" StackPane.alignment="BOTTOM_CENTER">
-                               <children>
-                                    <AnchorPane fx:id="onScreenList" styleClass="on-screen-slide" translateY="38" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
-                                       <children>
-                                         <VBox alignment="CENTER" minHeight="100">
-                                             <children>
-                                                 <HBox alignment="CENTER" minWidth="400" spacing="20.0" VBox.vgrow="ALWAYS">
-                                                     <children>
-                                                         <ToggleButton mnemonicParsing="false" styleClass="cinematic-button" />
-                                                         <ToggleButton mnemonicParsing="false" styleClass="chip-button" />
-                                                         <JFXButton fx:id="readStatic" mnemonicParsing="false" styleClass="read-button" />
-                                                         <JFXButton mnemonicParsing="false" styleClass="reset-button" />
-                                                         <JFXButton mnemonicParsing="false" styleClass="save-button" />
-                                                     </children>
-                                                 </HBox>
-                                                <JFXSlider fx:id="timelineSlider" styleClass="jfx-slider" visible="false" />
-                                             </children>
-                                          </VBox>
-                                       </children>
-                                    </AnchorPane>
-                               </children>
-                           </AnchorPane>
-                       </children>
-                           <BorderPane.margin>
-                              <Insets bottom="8.0" right="8.0" top="4.0" />
-                           </BorderPane.margin>
-                   </StackPane>
-               </center>
-               <top>
-               </top>
-            </BorderPane>
-         </content></Tab>
-       <Tab fx:id="tab3D" text="3D">
-         <content>
-                  <BorderPane>
-                     <right>
-                        <StackPane alignment="BOTTOM_CENTER" prefHeight="150.0" prefWidth="200.0" styleClass="table-view-container" BorderPane.alignment="CENTER">
-                           <BorderPane.margin>
-                              <Insets bottom="8.0" left="8.0" right="8.0" top="4.0" />
-                           </BorderPane.margin>
-                           <children>
-                              <AnchorPane>
-                                  <children>
-                                      <Group fx:id="scatterGroup" layoutX="1.0" layoutY="1.0">
-                                          <children>
+    <AnchorPane fx:id="mainPane" styleClass="root">
+        <children>
+            <TabPane fx:id="tabPane" side="TOP" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="48.0">
+                <tabs>
+                    <Tab fx:id="tab2D" text="2D View-1 ">
+                        <content>
+                            <BorderPane>
+                                <left>
+                                    <StackPane styleClass="table-view-container">
+                                        <children>
+                                            <TableView fx:id="tableStatic" editable="true" styleClass="table-view-2D" tableMenuButtonVisible="true">
+                                                <columns>
+                                                    <TableColumn minWidth="0.0" prefWidth="114.0" text="X Axis" />
+                                                    <TableColumn minWidth="0.0" prefWidth="133.0" text="Y Axis" />
+                                                </columns>
+                                                <padding>
+                                                    <Insets bottom="8.0" left="16.0" right="8.0" top="8.0" />
+                                                </padding>
+                                                <StackPane.margin>
+                                                    <Insets />
+                                                </StackPane.margin>
+                                            </TableView>
+                                        </children>
+                                        <BorderPane.margin>
+                                            <Insets bottom="8.0" left="8.0" right="4.0" top="4.0" />
+                                        </BorderPane.margin>
+                                    </StackPane>
+                                </left>
+                                <center>
+                                    <StackPane alignment="BOTTOM_CENTER" styleClass="chart-view-container">
+                                        <children>
+                                            <AnchorPane>
+                                                <children>
+                                                    <LineChart fx:id="lineChartStatic" axisSortingPolicy="NONE" createSymbols="false" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+                                                        <xAxis>
+                                                            <StableTicksAxis side="BOTTOM" fx:id="xAxisStatic" />
+                                                        </xAxis>
+                                                        <yAxis>
+                                                            <StableTicksAxis fx:id="yAxisStatic" side="LEFT" />
+                                                        </yAxis>
+                                                        <styleClass>
+                                                            <String fx:value="chart-plot-background" />
+                                                            <String fx:value="chart-series-line" />
+                                                        </styleClass>
+                                                    </LineChart>
+                                                    <JFXButton fx:id="settingsDropDownStatic" buttonType="RAISED" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" ripplerFill="#bdecff" styleClass="chart-settings" AnchorPane.bottomAnchor="68" AnchorPane.rightAnchor="48" />
+                                                </children>
+                                            </AnchorPane>
+                                            <AnchorPane maxHeight="60" translateY="30" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="350" AnchorPane.rightAnchor="70" StackPane.alignment="BOTTOM_CENTER"> <!-- maxHeight="100.0" maxWidth="400.0" minHeight="100.0" minWidth="400" prefHeight="100" prefWidth="400"-->
+                                                <children>
+                                                    <AnchorPane fx:id="onScreenList" styleClass="on-screen-slide" translateY="38" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+                                                        <children>
+                                                            <VBox alignment="TOP_CENTER" minHeight="60" spacing="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+                                                                <children>
+                                                                    <JFXSlider fx:id="timelineSlider" disable="true" styleClass="jfx-slider-style" stylesheets="@agixmaterialfx.css" translateY="-6" visible="true" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" />
+                                                                    <HBox alignment="CENTER" minWidth="400" spacing="40" HBox.hgrow="ALWAYS" VBox.vgrow="NEVER">
+                                                                        <children>
+                                                                            <ToggleButton mnemonicParsing="false" styleClass="cinematic-button" AnchorPane.rightAnchor="40" />
+                                                                            <ToggleButton mnemonicParsing="false" styleClass="chip-button" AnchorPane.rightAnchor="70" />
+                                                                            <JFXButton fx:id="readStatic" mnemonicParsing="false" styleClass="read-button" AnchorPane.leftAnchor="10" />
+                                                                            <JFXButton mnemonicParsing="false" styleClass="reset-button" AnchorPane.leftAnchor="40" />
+                                                                            <JFXButton mnemonicParsing="false" styleClass="save-button" AnchorPane.rightAnchor="10" />
+                                                                        </children>
+                                                                    </HBox>
+                                                                </children>
+                                                            </VBox>
+                                                        </children>
+                                                    </AnchorPane>
+                                                </children>
+                                            </AnchorPane>
+                                        </children>
+                                        <BorderPane.margin>
+                                            <Insets bottom="8.0" right="8.0" top="4.0" />
+                                        </BorderPane.margin>
+                                    </StackPane>
+                                </center>
+                                <top>
+                                </top>
+                            </BorderPane>
+                        </content>
+                    </Tab>
+                    <Tab fx:id="tab3D" text="3D">
+                        <content>
+                            <BorderPane>
+                                <right>
+                                    <StackPane alignment="BOTTOM_CENTER" prefHeight="150.0" prefWidth="200.0" styleClass="table-view-container" BorderPane.alignment="CENTER">
+                                        <BorderPane.margin>
+                                            <Insets bottom="8.0" left="8.0" right="8.0" top="4.0" />
+                                        </BorderPane.margin>
+                                        <children>
+                                            <AnchorPane>
+                                                <children>
+                                                    <Group fx:id="scatterGroup" layoutX="1.0" layoutY="1.0">
+                                                        <children>
 
-                                          </children>
-                                      </Group>
-                                  </children>
-                              </AnchorPane>
-                           </children>
-                        </StackPane>
-                     </right>
-                     <center>
-                        <StackPane alignment="BOTTOM_CENTER" styleClass="table-view-container" BorderPane.alignment="CENTER">
-                           <children>
-                        <AnchorPane>
-                           <children>
-                              <Group fx:id="group3D" layoutX="1.0" layoutY="1.0" />
-                           </children>
-                        </AnchorPane>
-                              <AnchorPane maxHeight="100.0" maxWidth="400.0" minHeight="100.0" minWidth="400.0" prefHeight="100.0" prefWidth="400.0" translateY="70" StackPane.alignment="BOTTOM_CENTER">
-                                 <children>
-                                    <AnchorPane maxHeight="100" maxWidth="400" minHeight="100" minWidth="400" translateY="38" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
-                                       <children>
-                                          <VBox alignment="CENTER" minHeight="100">
-                                             <children>
-                                                <HBox alignment="CENTER" minWidth="400" spacing="20.0" VBox.vgrow="ALWAYS">
-                                                   <children>
-                                                      <ToggleButton mnemonicParsing="false">
-                                                         <styleClass>
-                                                            <String fx:value="cinematic-button" />
-                                                            <String fx:value="toggle-button" />
-                                                         </styleClass>
-                                                      </ToggleButton>
-                                                      <ToggleButton fx:id="toggleReadChip1" mnemonicParsing="false">
-                                                         <styleClass>
-                                                            <String fx:value="toggle-button" />
-                                                            <String fx:value="chip-button" />
-                                                            </styleClass>
-                                                      </ToggleButton>
-                                                      <JFXButton fx:id="readStatic1" mnemonicParsing="false" styleClass="read-button" />
-                                                      <JFXButton fx:id="resetStatic1" mnemonicParsing="false" styleClass="reset-button" />
-                                                      <JFXButton fx:id="saveButton1" mnemonicParsing="false" styleClass="save-button" />
-                                                   </children>
-                                                </HBox>
-                                                <Slider fx:id="timelineSlider1" blockIncrement="5.0" majorTickUnit="10.0" minorTickCount="5" />
-                                             </children>
-                                          </VBox>
-                                       </children>
-                                    </AnchorPane>
-                                 </children>
-                              </AnchorPane>
-                           </children>
-                           <BorderPane.margin>
-                              <Insets bottom="8.0" left="8.0" right="8.0" top="4.0" />
-                           </BorderPane.margin>
-                        </StackPane>
-                     </center>
-                  </BorderPane>
-         </content></Tab>
-   </tabs>
-</TabPane>
-        <AnchorPane fx:id="navList" prefWidth="230" styleClass="menu-slide" translateX="-235" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="48.0">
-            <children>
-               <ScrollPane hbarPolicy="NEVER" layoutY="10.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0" AnchorPane.topAnchor="0">
-                  <content>
-                      <VBox fx:id="navBox" alignment="TOP_CENTER" maxHeight="300" spacing="10">
-                          <padding>
-                              <Insets right="0" top="10" />
-                          </padding>
-                          <children>
-                           <StackPane maxWidth="210" minHeight="220" styleClass="menu-slide-image">
-                              <children>
-                                 <ImageView fitHeight="205.0" fitWidth="170" pickOnBounds="true" preserveRatio="true" styleClass="menu-slide-image">
-                                     <image>
-                                         <Image url="file:resources/images/enable.png" />
-                                     </image>
-                                 </ImageView>
-                              </children>
-                           </StackPane>
-                              <Accordion>
-                                  <panes>
-                                      <MaterialAccordionTitledPane styleClass="material-accordion-titled-pane" text="Control">
-                                          <JFXButton alignment="TOP_CENTER" styleClass="menu-slide-button" text="Control" />
-                                      </MaterialAccordionTitledPane>
-                                  </panes>
-                              </Accordion>
-                              <Accordion>
-                                  <panes>
-                                      <MaterialAccordionTitledPane styleClass="material-accordion-titled-pane" text="Mode">
-                                          <JFXButton alignment="TOP_CENTER" styleClass="menu-slide-button" text="Mode" />
-                                      </MaterialAccordionTitledPane>
-                                  </panes>
-                              </Accordion>
-                              <Accordion>
-                                  <panes>
-                                      <MaterialAccordionTitledPane styleClass="material-accordion-titled-pane" text="Settings">
-                                          <VBox>
-                                              <padding>
-                                                  <Insets right="-20" left="-0"/>
-                                              </padding>
-                                              <children>
-                                                <JFXButton alignment="TOP_CENTER" styleClass="menu-slide-button" text="Color Settings" />
-                                                <JFXButton alignment="TOP_CENTER" styleClass="menu-slide-button" text="Chart settings" />
-                                                <JFXButton alignment="TOP_CENTER" styleClass="menu-slide-button" text="Table Settings" />
-                                              </children>
-                                          </VBox>
-                                      </MaterialAccordionTitledPane>
-                                  </panes>
-                              </Accordion>
-                              <Accordion>
-                                  <panes>
-                                      <MaterialAccordionTitledPane styleClass="material-accordion-titled-pane" text="About">
-                                          <JFXButton alignment="TOP_CENTER" styleClass="menu-slide-button" text="About" />
-                                      </MaterialAccordionTitledPane>
-                                  </panes>
-                              </Accordion>
-                          </children>
-                      </VBox>
-                  </content>
-               </ScrollPane>
-            </children>
-        </AnchorPane>
-      <AnchorPane fx:id="overlayPane" nodeOrientation="LEFT_TO_RIGHT" styleClass="overlay-menu" translateY="-960" visible="true" AnchorPane.bottomAnchor="1" AnchorPane.leftAnchor="1" AnchorPane.rightAnchor="1" AnchorPane.topAnchor="48">
-          <children>
-              <VBox alignment="CENTER" spacing="30" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
-                  <HBox fx:id="overlayMenuBox2D" alignment="CENTER" spacing="40">
-                      <JFXButton fx:id="change2DDefualt" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" styleClass="overlay-menu-button" text="2D view-1" />
-                      <JFXButton fx:id="newScene2D" mnemonicParsing="false" styleClass="overlay-menu-button" text="New 2D view" />
-                  </HBox>
-                  <HBox fx:id="overlayMenuBox3D" alignment="CENTER" spacing="40">
-                      <JFXButton fx:id="change3DDefualt" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" styleClass="overlay-menu-button" text="3D view" />
-                      <JFXButton fx:id="newScene3D" mnemonicParsing="false" styleClass="overlay-menu-button" text="New 3D view" />
-                  </HBox>
-              </VBox>
-          </children>
-      </AnchorPane>
-        <ToolBar minHeight="40.0" prefHeight="48.0" prefWidth="819.0" styleClass="menu-bar-custom" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <items>
-            <HBox alignment="CENTER" spacing="20.0">
-               <children>
-                  <JFXHamburger fx:id="menuHamburger" prefHeight="35" prefWidth="35" styleClass="jfx-hamburger-icon">
-                  </JFXHamburger>
-                     <JFXButton fx:id="overlayButton" mnemonicParsing="false" styleClass="menu-bar-overlay-menu-button" />
-                     <JFXButton fx:id="undoButton" mnemonicParsing="false" styleClass="menu-bar-undo" />
-                     <JFXButton fx:id="redoButton" mnemonicParsing="false" styleClass="menu-bar-redo" />
-                   <MenuButton fx:id="mathButton" mnemonicParsing="false" styleClass="menu-bar-math" />
-                     <JFXButton fx:id="settingsButton" mnemonicParsing="false" styleClass="menu-bar-settings" />
-               </children>
-                  <padding>
-                     <Insets left="10.0" />
-                  </padding>
-            </HBox>
-            <HBox fx:id="statusBox" alignment="CENTER" spacing="20.0">
-                 <children>
-                  <HBox alignment="CENTER" spacing="4.0" styleClass="menu-bar-status-box" HBox.hgrow="ALWAYS">
-                     <children>
-                        <JFXButton fx:id="refreshButton" mnemonicParsing="false" styleClass="menu-bar-status-refresh" />
-                          <Label alignment="CENTER" styleClass="menu-bar-label" text="Sensor status: " />
-                           <Circle fx:id="statusCircle" fill="#ff1f1f" radius="6.0" stroke="BLACK" strokeType="INSIDE">
-                           <HBox.margin>
-                              <Insets top="4.0" />
-                           </HBox.margin>
-                        </Circle>
-                     </children>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <padding>
-                        <Insets left="6.0" right="6.0" />
-                     </padding>
-                  </HBox>
-                    <Label fx:id="progressLabel" styleClass="menu-slide-item" text="Progress: " visible="false" />
-                  <JFXProgressBar fx:id="progressBar" prefHeight="5" prefWidth="150.0" progress="0.0" styleClass="jfx-progressbar" visible="false">
-                      <HBox.margin>
-                          <Insets />
-                      </HBox.margin>
-                  </JFXProgressBar>
+                                                        </children>
+                                                    </Group>
+                                                </children>
+                                            </AnchorPane>
+                                        </children>
+                                    </StackPane>
+                                </right>
+                                <center>
+                                    <StackPane alignment="BOTTOM_CENTER" styleClass="table-view-container" BorderPane.alignment="CENTER">
+                                        <children>
+                                            <AnchorPane>
+                                                <children>
+                                                    <Group fx:id="group3D" layoutX="1.0" layoutY="1.0" />
+                                                </children>
+                                            </AnchorPane>
+                                            <AnchorPane maxHeight="100.0" maxWidth="400.0" minHeight="100.0" minWidth="400.0" prefHeight="100.0" prefWidth="400.0" translateY="70" StackPane.alignment="BOTTOM_CENTER">
+                                                <children>
+                                                    <AnchorPane maxHeight="100" maxWidth="400" minHeight="100" minWidth="400" translateY="38" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+                                                        <children>
+                                                            <VBox alignment="CENTER" minHeight="100">
+                                                                <children>
+                                                                    <HBox alignment="CENTER" minWidth="400" spacing="20.0" VBox.vgrow="ALWAYS">
+                                                                        <children>
+                                                                            <ToggleButton mnemonicParsing="false">
+                                                                                <styleClass>
+                                                                                    <String fx:value="cinematic-button" />
+                                                                                    <String fx:value="toggle-button" />
+                                                                                </styleClass>
+                                                                            </ToggleButton>
+                                                                            <ToggleButton fx:id="toggleReadChip1" mnemonicParsing="false">
+                                                                                <styleClass>
+                                                                                    <String fx:value="toggle-button" />
+                                                                                    <String fx:value="chip-button" />
+                                                                                </styleClass>
+                                                                            </ToggleButton>
+                                                                            <JFXButton fx:id="readStatic1" mnemonicParsing="false" styleClass="read-button" />
+                                                                            <JFXButton fx:id="resetStatic1" mnemonicParsing="false" styleClass="reset-button" />
+                                                                            <JFXButton fx:id="saveButton1" mnemonicParsing="false" styleClass="save-button" />
+                                                                        </children>
+                                                                    </HBox>
+                                                                    <Slider fx:id="timelineSlider1" blockIncrement="5.0" majorTickUnit="10.0" minorTickCount="5" />
+                                                                </children>
+                                                            </VBox>
+                                                        </children>
+                                                    </AnchorPane>
+                                                </children>
+                                            </AnchorPane>
+                                        </children>
+                                        <BorderPane.margin>
+                                            <Insets bottom="8.0" left="8.0" right="8.0" top="4.0" />
+                                        </BorderPane.margin>
+                                    </StackPane>
+                                </center>
+                            </BorderPane>
+                        </content>
+                    </Tab>
+                </tabs>
+            </TabPane>
+            <AnchorPane fx:id="navList" prefWidth="230" styleClass="menu-slide" translateX="-255" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="48.0">
+                <children>
+                    <ScrollPane hbarPolicy="NEVER" layoutY="10.0" styleClass="menu-slide-scroll-pane" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="50" AnchorPane.topAnchor="0">
+                        <content>
+                            <VBox fx:id="navBox" alignment="TOP_CENTER" maxHeight="300" spacing="10">
+                                <padding>
+                                    <Insets right="0" top="10" />
+                                </padding>
+                                <children>
+                                    <HBox alignment="CENTER" spacing="10" styleClass="menu-slide-image">
+                                        <padding>
+                                            <Insets bottom="20" left="10" right="10" top="10" />
+                                        </padding>
+                                        <children>
+                                            <StackPane maxWidth="50" minHeight="55">
+                                                <children>
+                                                    <ImageView fitHeight="50" fitWidth="48" pickOnBounds="true" preserveRatio="true" styleClass="menu-slide-image">
+                                                        <image>
+                                                            <Image url="file:resources/images/enable_no_text.png" />
+                                                        </image>
+                                                    </ImageView>
+                                                </children>
+                                            </StackPane>
+                                            <Label styleClass="enable-studio-label" text="Enable Studio" />
+                                        </children>
+                                    </HBox>
+                                    <Accordion>
+                                        <panes>
+                                            <MaterialAccordionTitledPane styleClass="material-accordion-titled-pane" text="Control">
+                                                <VBox>
+                                                    <padding>
+                                                        <Insets left="-4" right="-20" />
+                                                    </padding>
+                                                    <JFXButton alignment="TOP_CENTER" styleClass="menu-slide-button" text="Control" />
+                                                </VBox>
+                                            </MaterialAccordionTitledPane>
+                                        </panes>
+                                    </Accordion>
+                                    <Accordion>
+                                        <panes>
+                                            <MaterialAccordionTitledPane styleClass="material-accordion-titled-pane" text="Mode">
+                                                <VBox>
+                                                <padding>
+                                                    <Insets left="-4" right="-20" />
+                                                </padding>
+                                                <JFXButton alignment="TOP_CENTER" styleClass="menu-slide-button" text="Mode" />
+                                                </VBox>
+                                            </MaterialAccordionTitledPane>
+                                        </panes>
+                                    </Accordion>
+                                    <Accordion>
+                                        <panes>
+                                            <MaterialAccordionTitledPane styleClass="material-accordion-titled-pane" text="Settings">
+                                                <VBox>
+                                                    <padding>
+                                                        <Insets left="-4" right="-20" />
+                                                    </padding>
+                                                    <children>
+                                                        <JFXButton alignment="TOP_LEFT" styleClass="menu-slide-button" text="Color Settings" />
+                                                        <JFXButton alignment="TOP_CENTER" styleClass="menu-slide-button" text="Chart settings" />
+                                                        <JFXButton alignment="TOP_CENTER" styleClass="menu-slide-button" text="Table Settings" />
+                                                    </children>
+                                                </VBox>
+                                            </MaterialAccordionTitledPane>
+                                        </panes>
+                                    </Accordion>
+                                    <Accordion>
+                                        <panes>
+                                            <MaterialAccordionTitledPane styleClass="material-accordion-titled-pane" text="About">
+                                                <VBox>
+                                                    <padding>
+                                                        <Insets left="-4" right="-20" />
+                                                    </padding>
+                                                    <JFXButton alignment="TOP_CENTER" styleClass="menu-slide-button" text="About" />
+                                                </VBox>
+                                            </MaterialAccordionTitledPane>
+                                        </panes>
+                                    </Accordion>
+                                </children>
+                            </VBox>
+                        </content>
+                    </ScrollPane>
+                    <StackPane prefHeight="50" styleClass="menu-slide-version-label-container" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+                        <Label styleClass="menu-slide-version-label" text="Version: Pre-Alpha 0.1" />
+                    </StackPane>
                 </children>
+            </AnchorPane>
+            <AnchorPane fx:id="overlayPane" nodeOrientation="LEFT_TO_RIGHT" styleClass="overlay-menu" translateY="-1080" visible="true" AnchorPane.bottomAnchor="1" AnchorPane.leftAnchor="1" AnchorPane.rightAnchor="1" AnchorPane.topAnchor="48">
+                <children>
+                    <VBox alignment="CENTER" spacing="30" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+                        <HBox fx:id="overlayMenuBox2D" alignment="CENTER" spacing="40">
+                            <JFXButton fx:id="change2DDefualt" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" styleClass="overlay-menu-button" text="2D view-1" />
+                            <JFXButton fx:id="newScene2D" mnemonicParsing="false" styleClass="overlay-menu-button" text="New 2D view" />
+                        </HBox>
+                        <HBox fx:id="overlayMenuBox3D" alignment="CENTER" spacing="40">
+                            <JFXButton fx:id="change3DDefualt" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" styleClass="overlay-menu-button" text="3D view" />
+                            <JFXButton fx:id="newScene3D" mnemonicParsing="false" styleClass="overlay-menu-button" text="New 3D view" />
+                        </HBox>
+                    </VBox>
+                </children>
+            </AnchorPane>
+            <ToolBar minHeight="40.0" prefHeight="48" prefWidth="819.0" styleClass="menu-bar-custom" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <items>
+                    <HBox alignment="CENTER" spacing="20.0">
+                        <children>
+                            <JFXHamburger fx:id="menuHamburger" prefHeight="35" prefWidth="35" styleClass="jfx-hamburger-icon">
+                            </JFXHamburger>
+                            <JFXButton fx:id="overlayButton" mnemonicParsing="false" styleClass="menu-bar-overlay-menu-button" />
+                            <JFXButton fx:id="undoButton" mnemonicParsing="false" styleClass="menu-bar-undo" />
+                            <JFXButton fx:id="redoButton" mnemonicParsing="false" styleClass="menu-bar-redo" />
+                            <MenuButton fx:id="mathButton" mnemonicParsing="false" styleClass="menu-bar-math" />
+                            <JFXButton fx:id="settingsButton" mnemonicParsing="false" styleClass="menu-bar-settings" />
+                        </children>
+                        <padding>
+                            <Insets left="10.0" />
+                        </padding>
+                    </HBox>
+                </items>
+            </ToolBar>
+            <JFXProgressBar fx:id="progressBar" progress="0" styleClass="jfx-progressbar" visible="false" AnchorPane.leftAnchor="-10" AnchorPane.rightAnchor="-10" AnchorPane.topAnchor="46" />
+            <HBox fx:id="statusBox" alignment="CENTER" minHeight="42" spacing="4.0" styleClass="menu-bar-status-box" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="3" HBox.hgrow="ALWAYS">
+                <children>
+                    <JFXButton fx:id="refreshButton" mnemonicParsing="false" styleClass="menu-bar-status-refresh" />
+                    <Label alignment="CENTER" styleClass="menu-bar-label" text="Sensor status: " />
+                    <Circle fx:id="statusCircle" fill="#ff1f1f" radius="6.0" stroke="BLACK" strokeType="INSIDE">
+                        <HBox.margin>
+                            <Insets top="4.0" />
+                        </HBox.margin>
+                    </Circle>
+                </children>
+                <HBox.margin>
+                    <Insets />
+                </HBox.margin>
+                <padding>
+                    <Insets left="6.0" right="6.0" />
+                </padding>
             </HBox>
-            </items>
-        </ToolBar>
-    </children>
-    <cursor>
-        <Cursor fx:constant="DEFAULT" />
-    </cursor>
-    <stylesheets>
-        <URL value="@stylesheet.css" />
-        <URL value="@agixmaterialfx.css" />
-    </stylesheets>
-</AnchorPane>
+        </children>
+        <cursor>
+            <Cursor fx:constant="DEFAULT" />
+        </cursor>
+        <stylesheets>
+            <URL value="@stylesheet.css" />
+            <URL value="@agixmaterialfx.css" />
+        </stylesheets>
+    </AnchorPane>
 </StackPane>

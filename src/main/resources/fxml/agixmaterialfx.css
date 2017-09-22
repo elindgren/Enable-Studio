@@ -1,0 +1,1372 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2015 - AGIX | Innovative Engineering
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT 	SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ */
+
+/*
+ *   This is a Material Design CSS for JavaFX
+ */
+
+/*******************************************************************************
+ *                                                                             *
+ * Root					 				                       				   *
+ *                                                                             *
+ ******************************************************************************/
+.root {
+	/* Swatch Colors - Blue*/
+	-swatch-100: #BBDEFB;
+	-swatch-200: #90CAF9;
+	-swatch-300: #64BEF6;
+	-swatch-400: #42A5F5;
+	-swatch-500: #2196F3; /*#12d5ff;*/  /*Light-blue*/
+	/*default text */
+	-fx-text-base-color: rgb(100.0, 100.0, 100.0);
+	-fx-text-button-normal: -swatch-500;
+	-fx-text-button-colored: rgb(255.0, 255.0, 255.0);
+	-fx-text-button-text: rgb(100.0, 100.0, 100.0);
+	-fx-text-title-color: rgb(45.0, 45.0, 45.0);
+	-fx-text-subtitle-color: rgb(65.0, 65.0, 65.0);
+	-fx-text-control-title-color: rgb(130.0, 130.0, 130.0);
+	-fx-text-fill: -fx-text-base-color;
+	-dark: rgb(47.0, 52.0, 57.0);
+	-fx-background-color: fbfbfb;	/*default font */
+	-fx-font-family: 'Roboto Medium';
+	-fx-font-size: 13.0px;
+	-fx-disabled-opacity: 0.6;
+	/*default colors */
+	-swatch-grey: rgb(200.0, 200.0, 200.0);
+	-swatch-dark-grey: rgb(150.0, 150.0, 150.0);
+	-swatch-light-grey: rgb(230.0, 230.0, 230.0);
+	-swatch-toolbar: rgb(245.0, 245.0, 245.0);
+	-swatch-toolbar-selected: rgb(215.0, 215.0, 215.0);
+	/*
+     Modena colors
+     */
+	-fx-dark-text-color: white; /* Text color when selected*/
+	-fx-mid-text-color: -fx-text-base-color;
+	-fx-light-text-color: -swatch-light-grey;
+	-fx-body-color: white;
+	/* A bright blue for the focus indicator of objects. Typically used as the
+     * first color in -fx-background-color for the "focused" pseudo-class. Also
+     * typically used with insets of -1.4 to provide a glowing effect.
+     */
+	-fx-focus-color: -swatch-400;
+	-fx-faint-focus-color: -swatch-200;
+	/* A bright blue for highlighting/accenting objects.  For example: selected
+     * text; selected items in menus, lists, trees, and tables; progress bars */
+	-fx-accent: -swatch-400;
+	-fx-dark-text-color: white;
+
+
+
+    /*My own colors - Eric L, 23/8-2017*/
+    -main-color:    #37474f; /*Toolbar color etc.*/ /*Cool cyan #00BCD4*/
+    -accent-color:  #00c853;
+    -navigation-drawer: white; /*Color of navigation menu etc*/
+	-navigation-drawer-focused: -swatch-grey;
+    -text-color:  -fx-body-color;
+	-icon-color: -fx-body-color;
+	-background-color: #f1f1f1; /*The background color for the program, used underneath the cards*/
+	-content-background-color: white;
+	-on-screen-button-color: white;
+	-accent-hover-color: #00e676;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Material Design - Cards 				                       				   *
+ *                                                                             *
+ ******************************************************************************/
+.card {
+	-fx-background-color: rgb(255.0, 255.0, 255.0);
+	-fx-background-radius: 4.0;
+	-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.15), 6.0, 0.7, 0.0,
+		1.5);
+	-fx-padding: 16 16 16 16;
+}
+
+.card-title {
+	-fx-font-size: 20.0px;
+	-fx-padding: 5 0 5 0;
+}
+
+.card-title .text {
+	-fx-fill: -fx-text-title-color;
+}
+
+.card-subtitle {
+	-fx-font-size: 16.0px;
+	-fx-padding: 5 0 5 0;
+}
+
+.card-subtitle .text {
+	-fx-fill: -fx-text-subtitle-color;
+}
+
+.control-label {
+	-fx-font-size: 12.0px;
+	-fx-padding: 16 0 0 0;
+}
+
+.control-label .text {
+	-fx-fill: -fx-text-control-title-color;
+}
+
+.card-button {
+	-fx-effect: null;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Button & ToggleButton                                                       *
+ *                                                                             *
+ ******************************************************************************/
+.button-raised {
+	-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0,
+		1);
+	-fx-background-color: #f1f1f1;/*rgb(250, 250, 250);*/
+}
+
+.button-flat {
+	-fx-effect: null;
+	-fx-background-color: f1f1f1; /*transparent;*/
+}
+
+.toggle-button, .button {
+	-fx-text-fill: -fx-text-button-normal;
+	-fx-font-family: 'Roboto';
+	-fx-font-weight: bold;
+	-fx-background-insets: 0.0;
+	-fx-background-radius: 4.0;
+	-fx-padding: 0.7em;
+	-fx-alignment: CENTER;
+}
+
+.button-raised .button .text, .button-flat .button .text {
+	-fx-text-weight: Bold;
+}
+
+.button:default {
+	-fx-background-color: -swatch-500;
+	-fx-text-fill: -fx-text-button-colored;
+}
+
+.toggle-button:focused, .button:focused, .button:default:focused {
+	/*-fx-background-color: -swatch-light-grey;*/
+}
+
+.toggle-button:focused:selected {
+	/*
+	-fx-background-color: derive(-swatch-500, 50.0%),
+		derive(-swatch-500, -20.0%);
+		*/
+	/*-fx-background-color: -accent-color;*/
+    /*-fx-background-color: -accent-color;*/
+	-fx-background-insets: 0.0, 0.2em;
+	-fx-text-fill: -fx-text-button-colored;
+}
+
+.toggle-button:armed, .toggle-button:selected, .button:armed, .button:default:armed
+	{
+	/*-fx-background-color: -swatch-grey;*/
+    -fx-background-color: -accent-color;
+	-fx-text-fill: -fx-text-button-colored;
+}
+/*
+.icon-button {
+	-fx-background-color: transparent;
+	-fx-pref-height: 42;
+	-fx-pref-width: 42;
+	-fx-min-height: 42;
+	-fx-min-width: 42;
+	-fx-padding: 0;
+}
+
+.icon-button .text {
+	-fx-font-family: 'MaterialDesignIconicFont';
+	-fx-font-size: 24px;
+}
+*/
+
+/* ------------------------*/
+
+/*******************************************************************************
+ *                                                                             *
+ * ComboBox, ChoiceBox COMMON                                                 *
+ *                                                                             *
+ ******************************************************************************/
+.combo-box-base, .choice-box {
+	-fx-background-color: transparent;
+	-fx-border-color: -swatch-grey;
+	-fx-border-width: 0 0 2 0;
+	-fx-background-radius: 0;
+	-fx-border-radius: 0;
+}
+
+.combo-box:focused, .choice-box:focused {
+	-fx-border-color: -swatch-500;
+}
+
+.combo-box-base>.label, .choice-box>.label {
+	-fx-padding: 0.7em 0.7em 0.7em 0em;
+}
+
+.combo-box-base>.arrow-button, .choice-box>.open-button {
+	-fx-padding: 1.2em 0.7em 1.2em 0.5em;
+	-fx-background-radius: 0.0 2.0 2.0 0.0;
+}
+
+.combo-box-base>.arrow-button>.arrow, .choice-box>.open-button>.arrow {
+	-fx-background-color: -swatch-grey;
+}
+
+.combo-box-base .arrow-button:hover .arrow, .spinner .increment-arrow-button:hover .increment-arrow,
+	.spinner .decrement-arrow-button:hover .decrement-arrow {
+	-fx-background-color: -swatch-dark-grey;
+}
+
+.menu-item:focused {
+	-fx-background-color: -swatch-light-grey;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * CheckBox                                                                    *
+ *                                                                             *
+ ******************************************************************************/
+.check-box {
+	-fx-padding: 10;
+}
+
+.check-box .text {
+	-fx-fill: -fx-text-base-color;
+}
+
+.check-box>.box, .check-box>.box.unfocused, .check-box:disabled>.box,
+	.check-box:indeterminate>.box {
+	-fx-border-radius: 4.0;
+	-fx-border-color: -swatch-grey;
+	-fx-border-width: 2;
+	-fx-background-radius: 4;
+	-fx-background-color: transparent;
+	-fx-padding: 1;
+}
+
+.check-box:selected>.box {
+	-fx-border-color: -swatch-500;
+	-fx-background-color: -swatch-500;
+}
+
+.check-box:focused>.box {
+	-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0,
+		0);
+}
+
+.check-box:selected>.box>.mark {
+	-fx-background-color: white;
+}
+
+.check-box:indeterminate>.box>.mark {
+	-fx-background-color: -swatch-grey;
+	-fx-padding: 0.45em;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * ChoiceBox                                                                   *
+ *                                                                             *
+ ******************************************************************************/
+.context-menu {
+	-fx-background-color: rgb(255.0, 255.0, 255.0, 0.95);
+	-fx-background-radius: 2.0;
+}
+
+.radio-menu-item, .check-menu-item {
+	-fx-padding: 0.7em 0.7em 0.7em 0em;
+}
+
+.radio-menu-item:checked .label, .check-menu-item:checked .label {
+	-fx-text-fill: -swatch-500;
+}
+
+.radio-menu-item:checked>.left-container>.radio, .check-menu-item:checked>.left-container>.check
+	{
+	-fx-background-color: -swatch-dark-grey;
+	-fx-padding: 0.68em 0.5em 0.0em 0.0em;
+	-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.2), 0.0, 0.0, 0.0,
+		1.0);
+}
+
+.radio-menu-item>.left-container>.radio, .check-menu-item>.left-container>.check
+	{
+	-fx-background-color: transparent;
+	-fx-padding: 0.68em 0.68em 0.0em 0.0em;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * ComboBox                                                                    *
+ *                                                                             *
+ ******************************************************************************/
+.combo-box .list-cell {
+	-fx-padding: 0.7em 0.7em 0.7em 0em;
+}
+
+.popup-overlay {
+	-fx-background-color: white;
+	-fx-border-color: -swatch-grey;
+	-fx-border-width: 0 0 2 0;
+	-fx-background-radius: 0;
+	-fx-border-radius: 0;
+}
+
+.title-bar {
+	-fx-padding: 10;
+}
+
+.title-bar .icon {
+	-fx-alignment: center-left;
+	-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.2), 0.0, 0.0, 0.0,
+		1.0);
+}
+
+.title-bar .title-label {
+	-fx-padding: 0 10 0 10;
+	-fx-alignment: center;
+	-fx-font-size: 36;
+	-fx-font-weight: bolder;
+}
+
+.content-area {
+	-fx-background-color: -dark;
+}
+
+.content-background {
+	-fx-background-color: white;
+	-fx-background-radius: 0.0 0.0 11.0 11.0;
+	-fx-padding: 0 10 10 10;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Date Picker			                                                       *
+ *                                                                             *
+ ******************************************************************************/
+.date-picker-popup .button {
+	-fx-background-color: -swatch-500;
+}
+
+.date-picker-popup>.month-year-pane {
+	-fx-background-color: -swatch-500;
+}
+
+.date-picker-popup>*>.spinner>.button>.left-arrow, .date-picker-popup>*>.spinner>.button>.right-arrow
+	{
+	-fx-background-color: white;
+}
+
+.date-picker-popup>*>.spinner {
+	-fx-border-width: 0;
+}
+
+.date-picker-popup>*>.spinner>.label {
+	-fx-text-fill: white;
+	-fx-font-weight: bold;
+}
+
+.date-picker-popup>*>.day-name-cell, .date-picker-popup>*>.week-number-cell
+	{
+	-fx-font-weight: normal;
+	-fx-text-fill: -swatch-dark-grey;
+	-fx-font-size: 1em;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Date picker						                                           *
+ *                                                                             *
+ ******************************************************************************/
+.date-picker .arrow-button {
+	-fx-background-color: transparent;
+}
+
+.date-picker .arrow-button .arrow {
+	-fx-background-insets: -4;
+}
+
+.date-picker .date-picker-display-node {
+	-fx-border-width: 0;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * HTML Editor 				                       			  				   *
+ *                                                                             *
+ ******************************************************************************/
+.html-editor {
+	-fx-background-color: white;
+	-fx-border-width: 2 0 2 0;
+	-fx-border-color: -swatch-grey;
+}
+
+.html-editor .web-view {
+	-fx-border-color: grey;
+	-fx-border-width: grey;
+}
+
+.web-view {
+	-fx-font-smoothing-type: gray;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Label                                                                       *
+ *                                                                             *
+ ******************************************************************************/
+.label {
+	-fx-text-fill: -fx-text-base-color;
+}
+
+.label:disabled {
+	-fx-opacity: -fx-disabled-opacity;
+}
+
+.label:show-mnemonics>.mnemonic-underline {
+	-fx-stroke: -fx-text-base-color;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * List, Tree, Table COMMON                                                    *
+ *                                                                             *
+ ******************************************************************************/
+.list-view:focused .list-cell:filled:focused:selected {
+	-fx-background-color: -swatch-light-grey;
+	-fx-text-fill: -swatch-500;
+}
+
+.list-view:hover .list-cell:hover {
+	-fx-background-color: -swatch-light-grey;
+	-fx-text-fill: -fx-text-base-color;
+}
+
+.list-cell {
+	-fx-cell-size: 40;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * ProgressBar                                                                 *
+ *                                                                             *
+ ******************************************************************************/
+.progress-bar>.track {
+	-fx-background-color: derive(-swatch-grey, 50.0%);
+	-fx-background-radius: 2.0;
+	-fx-padding: 0.0;
+}
+
+.progress-bar>.bar {
+	-fx-background-color: -swatch-500;
+	-fx-background-radius: 2.0;
+	-fx-background-insets: 0.0;
+	-fx-border-width: 0.0;
+	-fx-effect: null;
+}
+
+.progress-bar:indeterminate>.bar {
+	-fx-background-color: derive(-swatch-500, 50.0%);
+	-fx-background-radius: 2.0;
+	-fx-background-insets: 0.0;
+	-fx-border-width: 0.0;
+	-fx-effect: null;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * ProgressIndicator                                                           *
+ *                                                                             *
+ ******************************************************************************/
+.progress-indicator>.spinner {
+	-fx-border-width: 0;
+}
+
+.progress-indicator>.determinate-indicator>.indicator {
+	-fx-background-color: rgb(255.0, 255.0, 255.0, 0.5);
+	-fx-padding: 0.0;
+}
+
+.progress-indicator>.determinate-indicator>.progress {
+	-fx-background-color: -swatch-500;
+}
+
+.progress-indicator>.determinate-indicator>.percentage {
+	-fx-fill: -fx-text-base-color;
+	-fx-translate-y: 0em;
+	-fx-padding: 0.0;
+	-fx-font-size: 11px;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * RadioButton                                                                 *
+ *                                                                             *
+ ******************************************************************************/
+.radio-button {
+	-fx-padding: 10;
+}
+
+.radio-button .text {
+	-fx-fill: -fx-text-base-color;
+}
+
+.radio-button>.radio, .radio-button>.radio.unfocused, .radio-button:disabled>.radio,
+	.radio-button:selected>.radio {
+	-fx-border-radius: 100.0;
+	-fx-border-color: -swatch-grey;
+	-fx-border-width: 2;
+	-fx-background-radius: 100;
+	-fx-background-color: transparent;
+	-fx-padding: 3 3 3 3;
+}
+
+.radio-button:focused>.radio {
+	-fx-background-color: -swatch-100;
+}
+
+.radio-button:focused:armed>.radio {
+	-fx-background-color: -swatch-100;
+}
+
+.radio-button:selected>.radio>.dot {
+	-fx-background-color: -swatch-500;
+	-fx-background-insets: 0;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Separators		                   	                                       *
+ *                                                                             *
+ ******************************************************************************/
+.separator {
+	-fx-padding: 16 -16 16 -16;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Scroll Bar			                                                       *
+ *                                                                             *
+ ******************************************************************************/
+.scroll-bar:vertical>.track-background, .scroll-bar:horizontal>.track-background
+	{
+	-fx-background-color: -swatch-light-grey;
+	-fx-background-insets: 0.0;
+}
+
+.scroll-bar:vertical>.thumb, .scroll-bar:horizontal>.thumb {
+	-fx-background-color: -swatch-grey;
+	-fx-background-insets: 0.0;
+	-fx-background-radius: 4.0;
+}
+
+.scroll-bar>.increment-button, .scroll-bar>.decrement-button,
+	.scroll-bar:hover>.increment-button, .scroll-bar:hover>.decrement-button
+	{
+	-fx-background-color: transparent;
+}
+
+.scroll-bar>.increment-button>.increment-arrow, .scroll-bar>.decrement-button>.decrement-arrow
+	{
+	-fx-background-color: -swatch-dark-grey;
+}
+
+.scroll-bar>.track-background {
+	-fx-background-color: transparent;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Slider                                                                      *
+ *                                                                             *
+ ******************************************************************************/
+.slider {
+	-fx-padding: 10 0 10 0;
+}
+
+.slider:vertical {
+	-fx-padding: 0 10 0 10;
+}
+
+.slider>.track {
+	-fx-background-color: -swatch-grey;
+	-fx-background-insets: 1.5;
+}
+
+.slider>.thumb {
+	-fx-background-color: -swatch-500;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Spinner                                                                     *
+ *                                                                             *
+ ******************************************************************************/
+.spinner {
+	-fx-background-color: transparent;
+	-fx-border-width: 0 0 2 0;
+	-fx-border-color: -swatch-grey;
+}
+
+.spinner:focused {
+	-fx-border-color: -swatch-500;
+}
+
+.spinner .text-field {
+	-fx-background-color: transparent;
+	-fx-background-radius: 0;
+	-fx-border-width: 0;
+	-fx-padding: 0.5em 0.5em 0.5em 0.1em;
+	-fx-prompt-text-fill: derive(-dark, 50.0%);
+	-fx-highlight-fill: rgb(94.0, 203.0, 234.0);
+}
+
+.spinner .increment-arrow-button, .spinner .decrement-arrow-button {
+	-fx-background-color: transparent;
+	-fx-fill: swatch-500;
+}
+
+.spinner .increment-arrow-button .increment-arrow, .spinner .decrement-arrow-button .decrement-arrow
+	{
+	-fx-background-color: -swatch-grey;
+}
+
+.spinner .increment-arrow-button, .spinner .decrement-arrow-button {
+	-fx-background-color: transparent;
+	-fx-fill: swatch-500;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Tables								                       				   *
+ *                                                                             *
+ ******************************************************************************/
+.table-view, .tree-table-view {
+	/* Constants used throughout the tableview. */
+	-fx-table-header-border-color: transparent;
+	-fx-table-cell-border-color: -fx-box-border; /* Horizontal Lines*/
+	-fx-background-color: transparent;
+}
+
+/* The column header row is made up of a number of column-header, one for each
+   TableColumn, and a 'filler' area that extends from the right-most column
+   to the edge of the tableview, or up to the 'column control' button. */
+.table-view .filler, .tree-table-view .filler, .table-view .column-header,
+	.tree-table-view .column-header {
+	-fx-size: 65;
+	-fx-border-style: null;
+	-fx-border-color: -swatch-grey;
+	-fx-border-width: 0 0 2 0;
+	-fx-background-color: transparent;
+}
+
+.table-view .show-hide-columns-button, .tree-table-view .show-hide-columns-button
+	{
+	-fx-background-color: transparent;
+}
+
+.table-view .column-header .label, .table-view .filler .label,
+	.table-view .column-drag-header .label, .tree-table-view .column-header .label,
+	.tree-table-view .filler .label, .tree-table-view .column-drag-header .label
+	{
+	-fx-alignment: CENTER_LEFT;
+}
+
+.table-view .column-header-background, .tree-table-view .column-header-background
+	{
+	-fx-background-color: transparent;
+}
+
+.table-row-cell, .tree-table-row-cell {
+	-fx-cell-size: 40px;
+}
+
+.table-cell {
+	-fx-border-color: transparent; /* Vertical Lines*/
+	-fx-border-width: 1;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Text, Text field & Text area                                                *
+ *                                                                             *
+ ******************************************************************************/
+.text {
+	-fx-font-smoothing-type: gray;
+}
+
+.text-area, .text-field {
+	-fx-background-color: transparent;
+	-fx-background-radius: 2.0;
+	-fx-padding: 0.5em 0.5em 0.5em 0.1em;
+	-fx-border-color: -swatch-grey;
+	-fx-border-width: 0 0 2 0;
+	-fx-prompt-text-fill: derive(-dark, 50.0%);
+	-fx-highlight-fill: rgb(94.0, 203.0, 234.0);
+}
+
+.text-area .text, .text-field>*>.text {
+	-fx-effect: null;
+	-fx-fill: -dark;
+}
+
+.text-area {
+	-fx-padding: 0.15em;
+}
+
+.text-area .content {
+	-fx-padding: 0.7em;
+	-fx-border-width: 0.0;
+	-fx-background-color: transparent;
+}
+
+.text-area:focused  .content {
+	-fx-background-color: transparent;
+}
+
+.text-area:focused, .text-field:focused {
+	-fx-border-color: -swatch-500;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Tool bar	& Menu bar		                       			  				   *
+ *                                                                             *
+ ******************************************************************************/
+.tool-bar, .menu-bar { /* top */
+	-fx-background-color: -swatch-toolbar;
+	-fx-border-width: 0 0 2 0;
+	-fx-border-color: -swatch-grey;
+	-fx-min-height: 48;
+	-fx-alignment: CENTER_LEFT;
+}
+
+.tool-bar .label {
+	-fx-font-size: 18;
+}
+
+.tool-bar .combo-box-base, .menu-bar .combo-base {
+	-fx-border-width: 0;
+}
+
+.tool-bar .button, .tool-bar .toggle-button {
+	-fx-background-color: -swatch-toolbar;
+	-fx-text-fill: -fx-text-base-color;
+	-fx-pref-height: 42;
+	-fx-pref-width: 42;
+	-fx-min-height: 42;
+	-fx-min-width: 42;
+	-fx-padding: 0;
+	-fx-background-radius: 0;
+}
+
+.tool-bar .button:pressed, .tool-bar .toggle-button:pressed, .tool-bar .toggle-button:selected
+	{
+	-fx-background-color: -swatch-grey;
+}
+
+.tool-bar .toggle-button {
+	-fx-background-color: -swatch-toolbar;
+}
+
+.tool-bar .separator {
+	-fx-padding: 5 10 5 10;
+}
+
+.toolbar-colored {
+	-fx-background-color: -swatch-500;
+	-fx-border-width: 0 0 2 0;
+	-fx-border-color: -swatch-grey;
+}
+
+.toolbar-colored .button, .toolbar-colored .toggle-button {
+	-fx-background-color: -swatch-500;
+	-fx-text-fill: white;
+}
+
+.toolbar-colored .button:pressed, .toolbar-colored .toggle-button:pressed,
+	.toolbar-colored .toggle-button:selected {
+	-fx-background-color: -swatch-200;
+}
+
+.toolbar-colored .text {
+	-fx-fill: white;
+}
+
+/*************************************************************************
+    *                                                                    *
+    * Tab                                                                *
+    *                                                                    *
+*************************************************************************/
+.tab {
+    fx-background-color: -swatch-toolbar;
+    -fx-border-color: -swatch-grey;
+}
+
+/*************************************************************************
+    *                                                                    *
+    * TabPane - ericlin 28/6-17                                          *
+    *                                                                    *
+*************************************************************************/
+
+/*Styling for tabpane to hide them */
+
+.tab-pane{
+    -fx-tab-max-height: 0;
+    -fx-background-color: f1f1f1;
+}
+.tab-pane .tab-header-area{
+    visibility: HIDDEN;
+}
+
+
+
+/*************************************************************************
+    *                                                                    *
+    * ToolBar - ericlin 28/6-17                                          *
+    *                                                                    *
+*************************************************************************/
+
+.menu-bar-custom{
+    -fx-background-color: -main-color;    /*-swatch-toolbar;*/ /*cool purple #9932CC*/
+    	-fx-border-width: 0 0 0 0;
+    	-fx-border-color: -swatch-grey;
+    	-fx-min-height: 48;
+    	-fx-alignment: CENTER_LEFT;
+    -fx-spacing: 40;
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.50), 6.0, 0.3, 0, 1);
+    /*-fx-alignment: CENTER;*/
+}
+.menu-bar-custom-menu-slide{
+    /*-fx-graphic: url('file:resources/images/iconsViolet/menuLargeWhiteViolet.png');*/
+    /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1);  Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 4 4 4 4, 0, 1, 2;
+
+}
+
+.menu-bar-overlay-menu-button{
+    /*-fx-graphic: url('file:resources/images/iconsViolet/overlayLargeWhiteViolet.png');*/
+    -fx-background-insets: 4 4 4 4, 0, 1, 2;
+    -fx-background-color: transparent;
+}
+
+.menu-bar-undo{
+    /*-fx-graphic: url('file:resources/images/iconsViolet/undoLargeWhiteViolet.png');*/
+    /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1);  Makes it look lika a protruding button. Remove? */
+
+    -fx-background-insets: 4 4 4 4, 0, 1, 2;
+}
+
+.menu-bar-redo{
+    /*-fx-graphic: url('file:resources/images/iconsViolet/redoLargeWhiteViolet.png');*/
+    /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1);  Makes it look lika a protruding button. Remove?*/
+    -fx-background-insets: 4 4 4 4, 0, 1, 2;
+}
+
+.menu-bar-math{
+    /*-fx-graphic: url('file:resources/images/iconsViolet/mathLargeWhiteViolet.png');*/
+    -fx-background-insets: 4 4 4 4, 0, 1, 2;
+    -fx-background-color: transparent;
+    /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1);  Makes it look lika a protruding button. Remove? */
+}
+
+.menu-bar-settings{
+    /*-fx-graphic: url('file:resources/images/iconsViolet/settingsLargeWhiteViolet.png');*/
+    /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1);  Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 4 4 4 4, 0, 1, 2;
+}
+
+.menu-bar-status-box{
+    /*-fx-background-color: -accent-color;
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.40), 6.0, 0.3, 0, 1);*/
+    /*-fx-background-insets: -2 -2 -2 -2, 0 , 1, 2;*/
+}
+
+.menu-bar-status-refresh{
+    /*-fx-graphic: url('file:resources/images/iconsViolet/refreshLargeWhiteCherry.png');*/
+    -fx-background-insets: 4 4 4 4, 0, 1, 2;
+}
+
+.menu-bar-label{
+    -fx-text-fill: #F8F8FF;
+    -fx-font-size: 20;
+    -fx-font-family: "Roboto Medium";
+    -fx-font-weight: bold;
+    -fx-background-insets: 10px;
+}
+
+/* CODE FOR HIDING ARROW ON MENU BUTTON */
+.menu-button > .arrow-button{
+    -fx-padding: 0;
+}
+.menu-button >.arrow-button > .arrow{
+    -fx-padding: 0;
+}
+
+
+/*************************************************************************
+    *                                                                    *
+    * Menu-Slide - ericlin 29/6-17                                       *
+    *                                                                    *
+*************************************************************************/
+
+.menu-slide{
+    -fx-background-color: -navigation-drawer;/*#E91E63;*/ /*#6A5ACD*/
+	-fx-border-width: 0 0 0 0;
+	-fx-border-color: -swatch-light-grey;
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.45), 6.0, 0.3, 0, 0);
+}
+.menu-slide-button{
+	-fx-min-width: 210;
+    -fx-font-size: 15;
+    -fx-border-width: 0 0 1 0;
+    /*-fx-insets: 1 1 1 1;*/
+    -fx-font-style: normal;
+    -fx-font-smoothing-type: lcd;
+    -fx-font-weight: normal;
+    /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.45), 6.0, 0.3, 0, 1);*/
+    -fx-text-fill: -fx-text-base-color;
+    -fx-background-color: transparent;
+    /*-fx-border-color: -swatch-dark-grey;*/
+    -fx-background-radius: 0px;
+}
+.menu-slide-button:hover{
+	/*-fx-background-color: -navigation-drawer-focused;*/
+	-fx-text-fill: -navigation-drawer-focused;
+
+}
+.menu-slide-button:focused{
+	-fx-background-color: -accent-hover-color;
+	-fx-background-insets: 0 200 0 -4;
+}
+
+.menu-slide-image{
+    /*-fx-background-color: -accent-color;*/
+    -fx-border-width: 0 0 1 0;
+	-fx-border-insets: 0 -5 0 0;
+    -fx-border-color: -swatch-grey;
+	-fx-background-color: transparent;
+}
+
+.menu-slide-scroll-pane{
+	-fx-background-color: transparent;
+}
+.menu-slide-scroll-pane > .viewport{
+	-fx-background-color: transparent; /*For making the scroll pane transparent*/
+}
+
+.menu-slide-version-label-container{
+	-fx-border-width: 1 0 0 0;
+	-fx-border-color: -swatch-grey;
+	-fx-background-color: #f1f1f1;
+}
+
+.menu-slide-version-label{
+	-fx-font-size: 15;
+	-fx-font-style: italic;
+}
+
+/*
+.menu-slide-button{
+    -fx-text-fill: #00BCD4;
+    -fx-font-weight: bold;
+    -fx-background-radius: 0px;
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 12.0, 0.3, 0,1);
+    -fx-background-color: rgb(250, 250, 250);
+    -fx-min-width: 214px;
+    -fx-min-height: 120px;
+    -fx-background-insets: 0px;
+    -fx-padding: 0px;
+    -fx-accent: derive(-swatch-500, 50.0%), derive(-swatch-500, -20.0%);
+}
+
+*/
+
+
+
+/*************************************************************************
+    *                                                                    *
+    * On-screen-buttons - ericlin 29/6-17                                *
+    *                                                                    *
+*************************************************************************/
+
+/***ADDED ericlin 22/6-17***/
+
+.on-screen-slide{
+    /*-fx-background-color: rgba(255, 255, 255, 0.5);*/
+	-fx-background-color: linear-gradient(transparent, rgba(255, 255, 255, 0.5));
+    -fx-border-width: 0 0 0 0;
+    -fx-border-color: -swatch-grey;
+    -fx-background-radius: 2px;
+    -fx-effect: dropshadow(gaussian, rgb(0.0,0.0,0.0,0.30), 6.0, 0.3, 0, 1);
+}
+
+.save-button {
+    /*-fx-background-color: -swatch-200;*/
+    /*-fx-graphic: url('main/resources/images/iconsBlack/downloadSmallBlack.png');*/
+	-fx-graphic: url('file:classes/images/iconsBlack/downloadSmallBlack.png');
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look like a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+    -fx-background-radius: 2px;
+    -fx-background-color:  -on-screen-button-color;
+}
+
+.chart-settings{
+    /*-fx-background-color: -swatch-200;*/
+    /*-fx-graphic: url('file:src/main/resources/images/iconsBlack/chartSettingsSmallBlack.png');*/
+	-fx-graphic: url('file:classes/images/iconsBlack/chartSettingsSmallBlack.png');
+    /*-fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look like a protruding button. Remove? */
+    -fx-background-insets: -3 -3 -3 -3, 0, 1, 2;
+    -fx-background-radius: 50px;
+	-fx-background-color: -accent-color; /*-on-screen-button-color;*/
+
+	/*-fx-border-width:   3 3 3 3;
+	-fx-border-color: derive(-accent-color, 20%), derive(-accent-hover-color, -20.0%);
+	*/
+}
+
+.read-button{
+    /*-fx-graphic: url('file:src/main/resources/images/iconsBlack/readSmallBlack.png');*/
+	-fx-graphic: url('file:classes/images/iconsBlack/readSmallBlack.png');
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+    -fx-background-radius: 2px;
+	-fx-background-color:  -on-screen-button-color;
+}
+
+.play-button {
+    /*-fx-background-color: -swatch-200;*/
+    /*-fx-graphic: url('file:src/main/resources/images/iconsBlack/playSmallBlack.png');*/
+	-fx-graphic: url('file:classes/images/iconsBlack/playSmallBlack.png');
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look like a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+    -fx-background-radius: 2px;
+    -fx-background-color:  -on-screen-button-color;
+}
+
+.pause-button {
+    /*-fx-background-color: -swatch-200;*/
+    /*-fx-graphic: url('file:src/main/resources/images/iconsBlack/pauseSmallBlack.png');*/
+	-fx-graphic: url('file:classes/images/iconsBlack/pauseSmallBlack.png');
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+    -fx-background-radius: 2px;
+    -fx-background-color:  -on-screen-button-color;
+}
+
+.reset-button {
+    /*-fx-background-color: -swatch-200;*/
+    /*-fx-graphic: url('file:src/main/resources/images/iconsBlack/resetSmallBlack.png');*/
+	-fx-graphic: url('file:classes/images/iconsBlack/resetSmallBlack.png');
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+    -fx-background-radius: 2px;
+    -fx-background-color:  -on-screen-button-color;
+}
+
+.chip-button {
+    /*-fx-background-color: -swatch-200;*/
+    /*-fx-graphic: url('file:src/main/resources/images/iconsBlack/chipSmallBlack.png');/
+
+     */
+	-fx-graphic: url('file:classes/images/iconsBlack/chipSmallBlack.png');
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+    -fx-background-radius: 2px;
+    -fx-background-color:  -on-screen-button-color;
+}
+
+.chart-click {
+    /*-fx-background-color: -swatch-200;*/
+    /*-fx-graphic: url('file:src/main/resources/images/iconsBlack/chartClickSmallBlack.png');*/
+	-fx-graphic: url('file:classes/images/iconsBlack/chartClickSmallBlack.png');
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+    -fx-background-radius: 2px;
+    -fx-background-color:  -on-screen-button-color;
+}
+
+.cinematic-button {
+    /*-fx-background-color: -swatch-200;*/
+    /*-fx-graphic: url('file:src/main/resources/images/iconsBlack/cinematicSmallBlack.png');*/
+	-fx-graphic: url('file:classes/images/iconsBlack/cinematicSmallBlack.png');
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 6.0, 0.3, 0, 1); /* Makes it look lika a protruding button. Remove? */
+    -fx-background-insets: 3 3 3 3, 0, 1, 2;
+    -fx-background-radius: 2px;
+    -fx-background-color:  -on-screen-button-color;
+}
+
+/*************************************************************************
+    *                                                                    *
+    * On-screen limiters - ericlin 5/7-17                                *
+    *                                                                    *
+*************************************************************************/
+
+.chart-view-container{
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 12.0, 0.3, 0,1);
+    -fx-background-radius: 0px;
+}
+
+.table-view-container{
+    -fx-background-color: -content-background-color;
+    -fx-background-radius: 0px;
+    -fx-font-weight: normal;
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 12.0, 0.3, 0,1);
+}
+
+/*************************************************************************
+    *                                                                    *
+    * TableView - ericlin 5/7-17                                         *
+    *                                                                    *
+*************************************************************************/
+
+.table-view-2D{
+    -fx-font-weight: normal;
+}
+
+/*************************************************************************
+    *                                                                    *
+    * OverlayMenu - ericlin 10/7-17                                      *
+    *                                                                    *
+*************************************************************************/
+
+.overlay-menu{
+    -fx-background-color: /*rgb(236, 64, 122, 0.6);*/rgb(158, 158, 158, 0.3);
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 12.0, 0.3, 0,1);
+}
+
+.overlay-menu-button{
+    -fx-text-fill: -main-color;
+    -fx-font-weight: bold;
+    -fx-background-radius: 0px;
+    -fx-effect: dropshadow(gaussian, rgb(0.0, 0.0, 0.0, 0.30), 12.0, 0.3, 0,1);
+    -fx-background-color: rgb(250, 250, 250);
+    -fx-min-width: 214px;
+    -fx-min-height: 120px;
+    -fx-background-insets: 0px;
+    -fx-padding: 0px;
+    -fx-accent: derive(-swatch-500, 50.0%), derive(-swatch-500, -20.0%);
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * JFX-Slider                                                                  *
+ *                                                                             *
+ ******************************************************************************/
+.jfx-slider-style {
+    /*-fx-padding: 10 0 10 0;*/
+	-fx-min-height: 5px;
+	-fx-min-width: 5px;
+	/*-fx-background-insets: 3 3 3 3, 0, 1, 2;*/
+}
+
+.jfx-slider-style:vertical {
+    /*-fx-padding: 0 10 0 10;*/
+}
+
+.jfx-slider-style:disabled{
+	-fx-opacity: 1;
+}
+
+.jfx-slider-style .track{
+	-fx-background-color: -accent-color;
+	-fx-pref-height: 5px;
+	-fx-pref-width: 5px;
+}
+
+.jfx-slider-style:disabled .track{
+	-fx-background-color: -accent-color;
+	-fx-pref-height: 5px;
+	-fx-pref-width: 5px;
+}
+
+.jfx-slider-style>.thumb {
+    -fx-background-color: -accent-color;
+}
+
+
+.jfx-slider-style:disabled>.thumb {
+	-fx-pref-width: 0;
+	-fx-pref-height: 0;
+	-fx-background-color: transparent;
+}
+
+
+/*******************************************************************************
+ *                                                                             *
+ * JFX-Hamburger                                                               *
+ *                                                                             *
+ ******************************************************************************/
+
+.jfx-hamburger-icon{
+    -fx-spacing: 5; /*Controls how spread apart the lines in the hamburger are*/
+    -fx-cursor: hand;
+}
+.jfx-hamburger-icon StackPane{
+    -fx-pref-width: 25px;  /*Ratio between width and height should be 5:1 for proper look, i.e. 30 to 6.*/ /*or maybe 30 to 4, looks good*/
+    -fx-pref-height: 3px; /*The thickness of each of the lines that make up the hamburger*/
+    -fx-background-color: #F8F8FF;
+    -fx-background-radius: 1px;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * JFX-Progressbar                                                             *
+ *                                                                             *
+ ******************************************************************************/
+
+.jfx-progressbar{
+    -fx-background-color: -accent-color;
+    -fx-fill: -accent-color;
+}
+
+.jfx-progress-bar>.track {
+    -fx-background-color: derive(-swatch-grey, 50.0%);
+    -fx-background-radius: 2.0;
+    -fx-padding: 0.0;
+}
+
+.jfx-progress-bar>.bar {
+    -fx-background-color: -accent-color;
+    -fx-background-radius: 2.0;
+    -fx-background-insets: 0.0;
+    -fx-border-width: 0.0;
+    -fx-effect: null;
+}
+
+.jfx-progress-bar:indeterminate>.bar {
+    -fx-background-color: derive(-swatch-500, 50.0%);
+    -fx-background-radius: 2.0;
+    -fx-background-insets: 0.0;
+    -fx-border-width: 0.0;
+    -fx-effect: null;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Material Accordion - by ericlin 24/8                                        *
+ *                                                                             *
+ ******************************************************************************/
+
+.material-accordion{
+	-fx-font-size: 15;
+	-fx-font-weight: bold;
+	-fx-background-color: transparent;
+	-fx-box-border: transparent;
+	-fx-alignment: center;
+}
+
+.material-accordion-titled-pane{
+	-fx-font-size: 15;
+	-fx-font-weight: bold;
+	-fx-background-color: transparent;
+	-fx-border-width: 0 0 0 0;
+	-fx-alignment: center-left;
+}
+
+/*
+.material-accordion-titled-pane:collapsed {
+}
+*/
+
+.material-accordion-titled-pane > .title{
+	-fx-background-color: transparent;
+	-fx-box-border: transparent;
+	-fx-inner-border: transparent;
+}
+
+.material-accordion-titled-pane:focused > .title{
+	-fx-background-color: -navigation-drawer-focused;
+}
+.material-accordion-titled-pane:hover > .title{
+	-fx-background-color: -accent-hover-color;;
+}
+
+.material-accordion-titled-pane > .title > .arrow-button > .arrow{
+	-fx-background-color: transparent;
+}
+
+.material-accordion-titled-pane > .content{
+	-fx-background-color: transparent;
+	-fx-box-border: transparent;
+}
+/*******************************************************************************
+ *                                                                             *
+ * Icons                                                                       *
+ *                                                                             *
+ ******************************************************************************/
+
+/*Icon settings, including icon fill*/
+.material-icon{
+    -fx-fill: -icon-color;
+	-fx-font-smoothing-type: gray;
+
+}
+.material-icon-USB{
+	-fx-fill: -accent-color;
+	-fx-font-smoothing-type: gray;
+
+}
+/*Icon container settings, i.e buttons;*/
+.material-icon-container{
+	-fx-background-color: transparent;
+	-fx-background-radius: 2px;
+}
+.material-icon-arrow{
+	-fx-background-color: transparent;
+	-fx-background-radius: 2px;
+	-fx-fill: -main-color;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * Enable Studio Label                                                         *
+ *                                                                             *
+ ******************************************************************************/
+
+.enable-studio-label{
+	-fx-font-size: 24px;
+	-fx-font-weight: bold;
+	-fx-text-fill: black;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * JFX-Popup                                                                   *
+ *                                                                             *
+ ******************************************************************************/
+
+.jfx-popup{
+	-fx-background-radius: 4px;
+	-fx-padding: 2px;
+}
+
+

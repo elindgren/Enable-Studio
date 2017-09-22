@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_enable_studio" default="compile.module.enable_studio">
+  <dirname property="module.enable_studio.basedir" file="${ant.file.module_enable_studio}"/>
+  
+  <property name="module.jdk.home.enable_studio" value="${jdk.home.1.8}"/>
+  <property name="module.jdk.bin.enable_studio" value="${jdk.bin.1.8}"/>
+  <property name="module.jdk.classpath.enable_studio" value="jdk.classpath.1.8"/>
+  
+  <property name="compiler.args.enable_studio" value="-encoding UTF-8 -source 1.8 -target 1.8 ${compiler.args}"/>
+  
+  <property name="enable_studio.output.dir" value="${module.enable_studio.basedir}/out/production/Enable Studio"/>
+  <property name="enable_studio.testoutput.dir" value="${module.enable_studio.basedir}/out/test/Enable Studio"/>
+  
+  <path id="enable_studio.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="enable_studio.module.production.classpath">
+    <path refid="${module.jdk.classpath.enable_studio}"/>
+    <pathelement location="${basedir}/resources/lib/jSerialComm-1.3.11.jar"/>
+    <pathelement location="${basedir}/resources/lib/jfxutils-1.0.jar"/>
+    <pathelement location="${basedir}/resources/lib/jzy3d-javafx-1.0.0.jar"/>
+    <pathelement location="${basedir}/resources/lib/fxyz3d-0.1.1.jar"/>
+    <pathelement location="${basedir}/resources/lib/jfoenix-1.7.0.jar"/>
+    <path refid="library.de.jensd:fontawesomefx:8.9.classpath"/>
+  </path>
+  
+  <path id="enable_studio.runtime.production.module.classpath">
+    <pathelement location="${enable_studio.output.dir}"/>
+    <pathelement location="${basedir}/resources/lib/jSerialComm-1.3.11.jar"/>
+    <pathelement location="${basedir}/resources/lib/jfxutils-1.0.jar"/>
+    <pathelement location="${basedir}/resources/lib/jzy3d-javafx-1.0.0.jar"/>
+    <pathelement location="${basedir}/resources/lib/fxyz3d-0.1.1.jar"/>
+    <pathelement location="${basedir}/resources/lib/jfoenix-1.7.0.jar"/>
+    <path refid="library.de.jensd:fontawesomefx:8.9.classpath"/>
+  </path>
+  
+  <path id="enable_studio.module.classpath">
+    <path refid="${module.jdk.classpath.enable_studio}"/>
+    <pathelement location="${enable_studio.output.dir}"/>
+    <pathelement location="${basedir}/resources/lib/jSerialComm-1.3.11.jar"/>
+    <pathelement location="${basedir}/resources/lib/jfxutils-1.0.jar"/>
+    <pathelement location="${basedir}/resources/lib/jzy3d-javafx-1.0.0.jar"/>
+    <pathelement location="${basedir}/resources/lib/fxyz3d-0.1.1.jar"/>
+    <pathelement location="${basedir}/resources/lib/jfoenix-1.7.0.jar"/>
+    <path refid="library.de.jensd:fontawesomefx:8.9.classpath"/>
+  </path>
+  
+  <path id="enable_studio.runtime.module.classpath">
+    <pathelement location="${enable_studio.testoutput.dir}"/>
+    <pathelement location="${enable_studio.output.dir}"/>
+    <pathelement location="${basedir}/resources/lib/jSerialComm-1.3.11.jar"/>
+    <pathelement location="${basedir}/resources/lib/jfxutils-1.0.jar"/>
+    <pathelement location="${basedir}/resources/lib/jzy3d-javafx-1.0.0.jar"/>
+    <pathelement location="${basedir}/resources/lib/fxyz3d-0.1.1.jar"/>
+    <pathelement location="${basedir}/resources/lib/jfoenix-1.7.0.jar"/>
+    <path refid="library.de.jensd:fontawesomefx:8.9.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.enable_studio">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.enable_studio">
+    <patternset refid="excluded.from.module.enable_studio"/>
+  </patternset>
+  
+  <path id="enable_studio.module.sourcepath">
+    <dirset dir="${module.enable_studio.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.enable_studio" depends="compile.module.enable_studio.production,compile.module.enable_studio.tests" description="Compile module Enable Studio"/>
+  
+  <target name="compile.module.enable_studio.production" depends="register.custom.compilers" description="Compile module Enable Studio; production classes">
+    <mkdir dir="${enable_studio.output.dir}"/>
+    <javac2 destdir="${enable_studio.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.enable_studio}/javac">
+      <compilerarg line="${compiler.args.enable_studio}"/>
+      <bootclasspath refid="enable_studio.module.bootclasspath"/>
+      <classpath refid="enable_studio.module.production.classpath"/>
+      <src refid="enable_studio.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.enable_studio"/>
+    </javac2>
+    
+    <copy todir="${enable_studio.output.dir}">
+      <fileset dir="${module.enable_studio.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.enable_studio.tests" depends="register.custom.compilers,compile.module.enable_studio.production" description="compile module Enable Studio; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.enable_studio" description="cleanup module">
+    <delete dir="${enable_studio.output.dir}"/>
+    <delete dir="${enable_studio.testoutput.dir}"/>
+  </target>
+</project>

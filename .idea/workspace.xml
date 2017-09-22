@@ -2,20 +2,21 @@
 <project version="4">
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
-      <artifact name="JANA" />
-      <artifact name="Preloader" />
+      <artifact name="Enable Studio" />
     </artifacts-to-build>
   </component>
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/sample/Controller.java" line="133" />
-    <bookmark url="file://$PROJECT_DIR$/src/sample/Data.java" line="72" mnemonic="2" />
-    <bookmark url="file://$PROJECT_DIR$/src/sample/sample.fxml" line="219" />
+    <bookmark url="file://$PROJECT_DIR$/src/main/java/sample/Controller.java" line="133" />
+    <bookmark url="file://$PROJECT_DIR$/src/main/java/sample/Data.java" line="74" mnemonic="2" />
+    <bookmark url="file://$PROJECT_DIR$/src/main/java/sample/sample.fxml" line="219" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cdb932d9-7e58-4d94-93a9-e7b232ef17da" name="Default" comment="" />
     <ignored path="JavaFxApplication.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
+    <ignored path="$PROJECT_DIR$/EnableStudioIDMaven/target/" />
+    <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,7 +25,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/JANA___Java_Assisted_Newtonian_Analysis$MainApp.coverage" NAME="MainApp Coverage Results" MODIFIED="1504289384782" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/JANA___Java_Assisted_Newtonian_Analysis$MainApp.coverage" NAME="MainApp Coverage Results" MODIFIED="1505473196696" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>sample.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/JANA---Java-Assisted-Newtonian-Analysis$MainApp.coverage" NAME="MainApp Coverage Results" MODIFIED="1499690952392" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
@@ -77,106 +78,107 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="525">
-      <file leaf-file-name="sample.fxml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/sample.fxml">
-          <provider editor-type-id="JavaFX-Scene-Builder">
-            <state />
-          </provider>
+      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
-              <caret line="280" column="58" lean-forward="false" selection-start-line="280" selection-start-column="58" selection-end-line="280" selection-end-column="58" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MainApp.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/MainApp.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="39" column="0" lean-forward="false" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="OnScreenOverlay.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/OnScreenOverlay.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="31" column="17" lean-forward="false" selection-start-line="31" selection-start-column="17" selection-end-line="31" selection-end-column="17" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StandardView.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/StandardView.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="314" column="43" lean-forward="false" selection-start-line="314" selection-start-column="40" selection-end-line="314" selection-end-column="43" />
+            <state relative-caret-position="85">
+              <caret line="5" column="0" lean-forward="true" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="agixmaterialfx.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/agixmaterialfx.css">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/fxml/agixmaterialfx.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-6540">
-              <caret line="875" column="65" lean-forward="false" selection-start-line="875" selection-start-column="58" selection-end-line="875" selection-end-column="65" />
+            <state relative-caret-position="1394">
+              <caret line="82" column="27" lean-forward="false" selection-start-line="82" selection-start-column="20" selection-end-line="82" selection-end-column="27" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="stylesheet.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/stylesheet.css">
+        <entry file="file://$PROJECT_DIR$/src/main/java/sample/stylesheet.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="524">
-              <caret line="37" column="0" lean-forward="false" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
+            <state relative-caret-position="1377">
+              <caret line="81" column="0" lean-forward="false" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MANIFEST.MF" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="3" column="35" lean-forward="false" selection-start-line="3" selection-start-column="35" selection-end-line="3" selection-end-column="35" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MainApp.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/sample/MainApp.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="25" column="29" lean-forward="false" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
+              <folding>
+                <element signature="e#738#739#0" expanded="true" />
+                <element signature="e#766#767#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SharedScene.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/sample/SharedScene.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="8" column="1" lean-forward="false" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SplashScreenPreLoader.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/sample/SplashScreenPreLoader.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="391">
+              <caret line="37" column="41" lean-forward="false" selection-start-line="37" selection-start-column="41" selection-end-line="37" selection-end-column="41" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="sample.fxml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/sample/sample.fxml">
+          <provider editor-type-id="JavaFX-Scene-Builder">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="612">
+              <caret line="36" column="8" lean-forward="false" selection-start-line="36" selection-start-column="8" selection-end-line="36" selection-end-column="8" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Controller.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/sample/Controller.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3757">
+              <caret line="270" column="58" lean-forward="false" selection-start-line="270" selection-start-column="58" selection-end-line="270" selection-end-column="58" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="MaterialAccordionTitledPane.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/MaterialAccordionTitledPane.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/sample/MaterialAccordionTitledPane.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="19" column="98" lean-forward="false" selection-start-line="19" selection-start-column="98" selection-end-line="19" selection-end-column="98" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Controller.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/sample/Controller.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="343">
-              <caret line="463" column="75" lean-forward="false" selection-start-line="463" selection-start-column="75" selection-end-line="463" selection-end-column="75" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="View3D.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/View3D.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7973">
-              <caret line="511" column="25" lean-forward="false" selection-start-line="511" selection-start-column="22" selection-end-line="511" selection-end-column="25" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Data.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/sample/Data.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="117" column="65" lean-forward="false" selection-start-line="117" selection-start-column="59" selection-end-line="117" selection-end-column="65" />
+            <state relative-caret-position="238">
+              <caret line="17" column="53" lean-forward="false" selection-start-line="17" selection-start-column="53" selection-end-line="17" selection-end-column="53" />
               <folding />
             </state>
           </provider>
@@ -188,43 +190,44 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaFXApplication" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="FxmlFile" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>jfx-slider</find>
-      <find>timelineSlider.setV</find>
-      <find>button</find>
-      <find>on-screen-slide</find>
-      <find>lineChart</find>
-      <find>progress</find>
-      <find>chart-sett</find>
-      <find>chart-settin</find>
-      <find>on-scree</find>
-      <find>xAxis</find>
-      <find>jfx</find>
-      <find>jfxpopu</find>
-      <find>on-scre</find>
-      <find>acc</find>
-      <find>titled</find>
-      <find>jfxpro</find>
-      <find>label</find>
-      <find>toolbar</find>
-      <find>findmax</find>
+      <find>navlist</find>
+      <find>tablecol</find>
+      <find>max</find>
+      <find>read</find>
+      <find>fin</find>
+      <find>hambu</find>
+      <find>axis</find>
+      <find>setup</find>
+      <find>scroll</find>
+      <find>graph2d</find>
+      <find>prepare</find>
+      <find>animated</find>
       <find>reset</find>
-      <find>resetGraph</find>
-      <find>findMax</find>
-      <find>control</find>
-      <find>navigation</find>
-      <find>settingX</find>
-      <find>offset</find>
-      <find>overlay</find>
-      <find>add</find>
-      <find>addnewSh</find>
-      <find>gra</find>
+      <find>readAnimated</find>
+      <find>initAni</find>
+      <find>resetGra</find>
+      <find>slidemenu</find>
+      <find>newTimeLineIterat</find>
+      <find>on-scree</find>
+      <find>hamburger</find>
+      <find>timeline</find>
+      <find>measurement</find>
+      <find>getFi</find>
+      <find>change</find>
+      <find>file:resources</find>
+      <find>file:res</find>
+      <find>menu</find>
+      <find>nav</find>
+      <find>usb</find>
+      <find>icon</find>
     </findStrings>
   </component>
   <component name="FindManager">
@@ -251,29 +254,46 @@
         <option value="$PROJECT_DIR$/src/sample/DataPoint2D.java" />
         <option value="$PROJECT_DIR$/src/sample/TableColumn.java" />
         <option value="$PROJECT_DIR$/src/sample/DataAnimated.java" />
-        <option value="$PROJECT_DIR$/src/sample/TableCol.java" />
         <option value="$PROJECT_DIR$/src/sample/InitializeStaticGraph.java" />
         <option value="$PROJECT_DIR$/src/sample/Xform.java" />
         <option value="$PROJECT_DIR$/src/sample/Preloader.java" />
-        <option value="$PROJECT_DIR$/src/sample/Splashscreen.java" />
         <option value="$PROJECT_DIR$/src/sample/ScatterPlot.java" />
         <option value="$PROJECT_DIR$/src/sample/View.java" />
         <option value="$PROJECT_DIR$/src/sample/OnScreenPane.java" />
         <option value="$PROJECT_DIR$/src/sample/OnScreenOverlayInterface.java" />
         <option value="$PROJECT_DIR$/src/sample/OnScreenOverlay.java" />
-        <option value="$PROJECT_DIR$/src/sample/ReadSerialPort.java" />
-        <option value="$PROJECT_DIR$/src/sample/Graph2D.java" />
-        <option value="$PROJECT_DIR$/src/sample/MainApp.java" />
         <option value="$PROJECT_DIR$/src/sample/MaterialAccordion.java" />
         <option value="$PROJECT_DIR$/src/sample/View3D.java" />
         <option value="$PROJECT_DIR$/src/sample/ChartDataSettingsBox.java" />
-        <option value="$PROJECT_DIR$/src/sample/agixmaterialfx.css" />
-        <option value="$PROJECT_DIR$/src/sample/stylesheet.css" />
         <option value="$PROJECT_DIR$/src/sample/MaterialAccordionTitledPane.java" />
+        <option value="$PROJECT_DIR$/src/sample/MainApp.java" />
+        <option value="$PROJECT_DIR$/src/sample/stylesheet.css" />
+        <option value="$PROJECT_DIR$/src/sample/Graph2D.java" />
+        <option value="$PROJECT_DIR$/src/sample/TableCol.java" />
+        <option value="$PROJECT_DIR$/src/sample/Controller.java" />
+        <option value="$PROJECT_DIR$/src/sample/sample.fxml" />
+        <option value="$PROJECT_DIR$/src/sample/agixmaterialfx.css" />
+        <option value="$PROJECT_DIR$/src/sample/ReadSerialPort.java" />
         <option value="$PROJECT_DIR$/src/sample/Data.java" />
         <option value="$PROJECT_DIR$/src/sample/StandardView.java" />
-        <option value="$PROJECT_DIR$/src/sample/sample.fxml" />
-        <option value="$PROJECT_DIR$/src/sample/Controller.java" />
+        <option value="$PROJECT_DIR$/src/sample/Splashscreen.java" />
+        <option value="$PROJECT_DIR$/Preloader/src/Splashscreen.java" />
+        <option value="$PROJECT_DIR$/src/sample/build.xml" />
+        <option value="$PROJECT_DIR$/EnableStudioIDMaven/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/sample/Data.java" />
+        <option value="$PROJECT_DIR$/src/main/java/sample/MaterialAccordionTitledPane.java" />
+        <option value="$PROJECT_DIR$/src/main/java/sample/MaterialAccordion.java" />
+        <option value="$PROJECT_DIR$/src/agixmaterialfx.css" />
+        <option value="$PROJECT_DIR$/src/main/java/sample/sample.fxml" />
+        <option value="$PROJECT_DIR$/src/main/java/sample/Controller.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/fxml/agixmaterialfx.css" />
+        <option value="$PROJECT_DIR$/src/main/java/sample/stylesheet.css" />
+        <option value="$PROJECT_DIR$/src/main/java/sample/Splashscreen.java" />
+        <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/sample/SharedScene.java" />
+        <option value="$PROJECT_DIR$/src/main/java/sample/MainApp.java" />
+        <option value="$PROJECT_DIR$/src/main/java/sample/SplashScreenPreLoader.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" />
       </list>
     </option>
   </component>
@@ -283,10 +303,37 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="printErrorStackTraces" value="true" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="MavenProjectNavigator">
+    <treeState>
+      <expand>
+        <path>
+          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
+          <item name="EnableStudio" type="9519ce18:MavenProjectsStructure$ProjectNode" />
+        </path>
+        <path>
+          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
+          <item name="EnableStudio" type="9519ce18:MavenProjectsStructure$ProjectNode" />
+          <item name="Lifecycle" type="58874e2:MavenProjectsStructure$LifecycleNode" />
+        </path>
+      </expand>
+      <select />
+    </treeState>
+  </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="562" />
-    <option name="y" value="254" />
+    <option name="x" value="-7" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
   </component>
@@ -295,7 +342,7 @@
     <option name="STATE" value="0" />
   </component>
   <component name="ProjectView">
-    <navigator proportions="" version="1">
+    <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -308,7 +355,82 @@
       <manualOrder />
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="EnableStudio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EnableStudio" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EnableStudio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EnableStudio" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EnableStudio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EnableStudio" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EnableStudio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EnableStudio" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EnableStudio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EnableStudio" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EnableStudio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EnableStudio" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EnableStudio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EnableStudio" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="sample" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EnableStudio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EnableStudio" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EnableStudio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EnableStudio" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="fxml" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="EnableStudio" type="b2602c69:ProjectViewProjectNode" />
+              <item name="EnableStudio" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="images" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
+      <pane id="Scope" />
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="GoToFile.includeJavaFiles" value="false" />
@@ -321,8 +443,8 @@
     <property name="GoToClass.includeLibraries" value="false" />
     <property name="dynamic.classpath" value="false" />
     <property name="MemberChooser.copyJavadoc" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/lib/ikonli-core-1.9.0.jar!/" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="MavenSettings" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -331,6 +453,21 @@
     <property name="Downloaded.Files.Path.Enabled" value="true" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
+    <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
+    <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
+    <property name="GenerateAntBuildDialog.backupFiles" value="true" />
+    <property name="GenerateAntBuildDialog.outputFileNameProperty" value="enablestudio" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\ericl\OneDrive\Projekt\EnableStudio\src\main\resources\fxml" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\ericl\OneDrive\Projekt\EnableStudio\src\main\resources" />
+      <recent name="C:\Users\ericl\OneDrive\Projekt\EnableStudio\src\main\resources\fxml" />
+      <recent name="C:\Users\ericl\OneDrive\Projekt\EnableStudio\lib" />
+      <recent name="C:\Users\ericl\OneDrive\Projekt\EnableStudio\src" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -361,7 +498,7 @@
       <option name="ENABLE_SWING_INSPECTOR" value="false" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="JANA" />
+      <module name="EnableStudio" />
       <envs />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
@@ -407,6 +544,18 @@
       </option>
       <envs />
       <patterns />
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType" factoryName="Kotlin">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="JANA" />
+      <envs />
     </configuration>
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
       <module name="" />
@@ -553,19 +702,6 @@
       <envs />
       <method />
     </configuration>
-    <configuration default="true" type="JetRunConfigurationType" factoryName="Kotlin">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="JANA" />
-      <envs />
-      <method />
-    </configuration>
     <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType" factoryName="Kotlin script">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <option name="filePath" />
@@ -665,7 +801,24 @@
       <workItem from="1504380918533" duration="3349000" />
       <workItem from="1504613738795" duration="141000" />
       <workItem from="1505124191701" duration="522000" />
-      <workItem from="1505414854966" duration="595000" />
+      <workItem from="1505414854966" duration="656000" />
+      <workItem from="1505472202196" duration="5988000" />
+      <workItem from="1505550373630" duration="7999000" />
+      <workItem from="1505597699028" duration="1576000" />
+      <workItem from="1505599362125" duration="5792000" />
+      <workItem from="1505665313890" duration="12296000" />
+      <workItem from="1505711356702" duration="1913000" />
+      <workItem from="1505730648725" duration="2436000" />
+      <workItem from="1505763709388" duration="4004000" />
+      <workItem from="1505800494798" duration="1289000" />
+      <workItem from="1505817533514" duration="2002000" />
+      <workItem from="1505822852498" duration="859000" />
+      <workItem from="1505829630202" duration="421000" />
+      <workItem from="1505832699567" duration="3121000" />
+      <workItem from="1505842990568" duration="997000" />
+      <workItem from="1505886888574" duration="164000" />
+      <workItem from="1505936263826" duration="5054000" />
+      <workItem from="1506109423552" duration="1090000" />
     </task>
     <task id="LOCAL-00001" summary="Timer">
       <created>1499183339367</created>
@@ -678,26 +831,25 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="103883000" />
+    <option name="totallyTimeSpent" value="160945000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.42389005" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.422833" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32980973" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32928804" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1734375" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25052854" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2473573" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32992035" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.12447917" sideWeight="0.6703755" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13802083" sideWeight="0.6703755" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -781,37 +933,8 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/sample/AccGraph.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2142">
-          <caret line="144" column="59" lean-forward="false" selection-start-line="144" selection-start-column="59" selection-end-line="144" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/ConfirmBox.java" />
-    <entry file="file://$PROJECT_DIR$/src/sample/DynamicChart.java" />
-    <entry file="file://$PROJECT_DIR$/src/sample/AccGraph.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/AccGraph.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Main.java" />
-    <entry file="file://$PROJECT_DIR$/src/sample/Controller.java" />
-    <entry file="file://$PROJECT_DIR$/src/sample/sample.fxml" />
-    <entry file="file://$PROJECT_DIR$/src/sample/Main.java" />
-    <entry file="jar://C:/Program Files (x86)/Java/jdk1.8.0_111/javafx-src.zip!/javafx/event/EventHandler.java" />
-    <entry file="file://$PROJECT_DIR$/src/sample/DynamicChart.java" />
-    <entry file="file://$PROJECT_DIR$/src/sample/AnimatedLineChart.java" />
-    <entry file="file://$PROJECT_DIR$/src/sample/ConfirmBox.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/AnimatedLineChart.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/ConfirmBox.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="580">
           <caret line="44" column="5" lean-forward="false" selection-start-line="44" selection-start-column="5" selection-end-line="44" selection-end-column="5" />
@@ -823,7 +946,7 @@
     <entry file="jar://C:/Program Files (x86)/Java/jdk1.8.0_111/javafx-src.zip!/javafx/beans/value/ChangeListener.java" />
     <entry file="file://$PROJECT_DIR$/src/sample/TableColumn.java" />
     <entry file="file://$PROJECT_DIR$/src/sample/MainApp-DESKTOP-0B8TOF7.java" />
-    <entry file="file://$PROJECT_DIR$/src/sample/DataAnimated.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/DataAnimated.java" />
     <entry file="jar://$PROJECT_DIR$/resources/lib/jfxutils-1.0.jar!/org/gillius/jfxutils/chart/JFXChartUtil.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -838,13 +961,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/TableCol.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="545">
-          <caret line="38" column="0" lean-forward="false" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/resources/lib/jfxutils-1.0.jar!/org/gillius/jfxutils/tab/TabUtil.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
@@ -852,14 +968,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/DataPoint2D.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/DataPoint2D.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/ContinousToDoubleMatrix.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/ContinousToDoubleMatrix.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
           <caret line="17" column="45" lean-forward="false" selection-start-line="17" selection-start-column="45" selection-end-line="17" selection-end-column="45" />
@@ -868,155 +984,315 @@
     </entry>
     <entry file="jar://C:/Program Files (x86)/Java/jdk1.8.0_111/javafx-src.zip!/javafx/concurrent/Task.java" />
     <entry file="jar://C:/Program Files (x86)/Java/jdk1.8.0_111/src.zip!/java/util/concurrent/FutureTask.java" />
-    <entry file="file://$PROJECT_DIR$/src/sample/Splashscreen.java" />
     <entry file="jar://C:/Program Files (x86)/Java/jdk1.8.0_111/javafx-src.zip!/javafx/fxml/FXMLLoader.java" />
-    <entry file="file://$PROJECT_DIR$/src/sample/AccGraph.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="24" column="13" lean-forward="false" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files (x86)/Java/jdk1.8.0_111/javafx-src.zip!/com/sun/glass/ui/win/WinApplication.java" />
-    <entry file="file://$PROJECT_DIR$/src/sample/Xform.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/Xform.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
           <caret line="39" column="13" lean-forward="false" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/ScatterPlot.java" />
-    <entry file="file://$PROJECT_DIR$/src/sample/OnScreenPane.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/ScatterPlot.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/OnScreenPane.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="400">
           <caret line="16" column="0" lean-forward="false" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/View.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/View.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="476">
           <caret line="28" column="43" lean-forward="false" selection-start-line="28" selection-start-column="43" selection-end-line="28" selection-end-column="43" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/ReadSerialPort.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="368" column="9" lean-forward="false" selection-start-line="368" selection-start-column="9" selection-end-line="368" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/OnScreenOverlayInterface.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/OnScreenOverlayInterface.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
           <caret line="8" column="0" lean-forward="false" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="30" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Graph2D.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/OnScreenOverlay.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1819">
-          <caret line="125" column="0" lean-forward="false" selection-start-line="125" selection-start-column="0" selection-end-line="125" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/InitializeStaticGraph.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="53" column="0" lean-forward="false" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/MaterialAccordion.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="18" column="1" lean-forward="false" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/OnScreenOverlay.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
+        <state relative-caret-position="675">
           <caret line="31" column="17" lean-forward="false" selection-start-line="31" selection-start-column="17" selection-end-line="31" selection-end-column="17" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/sample/ChartDataSettingsBox.java" />
-    <entry file="file://$PROJECT_DIR$/src/sample/View3D.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/TableCol.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7973">
-          <caret line="511" column="25" lean-forward="false" selection-start-line="511" selection-start-column="22" selection-end-line="511" selection-end-column="25" />
-          <folding />
+        <state relative-caret-position="561">
+          <caret line="37" column="5" lean-forward="false" selection-start-line="37" selection-start-column="5" selection-end-line="37" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/MaterialAccordionTitledPane.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/InitializeStaticGraph.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="19" column="98" lean-forward="false" selection-start-line="19" selection-start-column="98" selection-end-line="19" selection-end-column="98" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="648">
+          <caret line="53" column="0" lean-forward="false" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/MainApp.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/agixmaterialfx.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20825">
+          <caret line="1225" column="28" lean-forward="false" selection-start-line="1225" selection-start-column="28" selection-end-line="1225" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/Graph2D.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
-          <caret line="39" column="0" lean-forward="false" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
-          <folding />
+          <caret line="23" column="13" lean-forward="false" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Data.java">
+    <entry file="file://$PROJECT_DIR$/src/sample/build.xml" />
+    <entry file="file://$PROJECT_DIR$/EnableStudioIDMaven/pom.xml" />
+    <entry file="file://$PROJECT_DIR$/Preloader/src/Splashscreen.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="117" column="65" lean-forward="false" selection-start-line="117" selection-start-column="59" selection-end-line="117" selection-end-column="65" />
-          <folding />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/stylesheet.css">
+    <entry file="file://$PROJECT_DIR$/src/main/resources/fxml/stylesheet.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="524">
-          <caret line="37" column="0" lean-forward="false" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/agixmaterialfx.css">
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/AccGraph.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-6540">
-          <caret line="875" column="65" lean-forward="false" selection-start-line="875" selection-start-column="58" selection-end-line="875" selection-end-column="65" />
-          <folding />
+        <state relative-caret-position="2950">
+          <caret line="136" column="34" lean-forward="false" selection-start-line="136" selection-start-column="34" selection-end-line="136" selection-end-column="34" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/StandardView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="314" column="43" lean-forward="false" selection-start-line="314" selection-start-column="40" selection-end-line="314" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/sample.fxml">
+    <entry file="file://$PROJECT_DIR$/src/main/resources/fxml/sample.fxml">
       <provider editor-type-id="JavaFX-Scene-Builder">
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="280" column="58" lean-forward="false" selection-start-line="280" selection-start-column="58" selection-end-line="280" selection-end-column="58" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/sample/Controller.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/ReadSerialPort.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="343">
-          <caret line="463" column="75" lean-forward="false" selection-start-line="463" selection-start-column="75" selection-end-line="463" selection-end-column="75" />
+        <state relative-caret-position="100">
+          <caret line="6" column="7" lean-forward="false" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/View3D.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="50">
+          <caret line="2" column="7" lean-forward="false" selection-start-line="2" selection-start-column="7" selection-end-line="2" selection-end-column="7" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/Data.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="6" column="2" lean-forward="false" selection-start-line="6" selection-start-column="2" selection-end-line="6" selection-end-column="2" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://MAVEN/EnableGroup:EnableStudio:Pre-Alpha 0.1">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>MAVEN</ID>
+          <OriginalElement>EnableGroup:EnableStudio:Pre-Alpha 0.1</OriginalElement>
+          <nodes>
+            <node x="0.0" y="140.00000000000003">EnableGroup:EnableStudio:Pre-Alpha 0.1</node>
+            <node x="206.0" y="0.0">com.jfoenix:jfoenix:jar:1.7.0</node>
+            <node x="183.0" y="70.0">de.jensd:fontawesomefx:jar:8.9</node>
+            <node x="206.5" y="140.0">org.gillius:jfxutils:jar:1.0</node>
+            <node x="189.5" y="210.0">com.fazecast:jSerialComm:jar:1.3.11</node>
+            <node x="207.0" y="280.0">org.fxyz3d:fxyz3d:jar:0.1.1</node>
+            <node x="401.5" y="241.25000000000003">org.fxyz3d:fxyz3d:jar:0.1.1/eu.mihosoft.vrl.jcsg:jcsg:jar:0.4.0</node>
+            <node x="567.5" y="206.25000000000003">org.fxyz3d:fxyz3d:jar:0.1.1/eu.mihosoft.vrl.jcsg:jcsg:jar:0.4.0/java3d:vecmath:jar:1.3.1</node>
+            <node x="560.0" y="276.25">org.fxyz3d:fxyz3d:jar:0.1.1/eu.mihosoft.vrl.jcsg:jcsg:jar:0.4.0/org.slf4j:slf4j-simple:jar:1.6.1</node>
+            <node x="735.0" y="276.25">org.fxyz3d:fxyz3d:jar:0.1.1/eu.mihosoft.vrl.jcsg:jcsg:jar:0.4.0/org.slf4j:slf4j-simple:jar:1.6.1/org.slf4j:slf4j-api:jar:1.6.1</node>
+            <node x="378.0" y="346.25">org.fxyz3d:fxyz3d:jar:0.1.1/org.orbisgis:poly2tri-core:jar:0.1.2</node>
+            <node x="569.5" y="346.25">org.fxyz3d:fxyz3d:jar:0.1.1/org.orbisgis:poly2tri-core:jar:0.1.2/org.slf4j:slf4j-api:jar:1.6.0</node>
+          </nodes>
+          <notes />
+          <edges>
+            <edge source="org.fxyz3d:fxyz3d:jar:0.1.1/org.orbisgis:poly2tri-core:jar:0.1.2" target="org.fxyz3d:fxyz3d:jar:0.1.1/org.orbisgis:poly2tri-core:jar:0.1.2/org.slf4j:slf4j-api:jar:1.6.0">
+              <point x="51.0" y="-0.0" />
+              <point x="-38.0" y="-0.0" />
+            </edge>
+            <edge source="org.fxyz3d:fxyz3d:jar:0.1.1" target="org.fxyz3d:fxyz3d:jar:0.1.1/org.orbisgis:poly2tri-core:jar:0.1.2">
+              <point x="33.5" y="7.5" />
+              <point x="298.0" y="302.5" />
+              <point x="-51.0" y="-0.0" />
+            </edge>
+            <edge source="org.fxyz3d:fxyz3d:jar:0.1.1/eu.mihosoft.vrl.jcsg:jcsg:jar:0.4.0/org.slf4j:slf4j-simple:jar:1.6.1" target="org.fxyz3d:fxyz3d:jar:0.1.1/eu.mihosoft.vrl.jcsg:jcsg:jar:0.4.0/org.slf4j:slf4j-simple:jar:1.6.1/org.slf4j:slf4j-api:jar:1.6.1">
+              <point x="47.5" y="-0.0" />
+              <point x="-38.0" y="-0.0" />
+            </edge>
+            <edge source="EnableGroup:EnableStudio:Pre-Alpha 0.1" target="com.fazecast:jSerialComm:jar:1.3.11">
+              <point x="51.5" y="6.0" />
+              <point x="-51.0" y="-0.0" />
+            </edge>
+            <edge source="EnableGroup:EnableStudio:Pre-Alpha 0.1" target="de.jensd:fontawesomefx:jar:8.9">
+              <point x="51.5" y="-6.0" />
+              <point x="-57.5" y="-0.0" />
+            </edge>
+            <edge source="EnableGroup:EnableStudio:Pre-Alpha 0.1" target="com.jfoenix:jfoenix:jar:1.7.0">
+              <point x="51.5" y="-12.0" />
+              <point x="183.0" y="15.0" />
+              <point x="-34.5" y="-0.0" />
+            </edge>
+            <edge source="org.fxyz3d:fxyz3d:jar:0.1.1" target="org.fxyz3d:fxyz3d:jar:0.1.1/eu.mihosoft.vrl.jcsg:jcsg:jar:0.4.0">
+              <point x="33.5" y="-7.5" />
+              <point x="298.0" y="287.5" />
+              <point x="378.0" y="256.25" />
+              <point x="-27.5" y="-0.0" />
+            </edge>
+            <edge source="org.fxyz3d:fxyz3d:jar:0.1.1/eu.mihosoft.vrl.jcsg:jcsg:jar:0.4.0" target="org.fxyz3d:fxyz3d:jar:0.1.1/eu.mihosoft.vrl.jcsg:jcsg:jar:0.4.0/org.slf4j:slf4j-simple:jar:1.6.1">
+              <point x="27.5" y="7.5" />
+              <point x="480.0" y="263.75" />
+              <point x="-47.5" y="-0.0" />
+            </edge>
+            <edge source="EnableGroup:EnableStudio:Pre-Alpha 0.1" target="org.fxyz3d:fxyz3d:jar:0.1.1">
+              <point x="51.5" y="12.0" />
+              <point x="183.0" y="295.0" />
+              <point x="-33.5" y="-0.0" />
+            </edge>
+            <edge source="org.fxyz3d:fxyz3d:jar:0.1.1/eu.mihosoft.vrl.jcsg:jcsg:jar:0.4.0" target="org.fxyz3d:fxyz3d:jar:0.1.1/eu.mihosoft.vrl.jcsg:jcsg:jar:0.4.0/java3d:vecmath:jar:1.3.1">
+              <point x="27.5" y="-7.5" />
+              <point x="480.0" y="248.75000000000003" />
+              <point x="-40.0" y="-0.0" />
+            </edge>
+            <edge source="EnableGroup:EnableStudio:Pre-Alpha 0.1" target="org.gillius:jfxutils:jar:1.0">
+              <point x="51.5" y="-0.0" />
+              <point x="-34.0" y="-0.0" />
+            </edge>
+          </edges>
+          <settings layout="Hierarchic Group" zoom="0.7805383022774327" x="297.0" y="68.0" />
+          <SelectedNodes>
+            <node>EnableGroup:EnableStudio:Pre-Alpha 0.1</node>
+          </SelectedNodes>
+          <Categories />
+          <SCOPE>All</SCOPE>
+          <VISIBILITY>All</VISIBILITY>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/MaterialAccordion.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/agixmaterialfx.css" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/StandardView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="776">
+          <caret line="705" column="35" lean-forward="false" selection-start-line="705" selection-start-column="35" selection-end-line="705" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/sample.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="36" column="8" lean-forward="false" selection-start-line="36" selection-start-column="8" selection-end-line="36" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/Controller.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3757">
+          <caret line="270" column="58" lean-forward="false" selection-start-line="270" selection-start-column="58" selection-end-line="270" selection-end-column="58" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/fxml/agixmaterialfx.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1394">
+          <caret line="82" column="27" lean-forward="false" selection-start-line="82" selection-start-column="20" selection-end-line="82" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/MaterialAccordionTitledPane.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="17" column="53" lean-forward="false" selection-start-line="17" selection-start-column="53" selection-end-line="17" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/stylesheet.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1377">
+          <caret line="81" column="0" lean-forward="false" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/SharedScene.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="1" lean-forward="false" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/MainApp.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="25" column="29" lean-forward="false" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
+          <folding>
+            <element signature="e#738#739#0" expanded="true" />
+            <element signature="e#766#767#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/sample/SplashScreenPreLoader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="37" column="41" lean-forward="false" selection-start-line="37" selection-start-column="41" selection-end-line="37" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="35" lean-forward="false" selection-start-line="3" selection-start-column="35" selection-end-line="3" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="0" lean-forward="true" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1027,7 +1303,7 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
-          <last-edited>Preloader</last-edited>
+          <last-edited>Enable Studio</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1075,7 +1351,7 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>JANA</last-edited>
+          <last-edited>EnableStudio</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1099,7 +1375,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>lib</last-edited>
+          <last-edited>de.jensd:fontawesomefx:8.9</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1110,5 +1386,12 @@
         </settings>
       </state>
     </states>
+  </component>
+  <component name="mavenExecuteGoalHistory">
+    <option value="C:\Users\ericl\OneDrive\Projekt\EnableStudio" />
+    <option value="exec:java -D exec.mainClass=sample.MainApp" />
+    <option value="exec:java -D exec.mainClass=&lt;sample.MainApp&gt;" />
+    <option value="exec:java -D exec.mainClass=MainApp" />
+    <option value="clean" />
   </component>
 </project>

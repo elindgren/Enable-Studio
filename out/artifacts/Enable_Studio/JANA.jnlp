@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="JANA.jnlp">
+  <information>
+    <title>Enable Studio</title>
+    <vendor>Unknown</vendor>
+    <description>Enable Studio Pre-Alpha 0.1, stable</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="JANA.jar" size="144972" download="eager" />
+  </resources>
+  <jfx:javafx-desc  width="1200" height="900" main-class="MainApp"  name="Enable Studio"  preloader-class="Splashscreen"/>
+  <update check="background"/>
+</jnlp>

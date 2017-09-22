@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="Enable Studio">
+    <output-path>$PROJECT_DIR$/out/artifacts/Enable_Studio</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="MainApp" />
+        <option name="description" value="Enable Studio Pre-Alpha 0.1, stable" />
+        <option name="height" value="900" />
+        <option name="htmlPlaceholderId" value="" />
+        <option name="title" value="Enable Studio" />
+        <option name="vendor" value="" />
+        <option name="version" value="Pre-Alpha 0.1" />
+        <option name="width" value="1200" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="module-output" name="EnableStudio" />
+    </root>
+  </artifact>
+</component>

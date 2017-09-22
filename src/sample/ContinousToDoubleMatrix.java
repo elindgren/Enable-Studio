@@ -1,11 +1,12 @@
-package sample;
-
 /**
  * Created by simon on 2017-06-16.
  */
+package sample;
+
 public class ContinousToDoubleMatrix implements Runnable {
     private ReadSerialPort rp;
     private int count;
+
     public ContinousToDoubleMatrix(ReadSerialPort rp){
         this.rp=rp;
     }

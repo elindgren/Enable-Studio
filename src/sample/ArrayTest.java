@@ -1,6 +1,8 @@
 /**
  * Created by simon on 2017-06-15.
  */
+package sample;
+
 public class ArrayTest {
     public static void main(String[] args) {
         System.out.println(Integer.MAX_VALUE);

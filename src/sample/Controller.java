@@ -1,288 +1,474 @@
 package sample;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import com.jfoenix.controls.*;
+import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
+import de.jensd.fx.glyphs.GlyphsDude;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIcon;
+import javafx.animation.*;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
+import javafx.geometry.Point3D;
+import javafx.scene.*;
 import javafx.scene.control.*;
-import javafx.event.ActionEvent;
 import java.net.URL;
+
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
+
+import java.util.ArrayList;
 import java.util.ResourceBundle;
-import org.gillius.jfxutils.JFXUtil.*;
-import org.gillius.jfxutils.chart.StableTicksAxis;
+import java.util.Stack;
+
 
 public class Controller implements Initializable {
     //********************************************************************//
-    private Timeline timeline;
-    private Data data;
+    ReadSerialPort rp;
+    private ArrayList viewList = new ArrayList(); //A list of all the active views
 
+    //Setting for controlling size of icons:
+    String iconSize="38px";
+
+    //Below are used by various progressbars.
+    private ObservableList<Integer> progressList;
+    private ObservableList<Integer> statusList;
+    private ObservableList<Integer> statusListView=FXCollections.observableArrayList(); //StatusList used by all the views, as to not have eventhandlers conflict
+
+    @FXML
+    private AnchorPane mainPane;
+
+    @FXML
+    private AnchorPane overlayPane;
+    @FXML
+    private HBox overlayMenuBox2D;
+    @FXML
+    private HBox overlayMenuBox3D;
+
+    @FXML
+    private Tab tab2D;
+    @FXML
+    private Tab tab3D;
+
+    private ArrayList<Tab> tabs2D;
+    private ArrayList<Tab> tabs3D;
+    private int tabIndex2D=0;
+    private int tabIndex3D=0;
+
+    @FXML
+    private TabPane tabPane;
+    SingleSelectionModel<Tab> selectionModel;
     //*********************MENU BAR************************//
-    @FXML
-    private MenuItem menuClose;
 
-    //*********************STATIC VIEW*********************//
-    private int statusResStatic =0; //TODO Change data so that it is the resulting data
-    //TableView - Static View
     @FXML
-    private TableView tableStatic;
-    private TableColumn xDataStaticCol;
-    private TableColumn yDataStaticCol;
+    private Button menuButton;
+    @FXML
+    private Button overlayButton;
+    @FXML
+    private MenuButton mathButton;
+    @FXML
+    private Button redoButton;
+    @FXML
+    private Button undoButton;
+    @FXML
+    private Button settingsButton;
 
-    //Buttons - Static View
+    //ProgressBar & Status - Static View
     @FXML
-    private Button readStatic;
+    private Button refreshButton;
     @FXML
-    private Button resetStatic;
+    private JFXProgressBar progressBar;
+    @FXML
+    private Circle statusCircle;
 
-    //LineChart - Static View
+    //**** BUTTONS ****//
     @FXML
-    private LineChart lineChartStatic;
+    private JFXButton change2DDefualt;
     @FXML
-    private NumberAxis xAxisStatic;
+    private JFXButton change3DDefualt;
     @FXML
-    private NumberAxis yAxisStatic;
-    //Static series
-    private XYChart.Series<Number,Number> seriesStatic;
+    private JFXButton newScene2D;
+
+    //***** SLIDE IN PANES ****//
+    @FXML
+    private AnchorPane navList;
+    @FXML
+    private AnchorPane onScreenList;
+
+    //Navigation drawer
+    @FXML
+    private JFXHamburger menuHamburger;
+
+
     //******************************************************//
 
-    //*********************ANIMATED VIEW*********************//
-    private int statusResAnimated = 0;
-
-    //TableView - Animated View
+    //******3D******//
     @FXML
-    private TableView tableAnimated;
-    private TableColumn xDataAnimatedCol;
-    private TableColumn yDataAnimatedCol;
-
-    //Buttons - Animated View
+    private Group group3D;
     @FXML
-    private Button stopAnimated;
-    @FXML
-    private Button readAnimated;
-    @FXML
-    private Button resetAnimated;
-
-    //LineChart - Animated View
-    @FXML
-    private LineChart lineChartAnimated;
-    @FXML
-    private NumberAxis xAxisAnimated;
-    @FXML
-    private NumberAxis yAxisAnimated;
-    //Animated series
-    private XYChart.Series<Number,Number> seriesAnimated;
-    //******************************************************//
+    private Group scatterGroup;
 
 
-    //***************************EXPERIMENTAL****************//
-    @FXML
-    private Button readExperimental;
-    @FXML
-    private Button resetExperimental;
-    @FXML
-    private LineChart lineChartExperimental;
-    //*******************************************************//
     //********************************************************************//
 
     @Override
-    public void initialize(URL fxmlFileLocation, ResourceBundle resources){
+    public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
         //*****Checks if all the imported fx:id's are declared in FXML-file*****//
-        assert menuClose != null : "fx:id=\"menuClose\" was not injected: check your FXML file";
-        assert readStatic != null : "fx:id=\"readStatic\" was not injected: check your FXML file";
-        assert resetStatic != null : "fx:id=\"resetStatic\" was not injected: check your FXML file";
-        assert readAnimated != null : "fx:id=\"readAnimated\" was not injected: check your FXML file";
-        assert stopAnimated != null : "fx:id=\"stopAnimated\" was not injected: check your FXML file";
-        assert resetAnimated != null : "fx:id=\"resetAnimated\" was not injected: check your FXML file";
+
         //********************************************************************//
 
-        ReadSerialPort rp = new ReadSerialPort();
-        data = new Data(rp);
+        rp = new ReadSerialPort();
+        progressList = rp.getProgressList();
+        //Setup of progresslist, as to not have set() crash.
+        progressList.add(0, 0);
+        progressList.add(1, 1);
+        statusListView.add(0,0);
+        StandardView std = new StandardView(true,tab2D,tabPane, rp, progressBar, progressList, statusListView);
+        viewList.add(std);
 
-        //**********************************************BUTTON SETUP*******************************************//
-        menuClose.setOnAction(e -> {
-            System.out.println("MenuClose");
-        });
+        //**********************SETUP*******************//
+        setupButtons();
+        setupChip();
+        setup3D();
+        setupProgressBar();
+        setupTabs();
+        prepareSlideMenuAnimation(); //Setup of slide-in menu
+        prepareOverlayMenuAnimation();
+        prepareSlideMenuAnimationHamburger();
 
-        //*****************************BUTTONS - Animated VIEW*******************************//
-        readAnimated.setOnAction(e -> {
-            rp.setBuffer(6);
-            ContinousToDoubleMatrix cont = new ContinousToDoubleMatrix(rp);
-            Thread thread = new Thread(cont);
-            thread.start();
-            initAnimatedGraph();
-            this.startAnimatedTimeline();
-            System.out.println("readAnimated");
-        });
-        stopAnimated.setOnAction(e -> {
-            this.stopAnimatedTimeline();
-            System.out.println("stopAnimated");
-        });
-        resetAnimated.setOnAction(e -> {
-            resetAnimatedGraph();
-            System.out.println("resetAnimated");
-        });
-        //***********************************************************************************//
-
-        //******************************BUTTONS - STATIC VIEW********************************//
-        readStatic.setOnAction(e ->{
-                if(statusResStatic == 0) {
-                    initStaticGraph();
-                    statusResStatic = 1;
-                }
-                else{
-                    System.out.println("Graph reset");
-                    resetStaticGraph();
-                    initStaticGraph();
-
-                }
-            System.out.println("readStatic");
-            });
-
-        resetStatic.setOnAction(e -> {
-            System.out.println("resetStatic");
-            resetStaticGraph();
-        });
-        //***********************************************************************************//
-        //*****************************************************************************************************//
-
-
-        //*************SETUP OF STATIC TABLEVIEW***************//
-        //Setup of static TableView.
-        tableStatic.setEditable(true);
-        //X-column
-        xDataStaticCol = new TableColumn("Time, <s>");
-        TableCol xColStatic = new TableCol(xDataStaticCol,"x");
-        //Y-column
-        yDataStaticCol = new TableColumn("Acc, <m/s^2>");
-        TableCol yColStatic = new TableCol(yDataStaticCol,"y");
-        //****************************************************//
-
-        //***********SETUP OF ANIMATED TALBEVIEW**************//
-        //Setup of Animated TableView.
-        tableAnimated.setEditable(true);
-        //X-column
-        xDataAnimatedCol = new TableColumn("Time, <s>");
-        TableCol xColAnimated = new TableCol(xDataAnimatedCol,"x");
-        //Y-column
-        yDataAnimatedCol = new TableColumn("Acc, <m/s^2>");
-        TableCol yColAnimated = new TableCol(yDataAnimatedCol,"y");
-        //****************************************************//
-
-
-
-        //****************SETUP OF EXPERIMENTAL VIEW*************//
-        readExperimental.setOnAction(e -> {
-            XYChart.Series<Number,Number> seriesExperimental = new XYChart.Series<Number,Number>();
-            seriesExperimental = data.getStaticDataAcc("x");
-            seriesExperimental.setName("Static Series - Experimental View");
-
-            StableTicksAxis x = new StableTicksAxis();
-            StableTicksAxis y = new StableTicksAxis();
-
-
-            Graph2D staticGraph = new Graph2D(lineChartExperimental, seriesExperimental, x, y,"readExperimental");
-            lineChartExperimental.getData().add(seriesExperimental);
-        });
         //*******************************************************//
+
     }
 
-    private void updateTableViewAnimated(){
-        tableAnimated.setItems(data.getTableDataAnimated());
+
+    //*********************************************SETUP METHODS******************************************************//
+    private void setup3D(){
+        //***********************3D-view setup*******************//
+        View3D view3d = new View3D(true, tabPane, tab3D, rp , progressBar, progressList, statusList, group3D, scatterGroup);
+        viewList.add(view3d);
     }
 
-    //**********************************************STATIC GRAPH*****************************************************//
 
-    public void initStaticGraph(){
-        //Fetching data for table
-        tableStatic.setItems(data.getTableDataStatic());
-        tableStatic.getColumns().setAll(xDataStaticCol,yDataStaticCol);
-
-        //Setup of series
-        seriesStatic = data.getStaticDataAcc("x");
-        seriesStatic.setName("Static Series");
-
-        Graph2D staticGraph = new Graph2D(lineChartStatic, seriesStatic, xAxisStatic, yAxisStatic,"readStatic");
-        staticGraph.setup();
-    }
-
-    public void resetStaticGraph(){
-        ObservableList<DataPoint2D> tableData = data.getTableDataStatic();
-        tableData.remove(0,tableData.size());
-        data.resetXYChartStatic();
-    }
-    //***************************************************************************************************************//
-
-    //********************************************ANIMATED GRAPH*****************************************************//
-
-    public void initAnimatedGraph(){
-
-        //Fetching data for table
-        ObservableList<DataPoint2D> series = data.getTableDataAnimated();
-        tableAnimated.setItems(series);
-        series.addListener(new ListChangeListener<DataPoint2D>() {
+    private void setupChip(){
+        //***********************************************CHIP STATUS SETUP************************************//
+        statusList = rp.getStatusList();
+        statusList.addListener(new ListChangeListener<Integer>() {
             @Override
-            public void onChanged(Change<? extends DataPoint2D> c) {
-                updateTableViewAnimated();
-            }
-        });
-        tableAnimated.getColumns().setAll(xDataAnimatedCol,yDataAnimatedCol);
-
-        seriesAnimated=data.getAnimatedAcc();
-        seriesAnimated.setName("Animated Series");
-
-        Graph2D animatedGraph = new Graph2D(lineChartAnimated, seriesAnimated, xAxisAnimated, yAxisAnimated,"readAnimated");
-        animatedGraph.setup();
-    }
-
-    public void resetAnimatedGraph(){
-        ObservableList<DataPoint2D> tableData = data.getTableDataAnimated();
-        tableData.remove(0,tableData.size()); //Removes everything in the table
-        data.resetXYChartAnimated();
-    }
-    //***************************************************************************************************************//
-
-    //******************************************TIMELINE HANDLING****************************************************//
-
-    public void timelineAnimated() {
-        //Creating a timeline for updating the graph
-        timeline = new Timeline();
-        timeline.setCycleCount(Timeline.INDEFINITE); //Indefinite cycles of the timeline finishing
-        timeline.setAutoReverse(true);
-        //****************** EVENT HANDLER FOR KEYFRAME ***************************//
-        EventHandler onFinished = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent t) {
-                //series.getData().add(new XYChart.Data<Number, Number>(secs, Math.random() * 10));
-                XYChart.Series<Number,Number> series = data.getAnimatedAcc();
-                for(int i = 0; i<series.getData().size(); i++) {
-                    seriesAnimated.getData().add(series.getData().get(i)); //TODO Clear up, it's very convoluted. Decide if we want to retrieve a XYSeries or an XYData.
-
+            public void onChanged(Change<? extends Integer> c) {
+                if (statusList.get(0).intValue() == 0) {
+                    statusCircle.setFill(Color.FIREBRICK);
+                    statusListView.set(0,0);
+                } else if (statusList.get(0).intValue() == 1) {
+                    statusCircle.setFill(Color.FORESTGREEN);
+                    statusListView.set(0,1);
                 }
             }
-        };
-        //*************************************************************************//
+        });
+        //Setup of default mode. If chip is connected, the program will load data from the chip. If not, it will default to load from a file on
+        //the computer
 
-        Duration duration = Duration.millis(10);
-
-        //I don't know how to do actionhandling for keyframe with lambda expression
-        KeyFrame keyFrame = new KeyFrame(duration, onFinished);
-        timeline.getKeyFrames().add(keyFrame);
+        if (rp.isConnected()) {
+            statusCircle.setFill(Color.FORESTGREEN);
+            //rp.setupPorts();
+            System.out.println("Chip available. Defualt to reading from chip.");
+        } else {
+            statusCircle.setFill(Color.FIREBRICK);
+            System.out.println("Chip unavailable. Defualt to reading from harddrive.");
+        }
+        //*****************************************************************************************************//
     }
 
-    public void startAnimatedTimeline(){
-        timelineAnimated();
-        timeline.play();
+    private void setupTabs(){
+        //**********************************************TAB SETUP**********************************************//
+        tabs2D= new ArrayList<>();
+        tabs3D= new ArrayList<>();
+        tabs2D.add(tabIndex2D,tab2D);
+        tabs3D.add(tabIndex3D,tab3D);
+        tabIndex2D++;
+        tabIndex3D++;
+        selectionModel=tabPane.getSelectionModel();
+        //tabs.makeDroppable(tabPane);
+        //tabs.makeDraggable(tabExperimentalView); <- TODO NullpointerException? Why?
+        //*****************************************************************************************************//
     }
 
-    public void stopAnimatedTimeline(){
-        timeline.stop();
+    private void setupProgressBar(){
+        //***********************************************PROGRESS BAR SETUP************************************//
+        //Setup of progressBar
+
+        //Add functionality for it to say "Done" when done TODO
+
+        progressList.addListener(new ListChangeListener<Integer>() {
+                                     @Override
+                                     public void onChanged(Change<? extends Integer> c) {
+                                         double progress = progressList.get(0).doubleValue() / progressList.get(1).doubleValue();
+                                         progressBar.setProgress(progress);
+                                     }
+                                 }
+        );
+        //*****************************************************************************************************//
     }
 
-    //***************************************************************************************************************//
+
+
+    private void setupButtons(){
+        //*************************** REFRESH STATUS BUTTON *****************************//
+
+        refreshButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                rp.isConnected();
+                /*
+                if(refreshButton.getRotate()!=0){
+                    refreshButton.setRotate(0);
+                }
+                //RotateTransition rot = new RotateTransition(new Duration(350), refreshButton);
+                //rot.setByAngle(360);
+
+                //rot.play();
+                */
+            }
+        });
+
+        Node iconRefresh = GlyphsDude.createIcon(MaterialDesignIcon.REFRESH,iconSize);
+        iconRefresh.getStyleClass().add("material-icon");
+        refreshButton.setGraphic(iconRefresh);
+        refreshButton.getStyleClass().setAll("material-icon-container");
+
+
+        redoButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                /*
+                if(redoButton.getRotate()!=0){
+                    redoButton.setRotate(0);
+                }
+                RotateTransition rot = new RotateTransition(new Duration(350), redoButton);
+                rot.setByAngle(360);
+                rot.play();
+                */
+            }
+        });
+
+        //Styling for button, with icon.
+        Node iconRedo = GlyphsDude.createIcon(MaterialDesignIcon.REDO,iconSize);
+        iconRedo.getStyleClass().add("material-icon");
+        redoButton.setGraphic(iconRedo);
+        redoButton.getStyleClass().setAll("material-icon-container");
+        /*
+        undoButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(undoButton.getRotate()!=0){
+                    undoButton.setRotate(0);
+                }
+                RotateTransition rot = new RotateTransition(new Duration(350), undoButton);
+                rot.setByAngle(-360);
+                rot.play();
+            }
+        });
+        */
+        Node iconUndo = GlyphsDude.createIcon(MaterialDesignIcon.UNDO,iconSize);
+        iconUndo.getStyleClass().add("material-icon");
+        undoButton.setGraphic(iconUndo);
+        undoButton.getStyleClass().setAll("material-icon-container");
+        /*
+        settingsButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(settingsButton.getRotate()!=0){
+                    settingsButton.setRotate(0);
+                }
+                RotateTransition rot = new RotateTransition(new Duration(350), settingsButton);
+                rot.setByAngle(360);
+                rot.play();
+            }
+        });
+        */
+        Node iconSettings = GlyphsDude.createIcon(MaterialDesignIcon.SETTINGS,iconSize);
+        iconSettings.getStyleClass().add("material-icon");
+        settingsButton.setGraphic(iconSettings);
+        settingsButton.getStyleClass().setAll("material-icon-container");
+
+        //*************************** OVERLAY MENU BUTTONS ******************************//
+        newScene2D.setOnAction(e ->{
+            Tab newTab = new Tab("2D view-" + Integer.toString(tabIndex2D +1));
+            tabs2D.add(tabIndex2D,newTab);
+            tabIndex2D++;
+            tabPane.getTabs().add(newTab);
+            StandardView std = new StandardView(false, newTab,tabPane, rp, progressBar, progressList, statusListView);
+            viewList.add(std);
+            addNewShortcutButton2D(newTab);
+        });
+        //*****************************************************************************//
+
+        change2DDefualt.setOnAction(e -> {
+            selectionModel.select(tab2D);
+        });
+
+        change3DDefualt.setOnAction(e -> {
+            selectionModel.select(tab3D);
+        });
+
+
+        //**********************************************************//
+
+        //******************MATH MENU BUTTON****************//
+        MenuItem findMax = new MenuItem("Find max");
+        findMax.setGraphic(new ImageView(new Image("file:resources/images/iconsBlack/chartLineSmallBlack.png")));
+        findMax.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                StandardView std = (StandardView)viewList.get(0);
+                std.findMax();
+                System.out.println("Max found");
+            }
+        });
+
+        MenuItem findMin = new MenuItem("Find min");
+        findMin.setGraphic(new ImageView(new Image("file:resources/images/iconsBlack/chartLineSmallBlack.png")));
+        findMin.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                StandardView std = (StandardView)viewList.get(0);
+                std.findMin();
+                System.out.println("Min found");
+            }
+        });
+        //Setting up material design rippler for mathButton //TODO
+        Node iconMath = GlyphsDude.createIcon(MaterialDesignIcon.MATH_COMPASS,iconSize);
+        iconMath.getStyleClass().add("material-icon");
+        mathButton.setGraphic(iconMath);
+        mathButton.getStyleClass().setAll("material-icon-container");
+
+        mathButton.getItems().addAll(findMax, findMin);
+
+        Node iconOverlay = GlyphsDude.createIcon(MaterialDesignIcon.APPS,iconSize);
+        iconOverlay.getStyleClass().add("material-icon");
+        overlayButton.setGraphic(iconOverlay);
+        overlayButton.getStyleClass().setAll("material-icon-container");
+    }
+
+    //******************MENU BAR & OVERLAY ANIMATION****************//
+    private void prepareSlideMenuAnimationHamburger(){
+        HamburgerSlideCloseTransition burgerTask = new HamburgerSlideCloseTransition(menuHamburger);
+        burgerTask.setRate(-1);
+
+        TranslateTransition openNav = new TranslateTransition(new Duration(350), navList);
+        openNav.setToX(0);
+        TranslateTransition closeNav = new TranslateTransition(new Duration(350), navList);
+
+        menuHamburger.addEventHandler(MouseEvent.MOUSE_PRESSED, (e) -> {
+            if(navList.getTranslateX()!=0){
+                openNav.play();
+            }
+            else{
+                closeNav.setToX(-(navList.getWidth()));
+                closeNav.play();
+            }
+            burgerTask.setRate(burgerTask.getRate()*-1);
+            burgerTask.play();
+        });
+    }
+    //Code taken from StackOverflow question, https://stackoverflow.com/questions/31601900/javafx-how-to-create-slide-in-animation-effect-for-a-pane-inside-a-transparent
+    private void prepareSlideMenuAnimation(){
+
+
+    }
+
+    public void prepareOverlayMenuAnimation(){
+        /*
+        RotateTransition openOverlayRot = new RotateTransition(new Duration(350), overlayButton);
+        openOverlayRot.setByAngle(90);
+        RotateTransition closeOverlayRot = new RotateTransition(new Duration(350), overlayButton);
+        */
+
+        TranslateTransition openOverlay = new TranslateTransition(new Duration(350), overlayPane);
+        openOverlay.setToY(0);
+        TranslateTransition closeOverlay = new TranslateTransition(new Duration(350), overlayPane);
+        ArrayList<WritableImage> imageList = new ArrayList<>();
+        overlayButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(overlayPane.getTranslateY()!=0){
+                    for(int i=0; i < tabs2D.size(); i++){
+                        //Setup snapshot views
+                        imageList.add(i, new WritableImage(900,500));
+                        tabs2D.get(i).getContent().snapshot(new SnapshotParameters(), imageList.get(i));
+                        Button menuButton = (Button)overlayMenuBox2D.getChildren().get(i);
+                        ImageView iw = new ImageView(imageList.get(i));
+                        iw.setSmooth(true);
+                        iw.setPreserveRatio(true);
+                        iw.setFitHeight(menuButton.getHeight());
+                        iw.setFitWidth(menuButton.getWidth());
+                        //menuButton.setBackground(new Background(new BackgroundImage(iw.getImage(), null, null, null, null)));
+                        menuButton.setGraphic(iw);
+                    }
+                    for(int i=0; i < tabs3D.size(); i++){
+                        //imageList.add(i, new WritableImage((int)tabPane.getHeight(),(int)tabPane.getWidth()));
+                        imageList.add(i, new WritableImage(900,500));
+                        tabs3D.get(i).getContent().snapshot(new SnapshotParameters(), imageList.get(i));
+                        Button menuButton = (Button)overlayMenuBox3D.getChildren().get(i);
+                        ImageView iw = new ImageView(imageList.get(i));
+                        iw.setSmooth(true);
+                        iw.setPreserveRatio(true);
+                        iw.setFitHeight(menuButton.getHeight());
+                        iw.setFitWidth(menuButton.getWidth());
+                        //menuButton.setBackground(new Background(new BackgroundImage(iw.getImage(), null, null, null, null)));
+                        menuButton.setGraphic(iw);
+                    }
+                    openOverlay.play();
+                    //openOverlayRot.play();
+                    selectionModel.getSelectedItem().setDisable(true);
+
+                }else{
+                    closeOverlay.setToY(-(mainPane.getHeight()+overlayPane.getHeight()+20));
+                    closeOverlay.play();
+                    //closeOverlayRot.setByAngle(-90);
+                    //closeOverlayRot.play();
+                    selectionModel.getSelectedItem().setDisable(false);
+                }
+            }
+        });
+        overlayPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                closeOverlay.setToY(-(mainPane.getHeight()+overlayPane.getHeight()+20));
+                closeOverlay.play();
+                //closeOverlayRot.setByAngle(-90);
+                //closeOverlayRot.play();
+                selectionModel.getSelectedItem().setDisable(false);
+            }
+        });
+    }
+
+
+
+    private void addNewShortcutButton2D(Tab tab){
+        Button btn = new Button("2D view-" + Integer.toString(tabIndex2D));
+        btn.getStyleClass().add("menu-slide-button");
+        overlayMenuBox2D.getChildren().add(tabIndex2D-1,btn);
+        btn.setOnAction(e->{
+            selectionModel.select(tab);
+        });
+    }
+
+
+
 }

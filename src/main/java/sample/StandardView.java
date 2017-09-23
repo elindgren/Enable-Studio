@@ -318,10 +318,12 @@ public class StandardView implements View {
         //settingZ.setDisable(true);
 
         settingGPSData = new JFXCheckBox("Position");
-        settingGPSData.setGraphic(new ImageView(new Image("file:resources/images/iconsBlack/gpsOff.png")));
+        //settingGPSData.setGraphic(new ImageView(new Image("file:resources/images/iconsBlack/gpsOff.png")));
+        settingGPSData.setGraphic(new ImageView(new Image("file:classes/images/iconsBlack/gpsOff.png")));
 
         settingClickData = new JFXCheckBox("Clickable data");
-        settingClickData.setGraphic(new ImageView(new Image("file:resources/images/iconsBlack/chartClickSmallBlack.png")));
+        //settingClickData.setGraphic(new ImageView(new Image("file:resources/images/iconsBlack/chartClickSmallBlack.png")));
+        settingClickData.setGraphic(new ImageView(new Image("file:classes/images/iconsBlack/chartClickSmallBlack.png")));
         settingClickData.setDisable(true);
 
         settingForceZeroInRange = new JFXCheckBox("Force zero in range");

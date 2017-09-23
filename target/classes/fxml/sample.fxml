@@ -205,7 +205,7 @@
                                                 <children>
                                                     <ImageView fitHeight="50" fitWidth="48" pickOnBounds="true" preserveRatio="true" styleClass="menu-slide-image">
                                                         <image>
-                                                            <Image url="file:resources/images/enable_no_text.png" />
+                                                            <Image url="file:/classes/images/enable_no_text.png" />
                                                         </image>
                                                     </ImageView>
                                                 </children>
@@ -299,6 +299,7 @@
                             <JFXButton fx:id="redoButton" mnemonicParsing="false" styleClass="menu-bar-redo" />
                             <MenuButton fx:id="mathButton" mnemonicParsing="false" styleClass="menu-bar-math" />
                             <JFXButton fx:id="settingsButton" mnemonicParsing="false" styleClass="menu-bar-settings" />
+                            <JFXButton fx:id="measurementButton" mnemonicParsing="false" styleClass="menu-bar-settings"/>
                         </children>
                         <padding>
                             <Insets left="20.0" />

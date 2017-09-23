@@ -1,4 +1,2 @@
 manifest-Version: 1.0
 Main-Class: sample.MainApp
-JavaFX-Preloader-Class: SplashScreenPreLoader.java
-JavaFX-Class-Path: SplashScreenPreloader-1.jar

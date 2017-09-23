@@ -80,17 +80,19 @@ public class Controller implements Initializable {
     //*********************MENU BAR************************//
 
     @FXML
-    private Button menuButton;
+    private JFXButton menuButton;
     @FXML
-    private Button overlayButton;
+    private JFXButton overlayButton;
     @FXML
     private MenuButton mathButton;
     @FXML
-    private Button redoButton;
+    private JFXButton redoButton;
     @FXML
-    private Button undoButton;
+    private JFXButton undoButton;
     @FXML
     private Button settingsButton;
+    @FXML
+    private Button measurementButton;
 
     //ProgressBar & Status - Static View
     @FXML
@@ -113,6 +115,8 @@ public class Controller implements Initializable {
     private AnchorPane navList;
     @FXML
     private AnchorPane onScreenList;
+    @FXML
+    private VBox navBox;
 
     //Navigation drawer
     @FXML
@@ -323,10 +327,21 @@ public class Controller implements Initializable {
             }
         });
         */
+
         Node iconSettings = GlyphsDude.createIcon(MaterialDesignIcon.SETTINGS,iconSize);
         iconSettings.getStyleClass().add("material-icon");
         settingsButton.setGraphic(iconSettings);
         settingsButton.getStyleClass().setAll("material-icon-container");
+
+        //New Measurement-button
+
+        Node iconMeasurement = GlyphsDude.createIcon(MaterialDesignIcon.IMPORT,iconSize);
+        iconMeasurement.getStyleClass().add("material-icon");
+        measurementButton.setGraphic(iconMeasurement);
+        measurementButton.getStyleClass().setAll("material-icon-container");
+
+
+
 
         //*************************** OVERLAY MENU BUTTONS ******************************//
         newScene2D.setOnAction(e ->{
@@ -393,6 +408,11 @@ public class Controller implements Initializable {
 
     //******************MENU BAR & OVERLAY ANIMATION****************//
     private void prepareSlideMenuAnimationHamburger(){
+        //Temporary Fix - fxml won't work.
+        //***************************//
+        ((ImageView)((StackPane)((HBox)navBox.getChildren().get(0)).getChildren().get(0)).getChildren().get(0)).setImage(new Image("file:classes/images/enable_no_text.png"));
+        //**************************//
+
         HamburgerSlideCloseTransition burgerTask = new HamburgerSlideCloseTransition(menuHamburger);
         burgerTask.setRate(-1);
 

@@ -296,6 +296,8 @@ public class Data {
 
         fileData = null; //Creating a new, empty matrix. Cannot make it null?
         measurementIteration = 0;
+        xAxis=1;
+        yAxis=10;
     }
     //****************************************************************************************************//
 

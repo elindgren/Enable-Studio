@@ -669,12 +669,15 @@ public class StandardView implements View {
         //******************************BUTTONS - STATIC VIEW********************************//
         readButton.setOnAction(e -> {
             if (cinematicMode) {
-                System.out.println("Trying to read from chip");
+                System.out.println("Trying to read from cinematically");
                 if (readFromChip) {
                     if (statusChart && !timelineIsStopped) {
                         timeline.stop();
                         timelineIsStopped = true;
-                    } else if (statusChart && timelineIsStopped) {
+                    }else if(timelineIsFinished) {
+                        System.out.println("Timeline is already finished!");
+                    }
+                    else if (statusChart && timelineIsStopped) {
                         timeline.play();
                         timelineIsStopped = false;
                         //System.out.println("Graph reset");
@@ -705,7 +708,7 @@ public class StandardView implements View {
                         readFileCinematic();
                     }
                 }
-                statusChart = true;
+                //statusChart = true;
 
                 settingX.setDisable(false);
                 settingY.setDisable(false);
@@ -1284,7 +1287,7 @@ public class StandardView implements View {
             timeline.setOnFinished(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    timelineIsFinished = true;
+                    timelineIsFinished = true; //TODO BUG! Even though the timeline is finished, it's possible to press play and try to read again => exception
                     readButton.setStyle(".play-button");
                     System.out.println("Done!");
                 }
@@ -1365,6 +1368,7 @@ public class StandardView implements View {
                     return null;
                 }
             };
+            statusChart=true;
             Thread th = new Thread(readTask);
             //progressBarStaticView.setProgress(0);
             System.out.println("Starting new readThread: from file");

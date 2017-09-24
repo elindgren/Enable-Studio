@@ -335,6 +335,13 @@ public class Controller implements Initializable {
 
         //New Measurement-button
 
+        measurementButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                rp.newMeassurment();
+            }
+        });
+
         Node iconMeasurement = GlyphsDude.createIcon(MaterialDesignIcon.IMPORT,iconSize);
         iconMeasurement.getStyleClass().add("material-icon");
         measurementButton.setGraphic(iconMeasurement);

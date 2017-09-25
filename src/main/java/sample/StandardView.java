@@ -76,6 +76,7 @@ public class StandardView implements View {
     private JFXCheckBox settingX;
     private JFXCheckBox settingY;
     private JFXCheckBox settingZ;
+    private JFXCheckBox settingResultant;
     private JFXCheckBox settingClickData;
     private JFXCheckBox settingGPSData;
     private JFXCheckBox settingForceZeroInRange;
@@ -316,6 +317,7 @@ public class StandardView implements View {
         settingZ = new JFXCheckBox("Z");
         //settingZ.setGraphic(new ImageView(new Image("file:resources/images/iconsBlack/chartLineSmallBlack.png")));
         //settingZ.setDisable(true);
+        settingResultant = new JFXCheckBox("Resultant");
 
         settingGPSData = new JFXCheckBox("Position");
         //settingGPSData.setGraphic(new ImageView(new Image("file:resources/images/iconsBlack/gpsOff.png")));
@@ -411,6 +413,26 @@ public class StandardView implements View {
             }
         });
 
+        settingResultant.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(settingResultant.isSelected()) {
+                    data.setDataMode("Resultant");
+                    settingX.setDisable(true);
+                    settingY.setDisable(true);
+                    settingZ.setDisable(true);
+
+                }else{
+                    data.setDataMode("Acceleration");
+                    settingX.setDisable(false);
+                    settingY.setDisable(false);
+                    settingZ.setDisable(false);
+
+                }
+            }
+        });
+
+
         settingGPSData.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -503,7 +525,7 @@ public class StandardView implements View {
                         ((VBox) settingX.getParent()).getChildren().removeAll(settingX, settingY, settingZ);
                         System.out.println("Removed settings from previous contextmenu");
                     }
-                    settingsBoxAcc.getChildren().addAll(settingX, settingY, settingZ);
+                    settingsBoxAcc.getChildren().addAll(settingX, settingY, settingZ, settingResultant);
                     data.setDataMode("Acceleration");
                     settingX.setText("X");
                     settingY.setText("Y");
@@ -533,7 +555,7 @@ public class StandardView implements View {
                         ((VBox) settingX.getParent()).getChildren().removeAll(settingX, settingY, settingZ);
                         System.out.println("Removed settings from previous contextmenu");
                     }
-                    settingsBoxGPS.getChildren().addAll(settingX, settingY, settingZ);
+                    settingsBoxGPS.getChildren().addAll(settingX, settingY, settingZ, settingResultant);
                     data.setDataMode("GPS");
                     settingX.setText("Longtitude");
                     settingY.setText("Latitude");
@@ -560,7 +582,7 @@ public class StandardView implements View {
                 System.out.println("Magnetic");
                 if (settingX.getParent() != settingsBoxMagnetic) {
                     if(settingX.getParent()!= null) {
-                        ((VBox) settingX.getParent()).getChildren().removeAll(settingX, settingY, settingZ);
+                        ((VBox) settingX.getParent()).getChildren().removeAll(settingX, settingY, settingZ, settingResultant);
                         System.out.println("Removed settings from previous contextmenu");
                     }
                     settingsBoxMagnetic.getChildren().addAll(settingX, settingY, settingZ);
@@ -588,7 +610,7 @@ public class StandardView implements View {
                 System.out.println("Rotation");
                 if (settingX.getParent() != settingsBoxRotation) {
                     if(settingX.getParent()!= null) {
-                        ((VBox) settingX.getParent()).getChildren().removeAll(settingX, settingY, settingZ);
+                        ((VBox) settingX.getParent()).getChildren().removeAll(settingX, settingY, settingZ, settingResultant);
                         System.out.println("Removed settings from previous contextmenu");
                     }
                     settingsBoxRotation.getChildren().addAll(settingX, settingY, settingZ);
@@ -669,7 +691,7 @@ public class StandardView implements View {
         //******************************BUTTONS - STATIC VIEW********************************//
         readButton.setOnAction(e -> {
             if (cinematicMode) {
-                System.out.println("Trying to read from cinematically");
+                System.out.println("Trying to read cinematically");
                 if (readFromChip) {
                     if (statusChart && !timelineIsStopped) {
                         timeline.stop();
@@ -695,16 +717,18 @@ public class StandardView implements View {
                         System.out.println("Stopping timeline");
                         stopAnimatedTimeline();
                         timelineIsStopped = true;
-                    } else if (statusChart && timelineIsFinished && timelineIteration + 1 == dataListX.size()) {
+                    } else if (statusChart && timelineIsFinished && timelineSlider.getValue()==timelineSlider.getMax()) { //&& timelineIteration + 1 == dataListX.size()
                         System.out.println("Resetting chart");
                         resetGraph();
                         readFileCinematic();
-                    } else if (!timelineIsFinished && statusChart || (timelineIteration + 1 != dataListX.size() && timelineIsFinished)) {
+                    } else if (!timelineIsFinished && statusChart || (timelineSlider.getValue()!=timelineSlider.getMax() && timelineIsFinished) ) { //(timelineIteration + 1 != dataListX.size() && timelineIsFinished)
                         //timeline.play();
+                        System.out.println(timelineSlider.getValue() + "Slider");
                         System.out.println("Starting timeline");
                         timelineIsStopped = false;
                         startAnimatedTimeline("file");
                     } else {
+                        System.out.println("Reading file cinematic");
                         readFileCinematic();
                     }
                 }
@@ -1061,6 +1085,12 @@ public class StandardView implements View {
             seriesZ = new XYChart.Series<>();
             settingZ.setSelected(false);
             settingZIsActive = false;
+        }
+
+        if(settingResultant.selectedProperty().getValue()){
+            lineChart.getData().removeAll(seriesX);
+            settingResultant.setSelected(false);
+            seriesX=new XYChart.Series<>();
         }
 
 

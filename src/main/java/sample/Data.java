@@ -39,6 +39,7 @@ public class Data {
     private int offsetRow;
 
     private boolean positionMode = false;
+    private boolean resultingData = false;
 
     private int xAxis = 1;
     private int yAxis = 10;
@@ -147,10 +148,13 @@ public class Data {
             if(positionMode){
                 staticDataPoint = new XYChart.Data<Number, Number>(GK.xLocal(GK.R(arr[i][2]), arr[i][2], arr[i][3], arr[i][4]),GK.yLocal(GK.R(arr[i][2]), arr[i][2], arr[i][3], arr[i][4]));
                 dataPoint = new DataPoint2D(GK.xLocal(GK.R(arr[i][2]), arr[i][2], arr[i][3], arr[i][4]),GK.yLocal(GK.R(arr[i][2]), arr[i][2], arr[i][3], arr[i][4]),i);
+            }else if(resultingData){
+                staticDataPoint = new XYChart.Data<Number, Number>(arr[i][xAxis] - offset, Math.sqrt(Math.pow(arr[i][yAxis],2)+Math.pow(arr[i][yAxis+1],2)+Math.pow(arr[i][yAxis+2],2)));
+                dataPoint = new DataPoint2D(arr[i][xAxis] - offset, Math.sqrt(Math.pow(arr[i][yAxis],2)+Math.pow(arr[i][yAxis+1],2)+Math.pow(arr[i][yAxis+2],2)), i);
             }
             else {
                 staticDataPoint = new XYChart.Data<Number, Number>(arr[i][xAxis] - offset, arr[i][yAxis]);
-                dataPoint = new DataPoint2D(arr[i][xAxis] - offset, arr[i][yAxis], i); //Number is the number of the object created, referring to its place in the array
+                dataPoint = new DataPoint2D(arr[i][xAxis] - offset, arr[i][yAxis], i); //Number is the number of the object created, referring to its place in tFhe array
             }
 
             seriesList.add(staticDataPoint);
@@ -202,6 +206,8 @@ public class Data {
         double offset = fileData[0][1]; //Used to set proper offset, as to make the graph begin at t=0
         parseArray(fileData, dataSeriesZ, dataZ, null, 0, fileData.length, offset);
     }
+
+
 
     //********************************* MATHEMATICAL OPERATIONS **********************************//
 
@@ -296,6 +302,7 @@ public class Data {
 
         fileData = null; //Creating a new, empty matrix. Cannot make it null?
         measurementIteration = 0;
+        resultingData=false;
         xAxis=1;
         yAxis=10;
     }
@@ -329,8 +336,10 @@ public class Data {
             this.setData(1,8);
             positionMode = false;
         }
-
-
+        else if(str=="Resultant"){
+            resultingData=true;
+            positionMode=false;
+        }
     }
 
     //*****************************************READ DATA FROM FILE****************************************//

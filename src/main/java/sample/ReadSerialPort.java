@@ -184,13 +184,10 @@ public class ReadSerialPort {
     }
 
     public void newMeassurment() {
-        if(connected) {
-            setBuffer(8);
-            writeBytesSerial();
-            System.out.println("Starting new measurement");
-        }else{
-            System.out.println("Sensor is not connected; can't start new measurement.");
-        }
+
+        setBuffer(8);
+        writeBytesSerial();
+        System.out.println("Starting new measurement");
     }
 
     private boolean openPort() {

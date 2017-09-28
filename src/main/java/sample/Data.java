@@ -37,6 +37,7 @@ public class Data {
     private int measurementIteration = 0;
     private double offset;
     private int offsetRow;
+    private int chipFileNumber=0;
 
     private boolean positionMode = false;
     private boolean resultingData = false;
@@ -53,7 +54,7 @@ public class Data {
         //********************************SETUP OF DATA - from readserialport********************************//
         if (readFromChip) {
             rp.setBuffer(4);
-            fileData = rp.fileToDoubleMatrix(32);
+            fileData = rp.fileToDoubleMatrix(chipFileNumber);
             System.out.println("Reading file from chip");
         }
         else{
@@ -79,7 +80,7 @@ public class Data {
         //********************************SETUP OF DATA - from readserialport********************************//
         if (readFromChip) {
             rp.setBuffer(4);
-            fileData = rp.fileToDoubleMatrix(19);
+            fileData = rp.fileToDoubleMatrix(chipFileNumber);
         }
         else{
             //Reads the whole file, row by row, and puts it in a string array.
@@ -99,8 +100,11 @@ public class Data {
         if (lastCount == 0){
             rp.setBuffer(6);
             //rp.continousToDoubleMatrix();
+            System.out.println("Fetching continous data from readserialport");
             continousData = rp.getContinuousMatrix();
+            System.out.println("Geting offset");
             offsetRow = rp.getCount();
+            System.out.println("Offset= " + offsetRow);
             offset = continousData[offsetRow][1]; //Finding offset in time from 0
             while (offset == 0){
                 offsetRow = rp.getCount();
@@ -342,6 +346,10 @@ public class Data {
         }
     }
 
+    public void setChipFileNumber(int nbr){
+        chipFileNumber=nbr;
+    }
+
     //*****************************************READ DATA FROM FILE****************************************//
 
     public double[][] readFile(File file, ObservableList<Integer> progressList){
@@ -390,7 +398,7 @@ public class Data {
     public void writeFile(File file, ObservableList<Integer> progressList, boolean  readFromChip){
         double[][] dataCopy;
         if(readFromChip){
-            dataCopy=continousData;
+            dataCopy=fileData;
         }
         else{
             dataCopy=fileData;
@@ -402,7 +410,7 @@ public class Data {
         for(int i = 0; i<data.length; i++){ //Can't have more than around 10-20k datapoints
             for(int j=0; j < data[0].length; j++) {
                 data[i][j] = dataCopy[i][j];
-                System.out.print(data[i][j] + ", ");
+                //System.out.print(data[i][j] + ", ");
             }
             System.out.println();
         }

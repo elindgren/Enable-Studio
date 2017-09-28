@@ -27,6 +27,8 @@ public class ReadSerialPort {
     private boolean connected = false;
     private boolean busy; //TODO
 
+    private boolean chipHasBeenConnected = false;
+
     private ObservableList<Integer> statusList = FXCollections.observableArrayList();
     private ObservableList<Integer> progressList = FXCollections.observableArrayList();
 
@@ -52,6 +54,7 @@ public class ReadSerialPort {
     public ReadSerialPort () {
         try {
             makeSerialPortListNew();
+            statusList.add(0,0);
             if (setPortNew(0)) {
                 if (openPortNew()) {
                     System.out.println("Port: " + port.getDescriptivePortName() + " Successfully opened");
@@ -62,7 +65,9 @@ public class ReadSerialPort {
                     if(connected) {
                         System.out.println("Trying to set buffer");
                         setBuffer(6);
+                        statusList.add(0,1);
                         continuousMatrix = new double[(int) (2.5 * Math.pow(10, 5))][nbrOfColumns];
+                        chipHasBeenConnected=true;
                     }
                     else{
                         System.out.println("The sensor wasn't connected");
@@ -134,6 +139,21 @@ public class ReadSerialPort {
         return port.isOpen();
     }
     public boolean isConnectedNew() {
+        //Setting the chips active port to the new one
+        if(chipHasBeenConnected) {
+            makeSerialPortListNew();
+            if(setPortNew(portsList.length-1) ){
+                if(openPortNew()){
+                    scanPort();
+                }
+                else{
+                    System.out.println("Port not opened");
+                }
+            }else{
+                System.out.println("Port not found!");
+            }
+        }
+
         setBuffer(7);
         //Adding a timeout in case of the chip being in setup mode to not hinder the boot of the program.
         ExecutorService executor = Executors.newCachedThreadPool();
@@ -141,6 +161,7 @@ public class ReadSerialPort {
             @Override
             public Object call() throws Exception {
                 writeBytesSerial();
+                delay(500);
                 return serialRead().equals("Connected");
             }
         };
@@ -149,8 +170,11 @@ public class ReadSerialPort {
             Object result = future.get(3, TimeUnit.SECONDS);
             if(result!=null){
                 connected=(boolean)result;
+                if(connected){
+                    chipHasBeenConnected=true;
+                }
             }else{
-                result=false;
+                connected=false;
             }
 
         }
@@ -167,7 +191,7 @@ public class ReadSerialPort {
         catch(ExecutionException e){
             System.out.println("There was a problem executing the WriteByteSerialTask");
             connected = false;
-            //e.printStackTrace();
+            e.printStackTrace();
         }
         //writeBytesSerial();
         //connected = serialRead().equals("Connected");
@@ -225,6 +249,7 @@ public class ReadSerialPort {
         port.setComPortTimeouts(SerialPort.TIMEOUT_WRITE_SEMI_BLOCKING, 100, 100);
         port.writeBytes(buffer, buffer.length);
         port.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER, 100, 100); //reset to Scanner-mode
+        System.out.println("Writing serial to chip");
     }
     private String serialRead() {
         String tmp = portScanner.nextLine();
@@ -317,10 +342,19 @@ public class ReadSerialPort {
         writeBytesSerial();
         serialRead();
     }
-    public void listFiles() {
+    public String[] listFiles() {
         setBuffer(3);
         writeBytesSerial();
-        serialRead();
+        String tmp = portScanner.nextLine();
+        String[] files = new String[1000];
+        int i=0;
+        while(!tmp.equals("EndOfLine")){
+            //System.out.println(tmp); //DEBUG
+            files[i] = tmp;
+            tmp = portScanner.nextLine();
+            i++;
+        }
+        return files;
     }
     public boolean isConnected() {
         setBuffer(7);
@@ -337,9 +371,12 @@ public class ReadSerialPort {
         buffer = ByteBuffer.allocate(4).putInt(nbr).array(); //1 = mode1 (Logging), 2 = mode2 (Current File), 3 = mode3 (List File) 4 = mode4 (fileToXXX), 5 = mode5 (Delete File)
     }
     private void getPortlist() {
+        System.out.println("Portlist length: " + portsList.length);
         for (int i = 0; i < portsList.length; i++) {
+            System.out.println("Printing port number: " + i);
             System.out.println(portsList[i].getDescriptivePortName());
         }
+        System.out.println("Printing of commPorts has completed.");
     }
     public int getFileLength(File file) {
         int i = 2;
@@ -370,7 +407,7 @@ public class ReadSerialPort {
         return (int)Double.parseDouble(line) + 1;
     }
     public void continousToDoubleMatrix() {
-        System.out.println("run");
+        //System.out.println("Starting continousToDoubleMatrix");
         String[] tmp;
         count = 0;
         writeBytesSerial();
@@ -379,7 +416,7 @@ public class ReadSerialPort {
             for (int i = 0; i < nbrOfColumns; i++) {
                 continuousMatrix[count][i] = Double.parseDouble(tmp[i]);
             }
-            //System.out.println(count);
+            //System.out.println("Current count in continous to doublematrix " + count);
             setCount(count);
             count++;
         }
@@ -409,7 +446,15 @@ public class ReadSerialPort {
     }
 
     public static void main(String[] args) {
-        ReadSerialPort test = new ReadSerialPort(0,4);
+        ReadSerialPort test = new ReadSerialPort();
+        System.out.println("Printing ports");
+        test.getPortlist();
+        System.out.println("Have returned to main method. ");
+        System.exit(0);
+
+
+
+        /*
         GeoToKart GK = new GeoToKart(57.433407, 12.033789, 1.40);
         double[][] tmp = test.fileToDoubleMatrix(28);
         double[] xCoord = new double[tmp.length];
@@ -420,6 +465,7 @@ public class ReadSerialPort {
             yCoord[i] = GK.yLocal(GK.R(tmp[i][2]), tmp[i][2], tmp[i][3], tmp[i][4]);
             System.out.println(xCoord[i] + ", " + yCoord[i]);
         }
+        */
         /*
         GeoToKart eval = new GeoToKart();
         double[][] tmp = test.fileToDoubleMatrix(67);

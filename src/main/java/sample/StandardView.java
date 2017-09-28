@@ -17,6 +17,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.chart.LineChart;
@@ -28,11 +29,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import org.gillius.jfxutils.chart.StableTicksAxis;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.io.File;
 
 /**
@@ -127,6 +130,7 @@ public class StandardView implements View {
         this.tab = tab;
         data = new Data(rp);
 
+
         if (isStandard) {
             table = (TableView) ((StackPane) ((Parent) tab.getContent()).getChildrenUnmodifiable().get(0)).getChildren().get(0);
             lineChart = (LineChart<Number, Number>) ((AnchorPane) ((StackPane) ((Parent) tab.getContent()).getChildrenUnmodifiable().get(1)).getChildren().get(0)).getChildren().get(0);
@@ -196,7 +200,8 @@ public class StandardView implements View {
         setupTable();
         setupSlider();
         setupStatusListener();
-        if (statusList.get(0) == 0) {
+        if (statusList.get(0) == 0) {  //statusList.get(0) == 0
+            System.out.println("Disabling chipSetting: " + rp.getConnected());
             chipModeToggle.setDisable(true);
         }
         saveButton.setDisable(true);
@@ -299,11 +304,77 @@ public class StandardView implements View {
         //*****************************************//
         //******Toggle: Chip or Computer***********//
         chipModeToggle.setOnAction(e -> {
-            if (readFromChip) {
-                readFromChip = false;
-            } else {
+            if (!readFromChip && !cinematicMode) {
                 readFromChip = true;
+
+                JFXDialog chipFileDialog = new JFXDialog();
+
+                JFXDialogLayout layout = new JFXDialogLayout();
+                layout.setHeading(new Text("Choose file"));
+                layout.setBody(new Text("Choose the file you want to read from the sensor's SD-card."));
+
+                JFXListView<Label> fileList = new JFXListView<Label>();
+                fileList.getStylesheets().add("file:classes/fxml/agixmaterialfx.css");
+                fileList.getStyleClass().add("root");
+                fileList.getStyleClass().add("jfx-list-view");
+                String[] files = rp.listFiles();
+                int i=0;
+                while(files[i]!=null && files[i]!="END OF DIRECTORY"){
+                    Label tmp = new Label(files[i]);
+                    System.out.println(tmp.getText());
+                    fileList.getItems().add(tmp);
+                    fileList.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>(){
+                        @Override
+                        public void handle(javafx.scene.input.MouseEvent event){
+                            String tmpText=fileList.getSelectionModel().getSelectedItem().getText();
+                            String[] tmpTextSplitFromTxt = tmpText.split("G");
+                            String[] tmpTextNumberString = tmpTextSplitFromTxt[1].split(".TXT");
+                            data.setChipFileNumber(Integer.parseInt(tmpTextNumberString[0]));
+                            chipFileDialog.close();
+                        }
+                    });
+                    i++;
+                }
+                layout.setBody(new Text("Choose the file you want to read from the sensor's SD-card."), fileList);
+                chipFileDialog.setContent(layout);
+                chipFileDialog.show((StackPane)((AnchorPane)tabPane.getParent()).getParent());
+            } else if(!readFromChip && cinematicMode){
+                readFromChip=true;
             }
+            else {
+                readFromChip = false;
+
+
+            }
+            /*
+            StackPane stackPane = new StackPane();
+            JFXDialog chipFileDialog = new JFXDialog(stackPane, null, JFXDialog.DialogTransition.CENTER);
+            chipFileDialog.getStylesheets().add("file:classes/fxml/agixmaterialfx.css");
+            chipFileDialog.getStyleClass().add("root");
+            chipFileDialog.getStyleClass().add("material-file-dialog");
+            JFXListView<Label> fileList = new JFXListView<Label>();
+            String[] files = rp.listFiles();
+            int i=0;
+        while(files[i]!=null && files[i]!="END OF DIRECTORY"){
+                Label tmp = new Label(files[i]);
+                System.out.println(tmp.getText());
+                fileList.getItems().add(tmp);
+                fileList.setOnMouseClicked(new EventHandler<javafx.scene.input.MouseEvent>(){
+                    @Override
+                    public void handle(javafx.scene.input.MouseEvent event){
+                        String tmpText=fileList.getSelectionModel().getSelectedItem().getText();
+                        String[] tmpTextSplitFromTxt = tmpText.split("G");
+                        String[] tmpTextNumberString = tmpTextSplitFromTxt[1].split(".TXT");
+                        data.setChipFileNumber(Integer.parseInt(tmpTextNumberString[0]));
+                        chipFileDialog.close();
+                    }
+                });
+                i++;
+            }
+            chipFileDialog.setContent(fileList);
+            chipFileDialog.show((StackPane)((AnchorPane)tabPane.getParent()).getParent());
+            */
+
         });
         //*****************************************//
         //**SETUP OF SETTING-box**//
@@ -705,9 +776,10 @@ public class StandardView implements View {
                         //System.out.println("Graph reset");
                         //resetGraph();
                     } else {
+                        System.out.println("Beginning setup to read from chip");
                         readChipCinematic();
                     }
-                    //statusChart=true;
+                    statusChart=true;
                 /*
                 initAnimatedGraph();
                 this.startAnimatedTimeline("chip");
@@ -1266,32 +1338,73 @@ public class StandardView implements View {
                 System.out.println("timeline Iteration: " + timelineIteration);
                 timelineSlider.setValue(progress);
                 timelineIteration++;
-            }
-        };
+        }
+    };
 
-        EventHandler onFinishedChip = new EventHandler<ActionEvent>() {
-            @Override
+    EventHandler onFinishedChip = new EventHandler<ActionEvent>() {
+        @Override
             public void handle(ActionEvent t) {
+                //System.out.println("onFinishedChip");
                 data.readContinously();
-                XYChart.Series<Number, Number> series = data.getDataSeriesX();
+                //XYChart.Series<Number, Number> series = data.getDataSeriesX();
+                if (settingX.isSelected()) { //settingXIsActive
+                    seriesX = data.getDataSeriesX();
+                    lineChart.getData().setAll(seriesX);
+                    //System.out.println("Adding data to lineChart");
+                }
 
+                if (settingY.isSelected()) { //settingYIsActive
+                    seriesY = data.getDataSeriesY();
+                    lineChart.getData().setAll(seriesY);
+                }
+                if (settingZ.isSelected()) { //settingZIsActive
+                    seriesZ = data.getDataSeriesZ();
+                    lineChart.getData().setAll(seriesZ);
+                }
+
+
+
+                //seriesX=data.getDataSeriesX();
+                /*
+                XYChart.Series<Number, Number> series = data.getDataSeriesX();
+                if (settingX.isSelected()) { //settingXIsActive
+                    seriesX = data.getDataSeriesX();
+                    //System.out.println("Adding data to lineChart");
+                }
+
+                if (settingY.isSelected()) { //settingYIsActive
+                    seriesY = data.getDataSeriesY();
+                }
+                if (settingZ.isSelected()) { //settingZIsActive
+                    seriesZ = data.getDataSeriesZ();
+                }
+                for (int i = 0; i < series.getData().size(); i++) {
+                    seriesX.getData().setAll(series.getData().get(i));
+                }
+                */
+                /*
                 for (int i = 0; i < series.getData().size(); i++) {
                     //seriesX.getData().setAll(series.getData().get(i)); //TODO, CLEAR UP
                     if (series.getData().get(series.getData().size() - 1) != null) { //If reaches the end without the file having stopped.
                         timeline.stop();
                     }
                     //seriesX = series;
-                    if (settingXIsActive) {
+                    if (settingX.isSelected()) { //settingXIsActive
                         seriesX = data.getDataSeriesX();
+
+                        System.out.println("Adding data to lineChart");
                     }
 
-                    if (settingYIsActive) {
+                    if (settingY.isSelected()) { //settingYIsActive
                         seriesY = data.getDataSeriesY();
                     }
-                    if (settingZIsActive) {
+                    if (settingZ.isSelected()) { //settingZIsActive
                         seriesZ = data.getDataSeriesZ();
                     }
                 }
+                */
+                //System.out.println("onfinishedChip finished. ");
+
 
                 /*
                 try {
@@ -1328,11 +1441,12 @@ public class StandardView implements View {
             keyFrameAnimated = new KeyFrame(duration, onFinishedFile);
             timeline.getKeyFrames().add(keyFrameAnimated);
         } else if (str == "chip") {
-            System.out.println("Reading chip");
+            System.out.println("Setting up chip read timeline");
             timeline.setCycleCount(Timeline.INDEFINITE);
             Duration duration = Duration.millis(frameTime);
             keyFrameAnimated = new KeyFrame(duration, onFinishedChip);
             timeline.getKeyFrames().add(keyFrameAnimated);
+            System.out.println("Setup of timeline complete");
         }
     }
 
@@ -1417,7 +1531,7 @@ public class StandardView implements View {
                 System.out.println("Reading data from chip...");
                 rp.setBuffer(6);
                 rp.continousToDoubleMatrix();
-                System.out.println("Read successful");
+                System.out.println("Chip set to readmode");
                 /*
                 Platform.runLater(new Runnable() {
                     @Override

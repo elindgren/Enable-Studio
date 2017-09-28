@@ -1369,4 +1369,24 @@
 	-fx-padding: 2px;
 }
 
+/*******************************************************************************
+ *                                                                             *
+ * JFX-List-View                                                               *
+ *                                                                             *
+ ******************************************************************************/
+
+.jfx-list-view{
+	-fx-background-insets: -2 -2 -2 -2;
+}
+
+
+.jfx-list-view:focused .list-cell:filled:focused:selected {
+	-fx-background-color: -swatch-light-grey;
+	-fx-text-fill: -accent-color;
+}
+
+.jfx-list-view:hover .list-cell:hover {
+	-fx-background-color: -swatch-light-grey;
+	-fx-text-fill: -accent-color;
+}
 

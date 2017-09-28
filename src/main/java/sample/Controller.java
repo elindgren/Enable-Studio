@@ -49,7 +49,7 @@ public class Controller implements Initializable {
 
     //Below are used by various progressbars.
     private ObservableList<Integer> progressList;
-    private ObservableList<Integer> statusList;
+    //private ObservableList<Integer> statusList;
     private ObservableList<Integer> statusListView=FXCollections.observableArrayList(); //StatusList used by all the views, as to not have eventhandlers conflict
 
     @FXML
@@ -146,7 +146,9 @@ public class Controller implements Initializable {
         //Setup of progresslist, as to not have set() crash.
         progressList.add(0, 0);
         progressList.add(1, 1);
-        statusListView.add(0,0);
+        //statusListView.add(0,0);
+        System.out.println("Retrieving statusList");
+        statusListView=rp.getStatusList();
         StandardView std = new StandardView(true,tab2D,tabPane, rp, progressBar, progressList, statusListView);
         viewList.add(std);
 
@@ -167,7 +169,7 @@ public class Controller implements Initializable {
     //*********************************************SETUP METHODS******************************************************//
     private void setup3D(){
         //***********************3D-view setup*******************//
-        View3D view3d = new View3D(true, tabPane, tab3D, rp , progressBar, progressList, statusList, group3D, scatterGroup);
+        View3D view3d = new View3D(true, tabPane, tab3D, rp , progressBar, progressList, statusListView, group3D, scatterGroup);
         viewList.add(view3d);
     }
 
@@ -175,16 +177,14 @@ public class Controller implements Initializable {
     private void setupSensor(){
         //***********************************************CHIP STATUS SETUP************************************//
         System.out.println("Retrieving statusList");
-        statusList = rp.getStatusList();
-        statusList.addListener(new ListChangeListener<Integer>() {
+        //statusListView = rp.getStatusList();
+        statusListView.addListener(new ListChangeListener<Integer>() {
             @Override
             public void onChanged(Change<? extends Integer> c) {
-                if (statusList.get(0).intValue() == 0) {
+                if (statusListView.get(0).intValue() == 0) {
                     statusCircle.setFill(Color.FIREBRICK);
-                    statusListView.set(0,0);
-                } else if (statusList.get(0).intValue() == 1) {
+                } else if (statusListView.get(0).intValue() == 1) {
                     statusCircle.setFill(Color.FORESTGREEN);
-                    statusListView.set(0,1);
                 }
             }
         });
@@ -192,7 +192,7 @@ public class Controller implements Initializable {
         //the computer
         System.out.println("Checking if rp is connected");
         if (rp.getConnected()) {
-            statusCircle.setFill(Color.FORESTGREEN);
+            statusCircle.setFill(Color.FORESTGREEN);;
             //rp.setupPorts();
             System.out.println("Chip available. Defualt to reading from chip.");
         } else {
@@ -241,11 +241,16 @@ public class Controller implements Initializable {
         Task<Void> connectedTask = new Task<Void>(){
             @Override
             protected Void call() throws Exception{
+                System.out.println("Getting status from chip");
                 boolean status = rp.isConnectedNew();
+                System.out.println("Status: " + status);
                 if(status){
-                    statusList.set(0,1);
+                    System.out.println("Setting statusListView to chip being available");
+                    statusListView.set(0,1);
+                    System.out.println("ListView has been set");
                 }else{
                     System.out.println("Sensor not connected");
+                    statusListView.set(0,0);
                 }
                 return null;
             }
@@ -255,8 +260,20 @@ public class Controller implements Initializable {
         refreshButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Thread th = new Thread(connectedTask);
-                th.start();
+                System.out.println("Getting status from chip");
+                boolean status = rp.isConnectedNew();
+                System.out.println("Status: " + status);
+                if(status){
+                    System.out.println("Setting statusListView to chip being available");
+                    statusListView.set(0,1);
+                    System.out.println("ListView has been set");
+                }else{
+                    System.out.println("Sensor not connected");
+                    statusListView.set(0,0);
+                }
+
+                //Thread th = new Thread(connectedTask);
+                //th.start();
 
 
                 /*
